@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="adriana-build" content="v6">
 <title>ADRIANA — Assistant Daily Reporting & Analytics</title>
 <style>
 :root{--bg:#f3f6f2;--panel:#fff;--ink:#17211b;--muted:#68746c;--line:#dce4dd;--green:#155c3b;--green2:#e7f1eb;--amber:#a36a12;--red:#a94332}
@@ -193,7 +194,7 @@ function saveEvaluation(){if(!ACTIVE){document.getElementById('evalMsg').textCon
 function renderEvalHistory(){const el=document.getElementById('evalHistory');if(!el)return;const idx=JSON.parse(localStorage.getItem('adriana_daily_index')||'[]');const evals=JSON.parse(localStorage.getItem('adriana_evaluations')||'[]');const decisions=JSON.parse(localStorage.getItem('adriana_decisions')||'[]');const rows=idx.map(date=>{const s=JSON.parse(localStorage.getItem(lockKey(date))||'null');if(!s)return'';const prev=decisions.find(x=>x.nextCheck===date),ev=evals.find(x=>x.decisionDate===prev?.date&&x.evaluationDate===date);return `<div class="notice" style="margin-top:8px"><b>${fmtDate(date)}</b> · ${html.escape(s.closingId)}<br>${Number(s.jjg||0).toLocaleString()} JJG · ${s.producingHK||0} HK · ${s.files?.length||0} file(s)<br>${prev?`Decision H-1: ${html.escape(prev.decision)} · Effectiveness: ${html.escape(ev?.effectiveness||'Pending')}`:'No H-1 decision linked'}<br><button class="btn" onclick="loadDate('${date}')">LOAD THIS DATE</button></div>`}).join('');el.innerHTML='<h2>Daily Closing / Effectiveness History</h2>'+(rows||'<div class="small">Belum ada closing.</div>')}
 // Build by-mandoran data after core is built
 const oldBuildData=buildData;buildData=function(snap){const d=oldBuildData(snap);d.byMandoran={};const p=d.sections.PRODUKSIBLOK;if(p){const h=p.header,mi=h.indexOf('KEMANDORAN'),ni=h.indexOf('NPK'),ji=h.indexOf('JJG');p.rows.forEach(r=>{const m=r[mi]||'—';d.byMandoran[m]??={j:0,n:new Set()};d.byMandoran[m].j+=num(r[ji]);if(r[ni])d.byMandoran[m].n.add(r[ni])})}return d}
-document.getElementById('amantaFiles').addEventListener('change',()=>{const n=document.getElementById('amantaFiles').files.length;document.getElementById('processBtn').disabled=!n;document.getElementById('uploadMsg').textContent=n?`${n} file dipilih.`:'Belum ada file.'});
+document.getElementById('amantaFiles').addEventListener('change',()=>{const n=document.getElementById('amantaFiles').files.length;STAGED=null;document.getElementById('lockBtn').disabled=true;document.getElementById('processBtn').disabled=!n;document.getElementById('uploadMsg').textContent=n?`${Math.min(n,2)} file dipilih. Klik PROCESS & RECONCILE lalu CLOSE & LOCK DATASET.`:'Belum ada file.';if(n>2)document.getElementById('uploadMsg').innerHTML='<b>Catatan:</b> maksimal 2 file diproses. '+n+' file dipilih.'});
 renderDecisionHistory();renderEvalHistory();const bootDates=JSON.parse(localStorage.getItem('adriana_daily_index')||'[]');if(bootDates[0]){const boot=JSON.parse(localStorage.getItem(lockKey(bootDates[0]))||'null');if(boot)renderAll(boot);}
 </script>
 </body></html>
