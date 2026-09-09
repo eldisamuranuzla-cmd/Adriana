@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ADRIANA — Assistant Daily Reporting & Analytics</title>
+<meta name="theme-color" content="#103d29">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="ADRIANA">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+
+<style>
+:root{--bg:#f3f6f2;--panel:#fff;--ink:#17211b;--muted:#68746c;--line:#dce4dd;--green:#155c3b;--green2:#e7f1eb;--amber:#a36a12;--red:#a94332}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+.app{display:flex;min-height:100vh}.side{width:235px;background:#103d29;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}.brand{font-size:25px;font-weight:800}.sub{font-size:11px;color:#bfd2c6;margin:4px 0 30px}.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#d7e5dc;text-align:left;padding:12px;border-radius:9px;font-size:13px;cursor:pointer}.nav button.active,.nav button:hover{background:#1e6545;color:#fff}.main{margin-left:235px;width:calc(100% - 235px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}.eyebrow{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em}.title{font-size:27px;font-weight:800;margin:5px 0}.meta{font-size:12px;color:var(--muted)}.lock{background:var(--green2);color:var(--green);padding:9px 12px;border-radius:9px;font-weight:700;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}.card{padding:18px}.label{font-size:11px;color:var(--muted);font-weight:700}.value{font-size:28px;font-weight:800;margin:8px 0 3px}.small{font-size:11px;color:var(--muted)}.confidence{float:right;font-size:10px;font-weight:800}.high{color:var(--green)}.medium{color:var(--amber)}.low{color:var(--red)}
+.two{display:grid;grid-template-columns:1.6fr .9fr;gap:14px;margin-top:14px}.panel{padding:20px}.panel h2{font-size:15px;margin:0 0 16px}.signal{padding:13px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:30px 1fr;gap:8px}.num{font-weight:800;color:var(--red)}.signal b{font-size:13px}.signal p{margin:4px 0 0;font-size:12px;color:var(--muted)}.decision{background:#103d29;color:#fff}.decision .muted{color:#c6d8cc}.btn{border:0;border-radius:9px;padding:10px 13px;background:#e7f1eb;color:#103d29;font-weight:800;cursor:pointer;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:10px;text-transform:uppercase}.tag{padding:4px 7px;border-radius:7px;background:#f5eee1;color:var(--amber);font-weight:800;font-size:10px}
+.section{display:none}.section.active{display:block}.notice{padding:15px;border:1px dashed #cbd6ce;border-radius:10px;background:#f8faf8;color:var(--muted);font-size:12px}.upload{border:2px dashed #bdcabe;padding:24px;border-radius:12px;text-align:center;margin-bottom:16px}.upload input{margin-top:10px}.footer{font-size:10px;color:var(--muted);margin-top:18px}
+@media(max-width:950px){.side{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:20px}.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="brand">ADRIANA</div><div class="sub">Assistant Daily Reporting & Analytics</div>
+  <div class="nav">
+    <button class="active" data-target="dashboard">Dashboard</button>
+    <button data-target="closing">Daily Closing</button>
+    <button data-target="rotation">Rotation</button>
+    <button data-target="production">Production</button>
+    <button data-target="quality">Harvest Quality</button>
+    <button data-target="transport">Transport & Restan</button>
+    <button data-target="exception">Exception & Priority</button>
+    <button data-target="ai">AI Analysis</button>
+    <button data-target="pdca">PDCA / Decision Log</button>
+    <button data-target="history">History & Effectiveness</button>
+  </div>
+</aside>
+<main class="main">
+<section id="dashboard" class="section active">
+<div class="top"><div><div class="eyebrow">DAILY OPERATIONAL VIEW</div><div class="title">08 September 2026</div><div class="meta">SYM1 · OC · AMANTA v3.2.8.9</div></div><div class="lock">● DATA LOCKED · VALIDATED</div></div>
+<div class="grid">
+<div class="card"><span class="confidence high">HIGH</span><div class="label">TOTAL JJG</div><div class="value">1,863</div><div class="small">3-source reconciliation matched</div></div>
+<div class="card"><span class="confidence high">HIGH</span><div class="label">PRODUCING HK</div><div class="value">23</div><div class="small">unique producing NPK</div></div>
+<div class="card"><span class="confidence medium">MEDIUM</span><div class="label">NET TRANSPORT</div><div class="value">12.86 T</div><div class="small">2 trips · scale weight</div></div>
+<div class="card"><span class="confidence low">LOW</span><div class="label">RESTAN</div><div class="value">—</div><div class="small">data unavailable</div></div>
+</div>
+<div class="two">
+<div class="panel"><h2>Today's Operational Signals</h2>
+<div class="signal"><div class="num">01</div><div><b>OC023 is the dominant production block</b><p>768 JJG · 41.2% of total daily JJG.</p></div></div>
+<div class="signal"><div class="num">02</div><div><b>OC023 shows a material mandoran gap</b><p>OCPN1: 26.45 JJG/HK vs OCPN2: 39.75 JJG/HK. Flag for investigation, not a performance verdict.</p></div></div>
+<div class="signal"><div class="num">03</div><div><b>Quality sample requires follow-up</b><p>OC023/OCPN1 recorded 5 non-standard circles in the sample.</p></div></div>
+<div class="signal"><div class="num">04</div><div><b>SIC recorded status</b><p>52 Y / 40 N. KPI denominator is not yet formally defined.</p></div></div>
+</div>
+<div class="panel decision"><h2>Assistant Decision</h2><div class="muted">Recommended focus</div><div style="font-size:25px;font-weight:800;margin:6px 0 12px">Investigate OC023</div><div class="muted" style="font-size:12px;line-height:1.6">Compare mandoran execution, field condition, harvest area and rotation before judging performance.</div><button class="btn" onclick="show('pdca')">CREATE ACTION PLAN</button></div>
+</div>
+<div class="panel" style="margin-top:14px"><h2>Production by Block</h2><table><thead><tr><th>Block</th><th>JJG</th><th>% Total</th><th>Review</th></tr></thead><tbody>
+<tr><td><b>OC023</b></td><td>768</td><td>41.2%</td><td><span class="tag">INVESTIGATE</span></td></tr>
+<tr><td>OC015</td><td>511</td><td>27.4%</td><td>Monitor</td></tr><tr><td>OC019</td><td>297</td><td>15.9%</td><td>Monitor</td></tr><tr><td>OC027</td><td>220</td><td>11.8%</td><td>Monitor</td></tr><tr><td>OC011</td><td>67</td><td>3.6%</td><td>Monitor</td></tr></tbody></table></div>
+</section>
+
+<section id="closing" class="section"><div class="top"><div><div class="eyebrow">CONTROL</div><div class="title">Daily Closing</div><div class="meta">One AMANTA upload → one validated dataset → one locked dashboard.</div></div></div>
+<div class="panel"><h2>AMANTA Upload</h2><div class="upload">Upload AMANTA CSV<br><input type="file" accept=".csv" onchange="readCSV(this)"><div id="uploadMsg" class="small"></div></div>
+<div class="notice"><b>Lock rule:</b> after closing, source values must not be silently edited. Corrections should create a new dataset version with reason, evidence, requester and approval.</div></div></section>
+
+
+<section id="rotation" class="section">
+<div class="top"><div><div class="eyebrow">ENGINE 01</div><div class="title">Harvest Rotation</div><div class="meta">Block-level rotation requires a confirmed harvest-date source.</div></div></div>
+<div class="panel">
+  <div class="upload">
+    <b>Rotation Source</b><br>
+    Upload historical/official rotation CSV containing at minimum <b>BLOK</b> and <b>HARVDATE</b>.
+    <br><input id="rotationFile" type="file" accept=".csv">
+    <div id="rotationMsg" class="small"></div>
+  </div>
+  <div id="rotationResult" class="notice">
+    <b>Current AMANTA file:</b> rotation status cannot be calculated reliably because the required historical/official rotation source is not confirmed.
+    <br><br><b>Status model:</b> Hijau 1–7 · Kuning 8–10 · Merah 11–15 · Hitam &gt;15 days.
+  </div>
+</div>
+</section>
+
+
+<section id="production" class="section"><div class="title">Production</div><div class="meta">Actual production from reconciled AMANTA records.</div><div class="panel" style="margin-top:14px"><table><thead><tr><th>Mandoran</th><th>HK</th><th>JJG</th><th>JJG/HK</th></tr></thead><tbody><tr><td>OCPN1</td><td>11</td><td>887</td><td>80.64</td></tr><tr><td>OCPN2</td><td>12</td><td>976</td><td>81.33</td></tr></tbody></table></div></section>
+
+<section id="quality" class="section"><div class="title">Harvest Quality</div><div class="meta">Recorded quality evidence, not a block-wide conclusion.</div><div class="panel" style="margin-top:14px"><table><thead><tr><th>Block</th><th>Mandoran</th><th>Sample Pokok</th><th>Piringan Non-Std</th><th>Buah Tinggal</th></tr></thead><tbody><tr><td>OC023</td><td>OCPN1</td><td>11</td><td>5</td><td>0</td></tr><tr><td>OC019</td><td>OCPN2</td><td>7</td><td>2</td><td>0</td></tr></tbody></table></div></section>
+
+<section id="transport" class="section"><div class="title">Transport & Restan</div><div class="meta">Net weight calculated from scale weights.</div><div class="panel" style="margin-top:14px"><table><thead><tr><th>Rit</th><th>Weight In</th><th>Weight Out</th><th>Net</th><th>Ready → Go</th></tr></thead><tbody><tr><td>1</td><td>12,540 kg</td><td>6,150 kg</td><td>6,390 kg</td><td>~34 min</td></tr><tr><td>2</td><td>12,730 kg</td><td>6,260 kg</td><td>6,470 kg</td><td>~32 min</td></tr></tbody></table><div class="notice" style="margin-top:14px"><b>Restan:</b> unavailable in this AMANTA file as an explicit confirmed value.</div></div></section>
+
+
+<section id="exception" class="section">
+<div class="top"><div><div class="eyebrow">ENGINE 05</div><div class="title">Exception & Priority</div><div class="meta">Rule-based signals generated from the locked AMANTA dataset.</div></div></div>
+<div class="panel">
+  <div id="exceptionSummary" class="grid" style="margin-bottom:14px">
+    <div class="card"><div class="label">P1 CRITICAL</div><div class="value" id="p1">0</div><div class="small">requires immediate review</div></div>
+    <div class="card"><div class="label">P2 HIGH</div><div class="value" id="p2">0</div><div class="small">same-day follow-up</div></div>
+    <div class="card"><div class="label">P3 MONITOR</div><div class="value" id="p3">0</div><div class="small">watch next cycle</div></div>
+    <div class="card"><div class="label">DATA GAP</div><div class="value" id="dg">0</div><div class="small">missing/undefined semantics</div></div>
+  </div>
+  <table><thead><tr><th>Priority</th><th>Object</th><th>Signal</th><th>Evidence</th><th>Recommended check</th></tr></thead>
+  <tbody id="exceptionBody"><tr><td colspan="5" class="small">Upload AMANTA to generate exceptions.</td></tr></tbody></table>
+</div>
+</section>
+
+
+
+<section id="ai" class="section">
+<div class="top"><div><div class="eyebrow">ENGINE 08</div><div class="title">AI-Assisted Analysis</div><div class="meta">AI reads the locked dataset, exceptions and evidence. It does not invent unavailable data.</div></div></div>
+<div class="two">
+<div class="panel"><h2>Generated Analysis</h2><div id="aiAnalysis" class="notice"><b>Primary signal: OC023</b><br><br>OC023 contributes 41.2% of daily JJG and shows a material JJG/HK difference between mandorans. The correct next step is investigation, not a performance verdict.<br><br><b>Evidence to compare:</b> harvest area, rotation, field condition, manpower composition, quality sample and historical baseline.</div></div>
+<div class="panel decision"><h2>Recommended Decision</h2><div class="muted">Priority</div><div style="font-size:25px;font-weight:800;margin:6px 0">Investigate OC023</div><div class="muted" style="font-size:12px;line-height:1.6">Validate the operational context, assign an owner and record the next-day check.</div><button class="btn" onclick="show('pdca')">OPEN PDCA</button></div>
+</div>
+</section>
+
+
+
+<section id="pdca" class="section">
+<div class="top"><div><div class="eyebrow">DECISION LOOP</div><div class="title">PDCA / Decision Log</div><div class="meta">Decision today → action tomorrow → actual result → effectiveness.</div></div></div>
+<div class="panel">
+<h2>Decision Draft</h2>
+<div class="grid">
+<div class="card"><div class="label">ISSUE</div><div class="value" style="font-size:18px">OC023 gap</div><div class="small">OCPN1 vs OCPN2 JJG/HK</div></div>
+<div class="card"><div class="label">OWNER</div><div class="value" style="font-size:18px">Assistant</div><div class="small">operational verification</div></div>
+<div class="card"><div class="label">TARGET</div><div class="value" style="font-size:18px">Next day</div><div class="small">recheck OC023 execution</div></div>
+<div class="card"><div class="label">SUCCESS</div><div class="value" style="font-size:18px">Measure</div><div class="small">compare actual vs baseline</div></div>
+</div>
+<div style="margin-top:16px"><label class="label">ACTION PLAN</label><textarea id="actionText" style="width:100%;margin-top:8px;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit" placeholder="Contoh: cek luasan panen, kondisi ancak, rotasi dan komposisi HK di OC023 sebelum briefing besok."></textarea></div>
+<button class="btn" onclick="saveDecision()">SAVE & LOCK DECISION</button>
+<div id="decisionMsg" class="small" style="margin-top:10px"></div>
+<div id="decisionHistory" style="margin-top:18px"></div>
+</div>
+</section>
+
+
+
+<section id="history" class="section">
+<div class="top"><div><div class="eyebrow">ENGINE 10</div><div class="title">History & Decision Effectiveness</div><div class="meta">Compare yesterday's decision with today's actual result.</div></div></div>
+<div class="panel">
+<h2>Next-Day Evaluation</h2>
+<div class="grid">
+<div class="card"><div class="label">PREVIOUS DECISION</div><div class="value" style="font-size:18px">Investigate OC023</div><div class="small">08 Sep 2026</div></div>
+<div class="card"><div class="label">ACTION STATUS</div><div class="value" style="font-size:18px">Pending</div><div class="small">waiting for next-day result</div></div>
+<div class="card"><div class="label">EXPECTED SIGNAL</div><div class="value" style="font-size:18px">Gap narrows</div><div class="small">context validated</div></div>
+<div class="card"><div class="label">EFFECTIVENESS</div><div class="value" style="font-size:18px">—</div><div class="small">not evaluated yet</div></div>
+</div>
+<div style="margin-top:18px">
+<label class="label">TODAY'S ACTUAL RESULT</label>
+<textarea id="actualResult" style="width:100%;margin-top:8px;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit" placeholder="Masukkan hasil aktual: misalnya JJG/HK OCPN1 dan OCPN2, kondisi lapangan, hasil pengecekan, dan tindakan yang benar-benar dilakukan."></textarea>
+</div>
+<div style="margin-top:12px">
+<label class="label">DECISION EFFECTIVENESS</label>
+<select id="effectiveness" style="width:100%;margin-top:8px;padding:11px;border:1px solid var(--line);border-radius:10px;background:#fff">
+<option value="">Pilih hasil evaluasi</option>
+<option>Effective — issue improved</option>
+<option>Partially Effective — issue improved but remains</option>
+<option>Not Effective — issue persists</option>
+<option>Invalidated — initial signal was not confirmed</option>
+</select>
+</div>
+<button class="btn" onclick="saveEvaluation()">SAVE EVALUATION</button>
+<div id="evalMsg" class="small" style="margin-top:10px"></div>
+<div id="evalHistory" style="margin-top:18px"></div>
+</div>
+</section>
+
+<div class="footer">ADRIANA MVP · AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
+</main></div>
+<script>
+let deferredInstallPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+ e.preventDefault(); deferredInstallPrompt=e;
+ const b=document.getElementById('installBtn'); if(b)b.style.display='block';
+});
+async function installADRIANA(){
+ if(deferredInstallPrompt){deferredInstallPrompt.prompt(); await deferredInstallPrompt.userChoice; deferredInstallPrompt=null;}
+ else alert('Jika tombol install belum muncul, buka ADRIANA melalui Chrome pada alamat HTTPS lalu pilih menu ⋮ → Add to Home screen / Install app.');
+}
+if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+
+const html={escape:(x)=>String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))};
+function show(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.target===id));}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>show(b.dataset.target));
+function parseCSVLine(line){
+  const out=[]; let cur='', q=false;
+  for(let i=0;i<line.length;i++){const c=line[i];
+    if(c==='"'){if(q && line[i+1]==='"'){cur+='"';i++;}else q=!q;}
+    else if(c===',' && !q){out.push(cur);cur='';} else cur+=c;
+  } out.push(cur); return out;
+}
+function readCSV(input){
+  const f=input.files[0]; if(!f)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    const text=reader.result.replace(/^\uFEFF/,'');
+    const lines=text.split(/\r?\n/);
+    const sections={}; let current=null, header=null, rows=[];
+    function flush(){if(current){sections[current]={header:header||[],rows:rows};} rows=[];header=null;}
+    for(const raw of lines){
+      const line=raw.trim(); if(!line)continue;
+      const cells=parseCSVLine(line);
+      if(cells.length===1 && /^[A-Z0-9_]+$/.test(cells[0])){flush();current=cells[0];continue;}
+      if(current && !header){header=cells;continue;}
+      if(current)rows.push(cells);
+    } flush();
+
+    const num=(v)=>{const x=parseFloat(String(v??'').replace(/,/g,''));return Number.isFinite(x)?x:0};
+    const get=(sec,name)=>{const d=sections[sec]; if(!d)return[]; const i=d.header.findIndex(x=>x===name); return i<0?[]:d.rows.map(r=>r[i]);};
+    const sum=(a)=>a.reduce((x,v)=>x+num(v),0);
+
+    const prod=sections.PRODUKSIBLOK;
+    let jjg=prod?sum(get('PRODUKSIBLOK','JJG')):0;
+    const npks=new Set(get('PRODUKSIBLOK','NPK').filter(Boolean));
+    const mand=new Set(get('PRODUKSIBLOK','KEMANDORAN').filter(Boolean));
+    const blocks={};
+    if(prod){
+      const bi=prod.header.indexOf('BLOK'), ji=prod.header.indexOf('JJG'), mi=prod.header.indexOf('KEMANDORAN');
+      prod.rows.forEach(r=>{const b=r[bi]||'—'; blocks[b]=(blocks[b]||0)+num(r[ji]);});
+    }
+    const tr=sections.TR_TBS_TRANSPORT;
+    let net=0,trips=0;
+    if(tr){
+      const wi=tr.header.indexOf('WEIGHTIN'), wo=tr.header.indexOf('WEIGHTOUT');
+      trips=tr.rows.length; tr.rows.forEach(r=>net+=num(r[wi])-num(r[wo]));
+    }
+    const sectionsCount=Object.keys(sections).length;
+    document.getElementById('uploadMsg').innerHTML=
+      '<b>Parsed successfully.</b> '+html.escape(f.name)+' · '+Math.round(f.size/1024)+' KB · '+sectionsCount+' AMANTA sections detected.';
+    const k=document.querySelectorAll('#dashboard .card .value');
+    if(k[0]&&jjg)k[0].textContent=Math.round(jjg).toLocaleString('en-US');
+    if(k[1]&&npks.size)k[1].textContent=npks.size;
+    if(k[2]&&net)k[2].textContent=(net/1000).toFixed(2)+' T';
+    window.ADRIANA_DATA={sections,jjg,producingHK:npks.size,mandorans:[...mand],blocks,netTransportKg:net,trips}; renderDynamic(window.ADRIANA_DATA);
+  };
+  reader.readAsText(f);
+}
+
+function renderDynamic(data){
+  const fmt=n=>Number(n||0).toLocaleString('en-US');
+  const pct=(n,d)=>d?((n/d)*100).toFixed(1)+'%':'—';
+  const prod=data.sections.PRODUKSIBLOK;
+  if(!prod)return;
+  const h=prod.header, idx=k=>h.indexOf(k);
+  const iM=idx('KEMANDORAN'), iB=idx('BLOK'), iN=idx('NPK'), iJ=idx('JJG');
+  const byM={}, byB={};
+  prod.rows.forEach(r=>{
+    const m=r[iM]||'—', b=r[iB]||'—', n=r[iN]||'';
+    const j=Number(r[iJ])||0;
+    byM[m]??={jjg:0,npks:new Set()}; byM[m].jjg+=j; if(n)byM[m].npks.add(n);
+    byB[b]=(byB[b]||0)+j;
+  });
+
+  // Production section
+  const prodBody=document.querySelector('#production tbody');
+  if(prodBody){
+    prodBody.innerHTML=Object.entries(byM).map(([m,v])=>{
+      const hk=v.npks.size; return `<tr><td>${html.escape(m)}</td><td>${hk}</td><td>${fmt(v.jjg)}</td><td>${hk?(v.jjg/hk).toFixed(2):'—'}</td></tr>`;
+    }).join('');
+  }
+
+  // Dashboard KPI
+  const vals=document.querySelectorAll('#dashboard .card .value');
+  if(vals[0])vals[0].textContent=fmt(data.jjg);
+  if(vals[1])vals[1].textContent=fmt(data.producingHK);
+  if(vals[2] && data.netTransportKg)vals[2].textContent=(data.netTransportKg/1000).toFixed(2)+' T';
+
+  // Dynamic block table
+  const db=document.querySelector('#dashboard table tbody');
+  if(db){
+    db.innerHTML=Object.entries(byB).sort((a,b)=>b[1]-a[1]).map(([b,j])=>{
+      const review=(b==='—')?'Review':(j/data.jjg>=.35?'INVESTIGATE':'Monitor');
+      return `<tr><td><b>${html.escape(b)}</b></td><td>${fmt(j)}</td><td>${pct(j,data.jjg)}</td><td><span class="tag">${review}</span></td></tr>`;
+    }).join('');
+  }
+
+  // Rotation: explicitly unavailable unless a recognized rotation field exists.
+  const rot=document.querySelector('#rotation .notice');
+  const rotationFields=['ROTASI','UMURROTASI','HARVDATE','HARV_DATE'];
+  const found=rotationFields.find(x=>Object.values(data.sections).some(sec=>sec.header.includes(x)));
+  if(rot && found){
+    rot.innerHTML='<b>Rotation source detected:</b> '+html.escape(found)+'. Calculation rule still requires an approved business definition before displaying status.';
+  }
+
+  window.ADRIANA_DATA={...data,byMandoran:byM,byBlock:byB}; buildExceptions(window.ADRIANA_DATA);
+}
+
+
+function parseDateAny(v){
+  if(!v)return null;
+  const x=String(v).trim();
+  let d=new Date(x);
+  if(!isNaN(d))return d;
+  const m=x.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  if(m)return new Date(+m[3],+m[2]-1,+m[1]);
+  return null;
+}
+function rotationStatus(days){
+  if(days<=7)return ['Hijau','high'];
+  if(days<=10)return ['Kuning','medium'];
+  if(days<=15)return ['Merah','low'];
+  return ['Hitam','low'];
+}
+document.getElementById('rotationFile')?.addEventListener('change',e=>{
+ const f=e.target.files[0]; if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{
+   const lines=r.result.replace(/^\uFEFF/,'').split(/\r?\n/).filter(Boolean);
+   if(!lines.length)return;
+   const h=parseCSVLine(lines[0]).map(x=>x.trim().toUpperCase());
+   const bi=h.indexOf('BLOK'), hi=h.indexOf('HARVDATE');
+   const msg=document.getElementById('rotationMsg'), out=document.getElementById('rotationResult');
+   if(bi<0||hi<0){msg.textContent='Required columns BLOK and HARVDATE were not found.';return;}
+   const now=new Date('2026-09-08T00:00:00');
+   const rows=[];
+   for(let i=1;i<lines.length;i++){
+     const c=parseCSVLine(lines[i]), block=c[bi], d=parseDateAny(c[hi]);
+     if(!block||!d||isNaN(d))continue;
+     const days=Math.floor((now-d)/86400000);
+     const [st,cls]=rotationStatus(days);
+     rows.push({block,d,days,st,cls});
+   }
+   rows.sort((a,b)=>b.days-a.days);
+   msg.textContent='Parsed '+rows.length+' rotation records from '+f.name;
+   if(!rows.length){out.innerHTML='<b>No valid rotation records.</b>';return;}
+   const body=rows.slice(0,100).map(x=>`<tr><td><b>${html.escape(x.block)}</b></td><td>${x.d.toLocaleDateString('id-ID')}</td><td>${x.days}</td><td><span class="tag ${x.cls}">${x.st}</span></td></tr>`).join('');
+   out.innerHTML=`<table><thead><tr><th>Block</th><th>Last Harvest</th><th>Age (days)</th><th>Status</th></tr></thead><tbody>${body}</tbody></table>`;
+ };
+ r.readAsText(f);
+});
+
+
+function buildExceptions(data){
+  const ex=[];
+  const add=(priority,obj,signal,evidence,action)=>ex.push({priority,obj,signal,evidence,action});
+  const byB=data.byBlock||data.blocks||{};
+  const total=data.jjg||0;
+
+  const blockEntries=Object.entries(byB).sort((a,b)=>b[1]-a[1]);
+  if(blockEntries.length){
+    const [b,j]=blockEntries[0];
+    if(total && j/total>=0.35)
+      add('P2',b,'Dominant production concentration',`${j.toLocaleString('en-US')} JJG · ${((j/total)*100).toFixed(1)}% of daily JJG`,'Compare rotation, harvest area and field condition.');
+  }
+
+  // Contextual mandoran gap on OC023, only when the uploaded dataset supports both mandorans.
+  if(data.byMandoran && data.byMandoran.OCPN1 && data.byMandoran.OCPN2){
+    const prod=data.sections.PRODUKSIBLOK, h=prod?.header||[];
+    if(prod){
+      const mi=h.indexOf('KEMANDORAN'), bi=h.indexOf('BLOK'), ni=h.indexOf('NPK'), ji=h.indexOf('JJG');
+      const agg={};
+      prod.rows.forEach(r=>{
+        if(r[bi]!=='OC023')return;
+        const m=r[mi],n=r[ni],j=Number(r[ji])||0;
+        agg[m]??={jjg:0,n:new Set()}; agg[m].jjg+=j;if(n)agg[m].n.add(n);
+      });
+      const a=agg.OCPN1,b=agg.OCPN2;
+      if(a&&b&&a.n.size&&b.n.size){
+        const x=a.jjg/a.n.size,y=b.jjg/b.n.size,d=Math.abs(x-y)/Math.min(x,y);
+        if(d>=.3)add('P1','OC023','Material mandoran productivity gap',`OCPN1 ${x.toFixed(2)} JJG/HK vs OCPN2 ${y.toFixed(2)} JJG/HK`,'Verify harvest area, field condition, rotation and manpower before concluding performance.');
+      }
+    }
+  }
+
+  const q=data.sections.SAMPLING_KUALITAS_PANEN;
+  if(q){
+    const h=q.header, pi=h.indexOf('PIRINGANTDKSTDR'), bi=h.indexOf('BLOK'), si=h.indexOf('SAMPLEPOKOK');
+    q.rows.forEach(r=>{
+      const non=Number(r[pi])||0, sample=Number(r[si])||0;
+      if(non>0)add(non>=5?'P2':'P3',r[bi]||'—','Non-standard harvest quality sample',`${non} non-standard circle(s) in recorded sample of ${sample} pokok`,'Recheck sample location and field execution.');
+    });
+  }
+
+  const tr=data.sections.TR_TBS_TRANSPORT;
+  if(tr && tr.rows.length){
+    const h=tr.header, wi=h.indexOf('WEIGHTIN'),wo=h.indexOf('WEIGHTOUT'),ri=h.indexOf('RITNUMBER');
+    tr.rows.forEach(r=>{
+      const net=(Number(r[wi])||0)-(Number(r[wo])||0);
+      if(net<=0)add('P1',`Rit ${r[ri]||'—'}`,'Invalid/non-positive net transport weight',`Weight In ${r[wi]||0} vs Weight Out ${r[wo]||0}`,'Validate weighbridge record before closing.');
+    });
+  }
+
+  // Known semantic gaps.
+  add('DATA GAP','Rotation','Official rotation source not present in current AMANTA export','Rotation age/status cannot be confirmed','Upload approved historical/rotation source.');
+  add('DATA GAP','Restan','Explicit confirmed restan field/value not identified','Restan = unavailable','Define official source and formula.');
+  add('DATA GAP','BJR','Explicit confirmed BJR field not identified','BJR = unavailable','Define official source before tonnage derivation.');
+
+  const rank={P1:1,P2:2,P3:3,'DATA GAP':4};
+  ex.sort((a,b)=>rank[a.priority]-rank[b.priority]);
+  const counts={P1:0,P2:0,P3:0,'DATA GAP':0}; ex.forEach(x=>counts[x.priority]++);
+  document.getElementById('p1').textContent=counts.P1;
+  document.getElementById('p2').textContent=counts.P2;
+  document.getElementById('p3').textContent=counts.P3;
+  document.getElementById('dg').textContent=counts['DATA GAP'];
+  document.getElementById('exceptionBody').innerHTML=ex.map(x=>`<tr><td><span class="tag ${x.priority==='P1'?'low':x.priority==='P2'?'medium':''}">${x.priority}</span></td><td><b>${html.escape(x.obj)}</b></td><td>${html.escape(x.signal)}</td><td>${html.escape(x.evidence)}</td><td>${html.escape(x.action)}</td></tr>`).join('');
+  window.ADRIANA_EXCEPTIONS=ex;
+}
+
+
+function saveDecision(){
+ const text=document.getElementById('actionText').value.trim();
+ if(!text){document.getElementById('decisionMsg').textContent='Action plan belum diisi.';return;}
+ const rec={date:'08 Sep 2026',issue:'OC023 mandoran productivity gap',decision:'Investigate OC023',action:text,status:'LOCKED',nextCheck:'Next day'};
+ const hist=JSON.parse(localStorage.getItem('adriana_decisions')||'[]'); hist.unshift(rec); localStorage.setItem('adriana_decisions',JSON.stringify(hist));
+ document.getElementById('decisionMsg').textContent='Decision saved and locked locally for this MVP.';
+ renderDecisionHistory();
+}
+function renderDecisionHistory(){
+ const el=document.getElementById('decisionHistory'); if(!el)return;
+ const hist=JSON.parse(localStorage.getItem('adriana_decisions')||'[]');
+ el.innerHTML=hist.length?'<h2>Decision History</h2>'+hist.map(x=>`<div class="notice" style="margin-top:8px"><b>${x.date} · ${html.escape(x.decision)}</b><br>${html.escape(x.action)}<br><span class="small">Status: ${x.status} · Next check: ${x.nextCheck}</span></div>`).join(''):'';
+}
+renderDecisionHistory();
+
+
+function saveEvaluation(){
+ const actual=document.getElementById('actualResult').value.trim();
+ const eff=document.getElementById('effectiveness').value;
+ const msg=document.getElementById('evalMsg');
+ if(!actual||!eff){msg.textContent='Actual result dan effectiveness wajib diisi.';return;}
+ const rec={decisionDate:'08 Sep 2026',evaluationDate:'09 Sep 2026',decision:'Investigate OC023',actual,effectiveness:eff};
+ const hist=JSON.parse(localStorage.getItem('adriana_evaluations')||'[]'); hist.unshift(rec);
+ localStorage.setItem('adriana_evaluations',JSON.stringify(hist));
+ msg.textContent='Evaluation saved. Decision effectiveness is now part of the historical learning loop.';
+ renderEvalHistory();
+}
+function renderEvalHistory(){
+ const el=document.getElementById('evalHistory'); if(!el)return;
+ const hist=JSON.parse(localStorage.getItem('adriana_evaluations')||'[]');
+ el.innerHTML=hist.length?'<h2>Evaluation History</h2>'+hist.map(x=>`<div class="notice" style="margin-top:8px"><b>${x.evaluationDate} · ${html.escape(x.effectiveness)}</b><br>${html.escape(x.actual)}<br><span class="small">Decision: ${html.escape(x.decision)}</span></div>`).join(''):'';
+}
+renderEvalHistory();
+
+</script>
+
+<div id="installCard" style="position:fixed;right:16px;bottom:16px;z-index:50;max-width:330px;background:#fff;border:1px solid #dce4dd;border-radius:14px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,.12);font-size:12px">
+<b style="font-size:13px">Install ADRIANA</b><br>
+<span style="color:#68746c">Pasang ADRIANA ke layar utama HP seperti aplikasi.</span>
+<button id="installBtn" onclick="installADRIANA()" style="display:none;margin-top:10px;width:100%;padding:10px;border:0;border-radius:9px;background:#103d29;color:#fff;font-weight:800">INSTALL ADRIANA</button>
+<div style="margin-top:8px;color:#68746c">Jika tombol belum muncul: Chrome ⋮ → Add to Home screen.</div>
+</div>
+</body></html>
