@@ -1,6 +1,6 @@
 {
-  "name": "ADRIANA \u2014 Assistant Daily Reporting & Analytics",
-  "short_name": "ADRIANA",
+  "name": "ADRIANA v21 — Assistant Daily Reporting & Analytics",
+  "short_name": "ADRIANA v21",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
