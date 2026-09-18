@@ -101,6 +101,827 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
 @media(max-width:980px){.side{position:fixed;left:0;right:0;top:auto;bottom:0;width:100%;height:66px;padding:7px 7px;background:rgba(5,53,37,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.1);box-shadow:0 -10px 28px rgba(0,0,0,.12)}.side .brandRow,.side .sub{display:none}.nav{display:flex;overflow-x:auto;gap:5px;height:52px;align-items:center}.nav button{flex:0 0 auto;padding:9px 12px;font-size:9px;white-space:nowrap}.nav button.active{box-shadow:inset 0 -3px 0 #55d99e,inset 0 0 0 1px rgba(255,255,255,.08)}.main{margin-left:0;width:100%;padding:0 14px 90px}.astraHead{margin:0 -14px 14px;padding:11px 14px}.adrianaMainLogo{height:34px!important;max-width:170px}.astra50Logo{height:30px!important;max-width:105px}.astraRight{display:none}.dashWelcome{border-radius:18px;padding:18px}.dashWelcome .title{font-size:24px}.dashControls{flex-direction:column;align-items:stretch}.dateBox{min-width:0}.grid.kpiGrid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.dashLower{grid-template-columns:1fr}.dashRight{grid-template-columns:1fr 1fr}.miniGrid,.peopleKpis{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.astraHead{position:relative}.brandPair{gap:7px}.brandDivider{height:23px}.dashWelcome{display:block}.dashControls{margin-top:14px;display:grid;grid-template-columns:1fr auto}.dashWelcome .title{font-size:22px}.grid.kpiGrid{gap:8px}.card{padding:13px}.kpi{min-height:132px}.kpi .value{font-size:22px}.kpiIcon{width:31px;height:31px;margin-bottom:8px}.kpi .small{font-size:8px}.dashRight{grid-template-columns:1fr}.panel{padding:13px;border-radius:15px}.panelHead h2{font-size:12px}.densitySummary{gap:6px}.densityMetric{padding:9px}.densityMetric strong{font-size:17px}.top .title{font-size:21px}.top{margin-bottom:12px}.peoplePeriodBar{display:block}.peoplePeriodBar .small{margin-top:6px}.section table{min-width:620px}.section .panel{overflow:hidden}.section .peopleTableWrap,.section .perfTable{margin-left:-2px;margin-right:-2px}.dashLower .productionPanel table{min-width:720px}.decisionHero #dashboardDecision{font-size:23px}.quickGrid{gap:6px}}
 
+
+/* ADRIANA PRODUCTION TREND */
+
+:root{--bg:#f3f6f2;--panel:#fff;--ink:#17211b;--muted:#68746c;--line:#dce4dd;--green:#155c3b;--green2:#e7f1eb;--amber:#a36a12;--red:#a94332}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
+.app{display:flex;min-height:100vh}.side{width:235px;background:#103d29;color:#fff;padding:24px 16px;position:fixed;inset:0 auto 0 0}.brand{font-size:25px;font-weight:800}.sub{font-size:11px;color:#bfd2c6;margin:4px 0 30px}.nav{display:grid;gap:6px}.nav button{border:0;background:transparent;color:#d7e5dc;text-align:left;padding:12px;border-radius:9px;font-size:13px;cursor:pointer}.nav button.active,.nav button:hover{background:#1e6545;color:#fff}.main{margin-left:235px;width:calc(100% - 235px);padding:28px 34px}.top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}.eyebrow{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.08em}.title{font-size:27px;font-weight:800;margin:5px 0}.meta{font-size:12px;color:var(--muted)}.lock{background:var(--green2);color:var(--green);padding:9px 12px;border-radius:9px;font-weight:700;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px}.card{padding:18px}.label{font-size:11px;color:var(--muted);font-weight:700}.value{font-size:28px;font-weight:800;margin:8px 0 3px}.small{font-size:11px;color:var(--muted)}.confidence{float:right;font-size:10px;font-weight:800}.high{color:var(--green)}.medium{color:var(--amber)}.low{color:var(--red)}
+.two{display:grid;grid-template-columns:1.6fr .9fr;gap:14px;margin-top:14px}.panel{padding:20px}.panel h2{font-size:15px;margin:0 0 16px}.signal{padding:13px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:30px 1fr;gap:8px}.num{font-weight:800;color:var(--red)}.signal b{font-size:13px}.signal p{margin:4px 0 0;font-size:12px;color:var(--muted)}.decision{background:#103d29;color:#fff}.decision .muted{color:#c6d8cc}.btn{border:0;border-radius:9px;padding:10px 13px;background:#e7f1eb;color:#103d29;font-weight:800;cursor:pointer;margin-top:14px}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-size:10px;text-transform:uppercase}.tag{padding:4px 7px;border-radius:7px;background:#f5eee1;color:var(--amber);font-weight:800;font-size:10px}
+.section{display:none}.section.active{display:block}.notice{padding:15px;border:1px dashed #cbd6ce;border-radius:10px;background:#f8faf8;color:var(--muted);font-size:12px}.upload{border:2px dashed #bdcabe;padding:24px;border-radius:12px;text-align:center;margin-bottom:16px}.upload input{margin-top:10px}.footer{font-size:10px;color:var(--muted);margin-top:18px}
+.astraHead{height:82px;background:linear-gradient(90deg,#fff 0%,#f8fbf8 58%,#eaf3ed 100%);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:10px 24px;margin:-28px -34px 24px;position:relative;overflow:hidden}.astraHead:after{content:"";position:absolute;right:-40px;top:-80px;width:340px;height:180px;background:rgba(21,92,59,.07);border-radius:50%;transform:rotate(-18deg)}.astraBrand{display:flex;align-items:center;gap:12px;position:relative;z-index:1}.astraLogo{width:72px;height:64px;object-fit:contain;border-radius:0;display:block}.astraName{font-size:18px;font-weight:850;letter-spacing:.02em}.astraTag{font-size:10px;color:var(--muted);margin-top:2px}.astraRight{position:relative;z-index:1;text-align:right}.astraRight b{font-size:12px;color:var(--green)}.astraRight span{display:block;font-size:10px;color:var(--muted);margin-top:3px}.sideLogo{width:52px;height:46px;object-fit:contain;border-radius:0;vertical-align:middle;margin-right:8px;background:transparent}.brandRow{display:flex;align-items:center;margin-bottom:4px}
+.harvestPerf{margin-top:12px}.harvestPerf .miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.miniCard{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfdfb}.miniCard h3{font-size:12px;margin:0 0 10px}.miniCard .big{font-size:22px;font-weight:900}.miniCard .small{margin-top:3px}.perfTable{margin-top:14px;overflow:auto}.perfTable table{min-width:720px}.rankBadge{font-size:9px;font-weight:900;padding:4px 7px;border-radius:7px;background:#e7f1eb;color:#155c3b}.rankBadge.low{background:#f8e9e6;color:#a94332}.perfNote{margin-top:10px;font-size:10px;color:var(--muted)}
+@media(max-width:950px){.astraHead{margin:-20px -20px 20px;padding:8px 16px}.astraLogo{width:64px;height:56px}.astraName{font-size:15px}.astraRight{display:none}.side{width:190px}.main{margin-left:190px;width:calc(100% - 190px);padding:20px}.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}}
+
+/* V13 corporate dashboard redesign */
+body{background:#f4f7f3}
+.side{width:222px;padding:20px 12px;background:linear-gradient(180deg,#0b4b32 0%,#083b2a 72%,#0b3b2b 100%);box-shadow:10px 0 28px rgba(8,58,42,.10);overflow:hidden}
+.side:after{content:"";position:absolute;left:-55px;bottom:-70px;width:300px;height:330px;background:radial-gradient(ellipse at center,rgba(43,131,82,.45),transparent 65%);pointer-events:none}
+.main{margin-left:222px;width:calc(100% - 222px);padding:0 26px 28px;max-width:1500px}
+.astraHead{height:94px;margin:0 -26px 22px;padding:10px 30px;background:linear-gradient(100deg,#fff 0%,#f9fcf9 45%,#e7f3ea 100%);border-bottom:1px solid #dfe8e1}
+.astraHead:before{content:"";position:absolute;right:190px;top:-30px;width:520px;height:125px;background:radial-gradient(ellipse at center,rgba(26,103,67,.16),transparent 67%);transform:skewX(-24deg)}
+.astraLogo{width:78px;height:68px;border-radius:0;background:transparent;object-fit:contain;object-position:center;display:block;flex:none}
+.astraBrand{gap:14px}.astraName{font-size:20px;letter-spacing:.01em}.astraTag{font-size:10px}.astraRight b{font-size:13px}.astraRight span{font-size:10px}
+.brand{font-size:26px}.brandRow{padding:4px 6px 0;margin-bottom:8px}.sideLogo{width:44px;height:44px;margin-right:8px}
+.nav{gap:4px}.nav button{padding:12px 13px;border-radius:11px}.nav button.active{background:linear-gradient(90deg,#1d8b59,#19734b);box-shadow:0 8px 18px rgba(0,0,0,.10)}
+.dashWelcome{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px;gap:16px}.dashWelcome .title{font-size:27px;letter-spacing:-.02em}.welcomeName{font-weight:900}.dashControls{display:flex;align-items:center;gap:12px}.dateBox{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 13px;min-width:245px;box-shadow:0 6px 20px rgba(24,55,39,.05)}.dateBox>span{font-size:20px}.dateBox small{display:block;color:var(--muted);font-size:10px}.dateBox strong{display:block;font-size:15px;margin-top:2px}.dateBox b{margin-left:auto}.dashWelcome .lock{white-space:nowrap}
+.kpiGrid{gap:12px}.kpi{position:relative;overflow:hidden;min-height:164px;padding:16px 17px;border-radius:15px;box-shadow:0 7px 24px rgba(25,57,40,.055)}.kpiIcon{position:absolute;left:17px;top:13px;font-size:30px;font-weight:900;opacity:.9}.kpiIcon img{width:58px;height:58px;object-fit:contain;display:block;margin:0 auto}.kpi .kpiIcon{min-height:64px;display:flex;align-items:center;justify-content:center}
+.kpi .label{margin-left:48px}.kpi .value{font-size:30px;margin:5px 0 1px;margin-left:48px}.kpi .small{margin-left:48px}.kpi .confidence{top:17px;right:15px}.delta{font-size:10px;font-weight:800;margin:3px 0 1px 48px}.delta.up{color:#198b52}.delta.down{color:#df3e42}.kpiPalm .kpiIcon{color:#df9a19}.kpiPeople .kpiIcon{color:#3ca961}.kpiTruck .kpiIcon{color:#e8a11c}.kpiRestan .kpiIcon{color:#177e70}
+.spark{height:25px;margin:9px 0 0 48px;display:flex;align-items:flex-end;gap:5px;border-bottom:1px solid #e2ebe4}.spark i{display:block;width:13px;height:9px;border-radius:3px 3px 0 0;background:#cdebd7}.spark i:nth-child(2){height:13px}.spark i:nth-child(3){height:8px}.spark i:nth-child(4){height:16px}.spark i:nth-child(5){height:11px}.spark i:nth-child(6){height:19px}.spark i:nth-child(7){height:23px}.spark.bars i{background:#b9e6c8}.spark.amber i{background:#f5d58c}.spark.dashed{border-bottom:2px dashed #d6dfe0}
+.dashTopGrid{grid-template-columns:1.45fr 1fr;gap:12px;margin-top:12px}.signalsPanel,.decisionHero{min-height:235px}.panel{border-radius:15px;box-shadow:0 7px 24px rgba(25,57,40,.045)}.panelHead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.panelHead h2{margin:0;font-size:16px}.panelHead span{font-size:11px;color:var(--muted);font-weight:700}.signalsPanel .signal{padding:14px 0}.signalsPanel .num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#f3f5f4;color:#a94332}.signalsPanel .signal:first-child .num{background:#e93635;color:#fff}.signalsPanel .signal:nth-child(2) .num{background:#f4c24a;color:#fff}.signalsPanel .signal:nth-child(3) .num{background:#e8edf0;color:#59656d}
+.decisionHero{position:relative;overflow:hidden;background:linear-gradient(120deg,#063d29,#0d6040 60%,#083b29);padding:20px;color:#fff}.decisionHero:after{content:"";position:absolute;right:-70px;bottom:-70px;width:310px;height:270px;background:radial-gradient(ellipse at center,rgba(70,159,91,.50),transparent 68%);transform:rotate(-12deg)}.decisionGlow{position:absolute;right:0;top:0;width:45%;height:100%;background:linear-gradient(135deg,transparent,rgba(255,255,255,.03))}.decisionHead{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}.decisionHead h2{margin:0;font-size:16px}.decisionHead span{font-size:9px;font-weight:900;padding:6px 9px;border-radius:20px;background:#258c5b}.decisionHero .decisionLabel{position:relative;z-index:1;color:#bcd9ca;font-size:12px;margin-top:25px}.decisionHero #dashboardDecision{position:relative;z-index:1;font-size:27px;font-weight:900;margin:5px 0 9px;line-height:1.05}.decisionHero #dashboardDecisionText{position:relative;z-index:1;max-width:380px;color:#d5e7dc;font-size:12px;line-height:1.55}.decisionHero .btn{position:relative;z-index:2;background:#fff;color:#103d29;border-radius:10px;padding:10px 13px}.decisionLeaf{position:absolute;right:25px;bottom:0;font-size:125px;line-height:1;color:rgba(98,189,119,.16);transform:rotate(-22deg)}
+.dashLower{display:grid;grid-template-columns:1.45fr 1fr;gap:12px;margin-top:12px}.productionPanel{padding:18px}.productionPanel table th{padding-top:7px}.productionPanel table td{padding:10px 8px}.productionPanel table tr:last-child td{border-bottom:0}.trend{font-size:22px;font-weight:900}.upTrend{color:#1b9257}.downTrend{color:#e34a4b}.productionPanel .tag{background:#eaf4ed;color:#1d8050}.dashRight{display:grid;gap:12px}.contributionPanel,.quickPanel{padding:17px}.donutWrap{display:flex;align-items:center;gap:20px}.donut{width:135px;height:135px;border-radius:50%;background:conic-gradient(#087045 0 41.2%,#19a269 41.2% 68.6%,#45bb70 68.6% 84.5%,#78cb70 84.5% 96.3%,#a5d96d 96.3% 100%);display:grid;place-items:center;flex:none}.donut:before{content:"";position:absolute;width:94px;height:94px;border-radius:50%;background:#fff}.donut>div{position:relative;z-index:1;text-align:center}.donut small{display:block;color:var(--muted);font-size:9px}.donut strong{display:block;font-size:18px;margin-top:3px}.legend{flex:1;display:grid;gap:9px;font-size:11px}.legend div{display:grid;grid-template-columns:12px 1fr auto;gap:7px;align-items:center}.legend i{width:10px;height:10px;border-radius:50%;background:#087045}.legend div:nth-child(2) i{background:#19a269}.legend div:nth-child(3) i{background:#45bb70}.legend div:nth-child(4) i{background:#78cb70}.legend div:nth-child(5) i{background:#a5d96d}.legend b{font-size:10px}.quickGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quickGrid button{border:1px solid #dce6df;background:#f8faf8;border-radius:10px;padding:10px;color:#244436;font-weight:700;font-size:11px;text-align:left;cursor:pointer}.quickGrid button:hover{background:#eaf4ed}
+.sustainBanner{margin-top:12px;min-height:96px;border-radius:14px;overflow:hidden;position:relative;background:linear-gradient(100deg,#0c5538,#17734a 55%,#eaf4ed);display:flex;align-items:center;padding:17px 22px;color:#fff;box-shadow:0 8px 24px rgba(25,57,40,.06)}.sustainBanner strong{font-size:20px;line-height:1.05}.sustainBanner span{display:block;font-size:10px;color:#cfe2d6;margin-top:6px}.leafStrip{position:absolute;left:38%;right:20%;top:0;bottom:0;background:radial-gradient(ellipse at 50% 100%,rgba(75,151,98,.8),transparent 50%),linear-gradient(120deg,transparent 10%,rgba(213,238,219,.16),transparent 70%);transform:skewX(-15deg)}.bannerLogo{margin-left:auto;position:relative;z-index:1;display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.72);padding:8px 12px;border-radius:10px;color:#163c2b}.bannerLogo img{width:48px;height:48px;object-fit:contain}.bannerLogo b{display:block;font-size:10px}.bannerLogo small{display:block;font-size:9px;color:var(--muted);margin-top:2px}.footer{font-size:10px;margin-top:12px}
+@media(max-width:1100px){.dashTopGrid,.dashLower{grid-template-columns:1fr}.dateBox{min-width:210px}}
+@media(max-width:760px){.side{width:78px;padding:14px 9px}.side .brandRow{justify-content:center}.side .brand,.side .sub,.sideLogo{display:none}.nav button{font-size:0;text-align:center;padding:12px 7px}.nav button:before{content:'•';font-size:18px}.main{margin-left:78px;width:calc(100% - 78px);padding:0 14px 20px}.astraHead{margin:0 -14px 18px;padding:8px 14px}.astraName{font-size:15px}.astraLogo{width:58px;height:58px}.astraRight{display:none}.dashWelcome{align-items:flex-start;flex-direction:column}.dashControls{width:100%}.dateBox{flex:1;min-width:0}.kpiGrid{grid-template-columns:1fr 1fr}.kpi{min-height:145px}.donutWrap{justify-content:center}.bannerLogo{display:none}}
+@media(max-width:480px){.kpiGrid{grid-template-columns:1fr}.kpi{min-height:130px}.dashWelcome .title{font-size:23px}.quickGrid{grid-template-columns:1fr}.donutWrap{flex-direction:column}.donut{width:125px;height:125px}}
+.section#transport table{min-width:760px}.section#transport .panel{overflow-x:auto}.section#transport td,.section#transport th{white-space:nowrap}.harvestPerf{margin-top:12px}.harvestPerf .miniGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.miniCard{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fbfdfb}.miniCard h3{font-size:12px;margin:0 0 10px}.miniCard .big{font-size:22px;font-weight:900}.miniCard .small{margin-top:3px}.perfTable{margin-top:14px;overflow:auto}.perfTable table{min-width:720px}.rankBadge{font-size:9px;font-weight:900;padding:4px 7px;border-radius:7px;background:#e7f1eb;color:#155c3b}.rankBadge.low{background:#f8e9e6;color:#a94332}.perfNote{margin-top:10px;font-size:10px;color:var(--muted)}
+@media(max-width:950px){.astraLogo{width:72px;height:62px}}
+.rotationMatrixWrap{margin-top:4px}.rotationMatrixHead{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.rotationLegend{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.rotationMatrix{min-width:max-content} .rotationMatrixScroller{max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain}.rotationMatrix th,.rotationMatrix td{padding:7px 8px;text-align:center;white-space:nowrap}.rotationMatrix th:first-child,.rotationMatrix td:first-child{text-align:left;position:sticky;left:0;background:inherit;z-index:3}.rotationMatrix .secRow td{text-align:left;background:#eef7f1;color:#166534;border-top:2px solid #d7e9dc}.rotCell{display:inline-flex;width:27px;height:27px;align-items:center;justify-content:center;border-radius:7px;font-weight:800;font-size:12px}.rotCell.green,.rotSum.green{background:#dcfce7;color:#166534}.rotCell.yellow,.rotSum.yellow{background:#fef3c7;color:#92400e}.rotCell.red,.rotSum.red{background:#fee2e2;color:#991b1b}.rotCell.black,.rotSum.black{background:#e5e7eb;color:#111827}.rotCell.harvested{outline:2px solid #166534;outline-offset:1px}.rotDash{color:#94a3b8}.rotationSummary{margin-top:14px;padding-top:12px;border-top:1px solid #e5e7eb}.rotationSummaryGrid{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:8px;margin-top:8px}.rotSum{padding:12px;border-radius:10px;text-align:center;display:flex;flex-direction:column;gap:3px}.rotSum strong{font-size:20px}@media(max-width:700px){.rotationSummaryGrid{grid-template-columns:repeat(2,1fr)}.rotationMatrix th,.rotationMatrix td{padding:6px}.rotCell{width:24px;height:24px}}
+/* V18 compact rotation UI: logic unchanged, presentation optimized for mobile */
+.rotationToday{margin-top:10px}.rotationTodayHead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.rotationTodayTable{width:100%;border-collapse:collapse;margin-top:8px}.rotationTodayTable th,.rotationTodayTable td{padding:8px 9px;border-bottom:1px solid #e5ebe6;white-space:nowrap}.rotationTodayTable th{text-align:left;font-size:11px;color:#64748b;text-transform:uppercase}.rotationTodayTable td:nth-child(2),.rotationTodayTable td:nth-child(3){text-align:center}.rotAge{display:inline-flex;min-width:34px;height:26px;padding:0 7px;align-items:center;justify-content:center;border-radius:8px;font-weight:800;font-size:12px}.rotationSectionLabel{font-size:12px;font-weight:800;color:#166534;background:#eef7f1;padding:7px 9px}.rotationMatrixDetails{margin-top:12px;border:1px solid #dfe7e1;border-radius:10px;background:#fff;overflow:hidden}.rotationMatrixDetails summary{cursor:pointer;list-style:none;padding:11px 13px;font-weight:800}.rotationMatrixDetails summary::-webkit-details-marker{display:none}.rotationMatrixDetails summary:after{content:'＋';float:right}.rotationMatrixDetails[open] summary:after{content:'−'}.rotationMatrixDetails .rotationMatrixWrap{margin:0;border-top:1px solid #e5ebe6}.rotationMetaCompact{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.rotationMetaCompact .tag{font-size:10px;padding:4px 7px}.rotationTodayTable .statusCell{width:80px}@media(max-width:700px){.rotationTodayTable th,.rotationTodayTable td{padding:7px 6px;font-size:12px}.rotationTodayTable th{font-size:10px}.rotationTodayTable th:nth-child(4),.rotationTodayTable td:nth-child(4){display:none}.rotationMatrixDetails summary{padding:10px 11px}}
+
+/* V21 main ADRIANA branding — visual only */
+.adrianaMainLogo{width:245px;height:auto;max-height:62px;object-fit:contain;object-position:left center;display:block;flex:none}
+@media(max-width:760px){.adrianaMainLogo{width:210px;max-width:58vw;max-height:54px}}
+/* V20.1 logo stability fix — visual only; no data/logic changes */
+.astraHead .astraBrand{min-width:0;display:flex;align-items:center;gap:12px;position:relative;z-index:2}
+.astraHead .astraLogo{width:58px!important;height:58px!important;min-width:58px!important;min-height:58px!important;max-width:58px!important;max-height:58px!important;object-fit:contain!important;object-position:center!important;display:block!important;flex:0 0 58px!important}
+.astraHead .astraName,.astraHead .astraTag{white-space:nowrap}
+@media(max-width:760px){.astraHead{overflow:visible}.astraHead .astraLogo{width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;max-width:52px!important;max-height:52px!important;flex-basis:52px!important}.astraHead .astraBrand{gap:9px}}
+
+/* V22.6 hybrid visual fixes */
+.brandPair{display:flex;align-items:center;gap:18px;position:relative;z-index:2;min-width:0}.brandDivider{width:1px;height:54px;background:#cfdad2;display:block;flex:none}.astra50Logo{width:255px;height:68px;object-fit:contain;display:block;flex:none;background:#fff}.afdFilter{display:inline-flex;align-items:center;gap:8px;margin-top:12px}.afdFilter label{font-size:10px;font-weight:800;color:var(--muted);letter-spacing:.08em}.afdFilter select{border:1px solid #d6e1da;border-radius:10px;background:#fff;padding:9px 30px 9px 11px;color:#164a32;font-weight:700;box-shadow:0 4px 12px rgba(16,61,41,.05)}
+.harvestDensityPanel{margin-top:14px}.densitySummary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}.densityMetric{background:#f7fbf8;border:1px solid #dce9e1;border-radius:12px;padding:12px}.densityMetric small{display:block;color:#718277;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}.densityMetric strong{display:block;color:#164a32;font-size:22px;margin-top:4px}.densityMetric span{display:block;color:#7a877f;font-size:9px;margin-top:2px}.productionPanel{overflow-x:auto}.productionPanel table{min-width:880px}.densityNote{font-size:10px;color:#718077;background:#f8fbf9;border-radius:10px;padding:9px;margin-top:10px}
+/* KPI cards: keep image + label readable on phones */
+.kpi{min-width:0}.kpi .confidence{position:absolute;z-index:3;top:15px;right:12px;float:none}.kpi .label{margin-left:58px;margin-right:66px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.kpi .value{margin-left:58px;white-space:nowrap}.kpi .delta,.kpi .small,.kpi .spark{margin-left:58px}.kpiIcon{width:48px;height:48px;left:14px;top:13px}.kpi .kpiIcon img{width:48px;height:48px}.kpiIcon img{filter:drop-shadow(0 3px 5px rgba(20,70,45,.12))}
+@media(max-width:900px){.kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.densitySummary{grid-template-columns:repeat(2,minmax(0,1fr))}.astra50Logo{width:180px;height:58px}}
+@media(max-width:520px){.kpiGrid{grid-template-columns:1fr}.kpi{min-height:150px}.brandPair{gap:8px}.astra50Logo{width:145px}.dashWelcome .title{font-size:24px}}
+
+.peopleDashPanel{margin-top:12px}.peopleKpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.peopleKpi{background:#f7fbf8;border:1px solid #dce9e1;border-radius:12px;padding:12px}.peopleKpi small{display:block;color:#718277;font-size:9px;font-weight:800;letter-spacing:.04em}.peopleKpi strong{display:block;color:#164a32;font-size:21px;margin-top:5px}.peopleTableWrap{overflow-x:auto;margin-top:12px}.peopleTableWrap table{min-width:900px}.peopleTableWrap th,.peopleTableWrap td{white-space:nowrap}.peopleNote{font-size:10px;color:#718077;margin-top:9px}.peoplePeriodBar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.peopleKpisLarge{margin-top:14px}.peopleClassGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.classBox{border:1px solid var(--line);border-radius:12px;padding:12px}.classBox small{display:block;font-size:9px;font-weight:900}.classBox strong{display:block;font-size:24px;margin-top:3px}.classBox span{font-size:10px;color:var(--muted)}.classA{background:#eaf5ee;color:#155c3b}.classB{background:#fff8e8;color:#8b6118}.classC{background:#fbeceb;color:#a94332}.premiMoney{font-weight:900;color:#155c3b}.classPill{display:inline-block;padding:4px 8px;border-radius:8px;font-size:9px;font-weight:900}.classPill.A{background:#dcfce7;color:#166534}.classPill.B{background:#fef3c7;color:#92400e}.classPill.C{background:#fee2e2;color:#991b1b}.classPill.NA{background:#eef2f0;color:#64746a}
+@media(max-width:1000px){.peopleKpis{grid-template-columns:repeat(3,1fr)}}@media(max-width:650px){.peopleKpis,.peopleClassGrid{grid-template-columns:1fr 1fr}.peopleKpi strong{font-size:19px}}
+
+/* BOOK PERIOD / CLOSING */
+.periodClosingPanel{border:1px solid #d7e5dc}
+.periodClosingHead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.periodStatus{padding:7px 11px;border-radius:999px;background:#e7f1eb;color:#155c3b;font-size:11px;font-weight:800;letter-spacing:.04em}
+.periodStatus.closed{background:#e8eef0;color:#34444b}
+.periodStatus.closing{background:#fff2d9;color:#8a5b0b}
+.periodKpis{margin-top:12px}
+.periodLogicNote{margin-top:12px}
+
+
+/* ADRIANA v20 — TOTAL UI REDESIGN
+   VISUAL LAYER ONLY. Existing HTML IDs, event handlers and scripts are untouched. */
+:root{
+ --neo-bg:#f4f7f5;--neo-surface:#ffffff;--neo-surface2:#f7faf8;--neo-ink:#17231d;--neo-muted:#6b776f;
+ --neo-green:#08784f;--neo-green2:#0d9a67;--neo-deep:#06452f;--neo-line:#dce7e0;--neo-soft:#e8f3ed;
+ --neo-shadow:0 10px 30px rgba(15,55,38,.08);--neo-radius:18px;
+}
+*{scrollbar-width:thin;scrollbar-color:#b9c9c0 transparent}
+html{background:var(--neo-bg);scroll-behavior:smooth}
+body{background:linear-gradient(180deg,#f8faf9 0,#f1f5f2 100%);color:var(--neo-ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{display:block;min-height:100vh}
+.side{z-index:50;width:236px;background:linear-gradient(180deg,#073f2b 0%,#062f22 100%);padding:20px 14px;box-shadow:10px 0 28px rgba(0,0,0,.08)}
+.side .brandRow{display:flex;align-items:center;gap:10px;padding:2px 8px}.sideLogo{width:38px!important;height:38px!important;object-fit:contain;border-radius:10px;background:#fff}.side .brand{font-size:21px;letter-spacing:-.03em}.side .sub{margin:5px 8px 24px;color:#b9d7c9;line-height:1.45}
+.nav{gap:5px}.nav button{border:1px solid transparent;color:#cfe4da;padding:11px 12px;border-radius:11px;font-weight:650;transition:.18s ease}.nav button.active{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.12);box-shadow:inset 3px 0 0 #55d99e}.nav button:hover{background:rgba(255,255,255,.08);transform:translateX(2px)}
+.main{margin-left:236px;width:calc(100% - 236px);padding:0 30px 38px;max-width:1600px}
+.astraHead{position:sticky;top:0;z-index:40;margin:0 -30px 22px;padding:15px 30px;background:rgba(255,255,255,.91);backdrop-filter:blur(16px);border-bottom:1px solid var(--neo-line);display:flex;align-items:center;justify-content:space-between;gap:18px}.brandPair{display:flex;align-items:center;gap:12px}.adrianaMainLogo{height:42px!important;width:auto!important;max-width:210px;object-fit:contain}.astra50Logo{height:38px!important;width:auto!important;max-width:145px;object-fit:contain}.brandDivider{width:1px;height:30px;background:var(--neo-line)}.astraRight{display:flex;flex-direction:column;align-items:flex-end;gap:2px}.astraRight b{font-size:11px;color:var(--neo-deep);letter-spacing:.08em;text-transform:uppercase}.astraRight span{font-size:10px;color:var(--neo-muted)}
+.section{max-width:1320px;margin:0 auto 24px}.section:not(.active){display:none}
+.dashWelcome{background:linear-gradient(135deg,#063e2a 0%,#0a6c49 62%,#10a36d 100%);color:#fff;border:0;border-radius:24px;padding:25px 26px;box-shadow:0 18px 45px rgba(6,68,46,.18);display:flex;justify-content:space-between;align-items:flex-end;gap:20px;position:relative;overflow:hidden}.dashWelcome:after{content:"";position:absolute;right:-70px;top:-90px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,.08)}.dashWelcome>*{position:relative;z-index:1}.dashWelcome .eyebrow{color:#aee4ce}.dashWelcome .title{font-size:30px;letter-spacing:-.04em;margin:6px 0}.dashWelcome .meta{color:#d2eee3}.welcomeName{color:#fff}.afdFilter{display:flex;align-items:center;gap:8px;margin-top:14px}.afdFilter label{font-size:9px;font-weight:800;letter-spacing:.1em;color:#b9e6d5}.afdFilter select{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 11px;outline:none}.afdFilter option{color:#17231d;background:#fff}.dashControls{display:flex;align-items:center;gap:9px}.dateBox{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:13px;padding:10px 12px;display:flex;align-items:center;gap:9px;min-width:205px}.dateBox small{display:block;color:#b9e6d5;font-size:8px;text-transform:uppercase;letter-spacing:.08em}.dateBox strong{font-size:12px}.dashWelcome .lock{background:#fff;color:var(--neo-deep);border-radius:11px;padding:10px 12px;white-space:nowrap}
+.grid.kpiGrid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:13px}.card,.panel{background:var(--neo-surface);border:1px solid var(--neo-line);border-radius:var(--neo-radius);box-shadow:var(--neo-shadow)}.card{padding:17px}.kpi{min-height:145px;position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;right:-25px;bottom:-40px;width:100px;height:100px;border-radius:50%;background:var(--neo-soft)}.kpiIcon{width:36px;height:36px;border-radius:11px;background:var(--neo-soft);display:flex;align-items:center;justify-content:center;margin-bottom:11px;position:relative;z-index:1}.kpiIcon img{max-width:23px;max-height:23px;object-fit:contain}.kpi .label{font-size:9px;letter-spacing:.09em}.kpi .value{font-size:27px;letter-spacing:-.04em;margin:5px 0 1px}.kpi .delta{font-size:9px;font-weight:750}.kpi .small{font-size:9px}.confidence{background:#edf7f2;padding:4px 6px;border-radius:6px;font-size:8px!important;letter-spacing:.05em}.high{color:var(--neo-green)}.medium{color:#9b6813}.low{color:#ad4538}.spark{opacity:.6}.two{grid-template-columns:1.45fr .85fr;gap:13px;margin-top:13px}.panel{padding:18px}.panelHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:13px}.panelHead h2{font-size:13px;letter-spacing:-.01em;margin:0}.panelHead>span{font-size:8px;color:var(--neo-muted);font-weight:750;text-transform:uppercase;letter-spacing:.06em}.signalsPanel,.decisionHero{min-height:190px}.signal{padding:11px 0;border-bottom:1px solid #edf2ef}.signal:last-child{border-bottom:0}.decisionHero{background:linear-gradient(145deg,#073f2c,#0b7650);color:#fff;border:0;position:relative;overflow:hidden}.decisionHead span{background:rgba(255,255,255,.12);color:#c7eadc;padding:5px 7px;border-radius:7px;font-size:7px}.decisionLabel{font-size:8px;color:#bfe6d7;text-transform:uppercase;letter-spacing:.08em;margin-top:22px}.decisionHero #dashboardDecision{font-size:27px;font-weight:850;letter-spacing:-.04em;margin:5px 0}.decisionHero #dashboardDecisionText{font-size:10px;color:#d2eee3;max-width:320px}.decisionHero .btn{background:#fff;color:#075239;border:0;font-weight:800;margin-top:12px}.dashLower{display:grid;grid-template-columns:1.55fr 1fr .85fr;gap:13px;margin-top:13px;align-items:start}.dashLower .panel{min-width:0}.productionPanel{overflow:hidden}.harvestDensityPanel{height:100%}.densitySummary{display:grid;grid-template-columns:1fr 1fr;gap:8px}.densityMetric{background:var(--neo-surface2);border:1px solid var(--neo-line);padding:11px;border-radius:12px}.densityMetric small{font-size:8px;color:var(--neo-muted);display:block}.densityMetric strong{display:block;font-size:20px;margin:3px 0}.densityMetric span{font-size:7px;color:var(--neo-muted);line-height:1.3}.densityNote,.perfNote{font-size:8px!important;line-height:1.5!important;color:var(--neo-muted);background:var(--neo-surface2);border-radius:10px;padding:9px;margin-top:10px}.dashRight{display:grid;gap:13px}.contributionPanel,.quickPanel{min-height:150px}.quickGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.quickGrid button{border:1px solid var(--neo-line);background:var(--neo-surface2);border-radius:11px;padding:12px 8px;color:var(--neo-deep);font-size:9px;font-weight:750}.quickGrid button:hover{background:var(--neo-soft)}
+.donutWrap{display:flex;align-items:center;gap:14px}.donut{width:94px;height:94px;border-radius:50%;background:conic-gradient(var(--neo-green2) 0 72%,#dce9e2 72% 100%);display:grid;place-items:center;flex:0 0 auto}.donut>div{width:66px;height:66px;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center}.donut small{font-size:7px;color:var(--neo-muted)}.donut strong{font-size:17px}.legend{font-size:8px;color:var(--neo-muted);line-height:1.5}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{background:#f1f6f3;color:#627169;font-size:7px;text-transform:uppercase;letter-spacing:.07em;font-weight:800;padding:9px 8px;text-align:left;white-space:nowrap;border-bottom:1px solid var(--neo-line)}td{padding:9px 8px;border-bottom:1px solid #edf2ef;vertical-align:middle}tbody tr:hover td{background:#fafcfb}.panel table{overflow:hidden;border:1px solid var(--neo-line);border-radius:11px}.notice{background:#f4f8f5;border:1px solid #e1ebe5;border-radius:11px;padding:10px;color:#5f6e65;font-size:9px;line-height:1.5}.btn{border:1px solid #cfe0d7;background:#fff;color:var(--neo-deep);border-radius:10px;padding:9px 12px;font-size:9px;font-weight:800;cursor:pointer}.btn:hover{background:var(--neo-soft)}.top{align-items:center}.top .title{font-size:25px;letter-spacing:-.035em}.top .meta{font-size:10px}.section>.panel{margin-top:12px}.miniGrid,.peopleKpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.miniCard,.peopleKpi{background:var(--neo-surface2);border:1px solid var(--neo-line);border-radius:12px;padding:12px}.miniCard h3{font-size:8px;color:var(--neo-muted);margin:0 0 6px;text-transform:uppercase;letter-spacing:.06em}.miniCard .big{font-size:17px;font-weight:850}.peopleKpi small{display:block;font-size:7px;color:var(--neo-muted);font-weight:800}.peopleKpi strong{font-size:18px;display:block;margin-top:3px}.peopleTableWrap,.perfTable{overflow:auto;border-radius:11px}.peoplePeriodBar{background:var(--neo-surface2);border:1px solid var(--neo-line);border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:10px;align-items:center}.peoplePeriodBar b,.peoplePeriodBar span{font-size:10px}.small{font-size:9px}.muted{color:var(--neo-muted)}
+/* lower-level sections share the same executive shell */
+#closing .upload{background:linear-gradient(135deg,#f6faf8,#edf6f1);border:1px dashed #b9d4c6;border-radius:13px;padding:18px}.upload input{font-size:10px;margin-top:9px}.peoplePeriodBar+*{margin-top:12px}.section .grid{gap:10px}.section .value{font-size:23px}
+/* mobile */
+@media(max-width:980px){.side{position:fixed;left:0;right:0;top:auto;bottom:0;width:100%;height:66px;padding:7px 7px;background:rgba(5,53,37,.97);backdrop-filter:blur(14px);border-top:1px solid rgba(255,255,255,.1);box-shadow:0 -10px 28px rgba(0,0,0,.12)}.side .brandRow,.side .sub{display:none}.nav{display:flex;overflow-x:auto;gap:5px;height:52px;align-items:center}.nav button{flex:0 0 auto;padding:9px 12px;font-size:9px;white-space:nowrap}.nav button.active{box-shadow:inset 0 -3px 0 #55d99e,inset 0 0 0 1px rgba(255,255,255,.08)}.main{margin-left:0;width:100%;padding:0 14px 90px}.astraHead{margin:0 -14px 14px;padding:11px 14px}.adrianaMainLogo{height:34px!important;max-width:170px}.astra50Logo{height:30px!important;max-width:105px}.astraRight{display:none}.dashWelcome{border-radius:18px;padding:18px}.dashWelcome .title{font-size:24px}.dashControls{flex-direction:column;align-items:stretch}.dateBox{min-width:0}.grid.kpiGrid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.dashLower{grid-template-columns:1fr}.dashRight{grid-template-columns:1fr 1fr}.miniGrid,.peopleKpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.astraHead{position:relative}.brandPair{gap:7px}.brandDivider{height:23px}.dashWelcome{display:block}.dashControls{margin-top:14px;display:grid;grid-template-columns:1fr auto}.dashWelcome .title{font-size:22px}.grid.kpiGrid{gap:8px}.card{padding:13px}.kpi{min-height:132px}.kpi .value{font-size:22px}.kpiIcon{width:31px;height:31px;margin-bottom:8px}.kpi .small{font-size:8px}.dashRight{grid-template-columns:1fr}.panel{padding:13px;border-radius:15px}.panelHead h2{font-size:12px}.densitySummary{gap:6px}.densityMetric{padding:9px}.densityMetric strong{font-size:17px}.top .title{font-size:21px}.top{margin-bottom:12px}.peoplePeriodBar{display:block}.peoplePeriodBar .small{margin-top:6px}.section table{min-width:620px}.section .panel{overflow:hidden}.section .peopleTableWrap,.section .perfTable{margin-left:-2px;margin-right:-2px}.dashLower .productionPanel table{min-width:720px}.decisionHero #dashboardDecision{font-size:23px}.quickGrid{gap:6px}}
+
+
+/* LOGO + EXPORT UPGRADE — visual only */
+.astraHead{
+  display:flex!important;align-items:center!important;gap:18px!important;
+  overflow:hidden!important;
+}
+.astraHead .brandPair{
+  flex:1 1 auto!important;min-width:0!important;display:flex!important;
+  align-items:center!important;gap:16px!important;
+}
+.astraHead .adrianaMainLogo{
+  height:52px!important;width:auto!important;max-width:245px!important;
+  flex:0 1 auto!important;object-fit:contain!important;
+}
+.astraHead .astra50Logo{
+  height:52px!important;width:auto!important;max-width:205px!important;
+  flex:0 1 auto!important;object-fit:contain!important;
+}
+.astraHead .brandDivider{height:42px!important;flex:0 0 1px!important}
+.astraLestariHeadLogo{
+  width:64px!important;height:64px!important;max-width:64px!important;max-height:64px!important;
+  flex:0 0 64px!important;object-fit:contain!important;background:#fff!important;
+  display:block!important;position:relative!important;z-index:5!important;
+}
+.astraHead .astraRight{display:none!important}
+
+.kpiIcon{
+  width:60px!important;height:60px!important;border-radius:15px!important;
+  margin-bottom:10px!important;
+}
+.kpi .kpiIcon img{
+  width:50px!important;height:50px!important;max-width:50px!important;max-height:50px!important;
+  object-fit:contain!important;
+}
+.kpi .label,.kpi .value,.kpi .delta,.kpi .small,.kpi .spark{
+  margin-left:72px!important;
+}
+.kpi .label{margin-right:54px!important}
+
+.periodHeadActions{
+  display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;
+}
+.sectionDownloadBar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-top:11px;padding:10px 12px;background:var(--neo-surface2);
+  border:1px solid var(--neo-line);border-radius:11px;
+}
+.sectionDownloadBar span{
+  font-size:9px;font-weight:800;color:var(--neo-muted);
+  text-transform:uppercase;letter-spacing:.07em;
+}
+.downloadBtn{margin-top:0!important;white-space:nowrap}
+
+@media(max-width:980px){
+  .astraHead{gap:9px!important;padding:9px 10px!important}
+  .astraHead .brandPair{gap:8px!important}
+  .astraHead .adrianaMainLogo{
+    height:42px!important;max-width:180px!important;
+  }
+  .astraHead .astra50Logo{
+    height:40px!important;max-width:132px!important;
+  }
+  .astraHead .brandDivider{height:31px!important}
+  .astraLestariHeadLogo{
+    width:52px!important;height:52px!important;max-width:52px!important;max-height:52px!important;flex-basis:52px!important;
+  }
+  .kpiIcon{width:56px!important;height:56px!important}
+  .kpi .kpiIcon img{width:46px!important;height:46px!important;max-width:46px!important;max-height:46px!important}
+  .kpi .label,.kpi .value,.kpi .delta,.kpi .small,.kpi .spark{margin-left:66px!important}
+}
+@media(max-width:520px){
+  .astraHead{padding:7px 8px!important;gap:5px!important}
+  .astraHead .brandPair{gap:5px!important}
+  .astraHead .adrianaMainLogo{
+    height:36px!important;max-width:145px!important;
+  }
+  .astraHead .astra50Logo{
+    height:34px!important;max-width:105px!important;
+  }
+  .astraHead .brandDivider{height:26px!important}
+  .astraLestariHeadLogo{
+    width:43px!important;height:43px!important;max-width:43px!important;max-height:43px!important;flex-basis:43px!important;
+  }
+  .kpiIcon{width:52px!important;height:52px!important}
+  .kpi .kpiIcon img{width:43px!important;height:43px!important;max-width:43px!important;max-height:43px!important}
+  .kpi .label,.kpi .value,.kpi .delta,.kpi .small,.kpi .spark{margin-left:62px!important}
+  .sectionDownloadBar{flex-direction:column;align-items:stretch}
+  .downloadBtn{width:100%}
+  .periodHeadActions{justify-content:stretch}
+  .periodHeadActions .downloadBtn{width:auto}
+}
+
+/* DAILY COMPARISON — current day vs previous calendar day */
+.dayCompare{
+  margin:5px 0 0 72px;
+  font-size:9px;font-weight:750;color:var(--neo-muted);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.dayCompare.up{color:#198b52}
+.dayCompare.down{color:#d44a4d}
+.dayCompare.flat{color:#718077}
+@media(max-width:980px){.dayCompare{margin-left:66px}}
+@media(max-width:520px){.dayCompare{margin-left:62px;font-size:8px}}
+
+/* ACCUMULATED PRODUCTION TREND — visual layer */
+.trendPanel{margin:14px 0;padding:16px;background:var(--neo-surface,#fff);border:1px solid var(--neo-line,#dfe9e3);border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+.trendHead{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px}
+.trendEyebrow{font-size:9px;font-weight:800;letter-spacing:.1em;color:#188452}
+.trendHead h2{margin:3px 0 2px;font-size:18px;color:#17382c}
+.trendHead p{margin:0;font-size:10px;color:#718077}
+.trendControls{display:flex;align-items:end;gap:8px;flex-wrap:wrap}
+.trendControls label{font-size:9px;font-weight:800;color:#718077;text-transform:uppercase;letter-spacing:.05em}
+.trendControls select{display:block;margin-top:4px;padding:8px 28px 8px 10px;border:1px solid #d7e2dc;border-radius:9px;background:#fff;font-size:11px;color:#17382c}
+.trendGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.trendCard{min-width:0;padding:12px;border:1px solid #e2ebe6;border-radius:13px;background:#fff}
+.trendCardTitle{font-size:10px;font-weight:800;color:#28493c;min-height:28px}
+.trendValue{font-size:18px;font-weight:900;color:#17382c;margin:2px 0 5px}
+.trendCanvasWrap{height:145px;position:relative}
+.trendCanvasWrap canvas{width:100%;height:100%;display:block}
+@media(max-width:900px){.trendGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.trendPanel{padding:12px}.trendHead{flex-direction:column}.trendControls{width:100%}.trendControls label{flex:1}.trendControls select{width:100%}.trendControls .downloadBtn{width:100%}.trendGrid{grid-template-columns:1fr}.trendCanvasWrap{height:135px}}
+
+.trendPanel{grid-column:1/-1}
+
+/* =========================================================
+   ADRIANA UI THEME — VISUAL ONLY
+   No JavaScript / data / storage / calculation changes.
+   ========================================================= */
+:root{
+  --ui-deep:#063e2a;
+  --ui-green:#08784f;
+  --ui-green2:#19a269;
+  --ui-light:#eaf6ef;
+  --ui-mint:#d8f0e2;
+  --ui-gold:#d9a72d;
+  --ui-gold2:#f2cf72;
+  --ui-white:#ffffff;
+  --ui-ink:#14231c;
+  --ui-muted:#6c7a72;
+  --ui-line:#dce9e1;
+  --ui-bg:#f3f7f4;
+}
+
+/* Shared green / white / gold visual language across every engine */
+body{
+  background:
+    radial-gradient(circle at 88% 8%,rgba(217,167,45,.08),transparent 22%),
+    linear-gradient(180deg,#f8fbf9 0%,var(--ui-bg) 100%);
+}
+.side{
+  background:linear-gradient(180deg,var(--ui-deep) 0%,#075238 52%,#063b29 100%) !important;
+}
+.nav button.active{
+  background:linear-gradient(90deg,var(--ui-green),#11905e) !important;
+  box-shadow:inset 3px 0 0 var(--ui-gold),0 8px 20px rgba(3,50,34,.18) !important;
+}
+.nav button:hover{
+  background:rgba(217,167,45,.12) !important;
+}
+.main{background:transparent}
+
+/* Corporate header */
+.astraHead{
+  background:
+    radial-gradient(circle at 72% 0%,rgba(217,167,45,.13),transparent 28%),
+    linear-gradient(105deg,#fff 0%,#f8fcf9 52%,#e7f3eb 100%) !important;
+  border-bottom:2px solid rgba(217,167,45,.28) !important;
+}
+.astraHead:after{
+  background:rgba(8,120,79,.07) !important;
+}
+.astraRight{
+  min-width:190px;
+  min-height:48px;
+  justify-content:center;
+  position:relative;
+  padding-right:2px;
+}
+.astraRight b,.astraRight span{display:none !important}
+.astraRight:before{
+  content:"";
+  display:block;
+  width:178px;
+  height:52px;
+  background:url("astra-agro-logo.png") center right/contain no-repeat;
+  filter:none;
+}
+
+/* Welcome hero */
+.dashWelcome{
+  background:
+    radial-gradient(circle at 88% 15%,rgba(242,207,114,.22),transparent 20%),
+    linear-gradient(135deg,#053b29 0%,#08784f 60%,#0e9d67 100%) !important;
+  border:1px solid rgba(242,207,114,.35) !important;
+}
+.dashWelcome:before{
+  content:"";
+  position:absolute;
+  right:20%;
+  bottom:-55px;
+  width:250px;
+  height:100px;
+  border-radius:50%;
+  border-top:3px solid rgba(242,207,114,.30);
+  transform:rotate(-8deg);
+}
+
+/* Four hero KPI cards — large, visual and catching */
+.grid.kpiGrid{
+  grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+  gap:14px !important;
+}
+.kpi{
+  min-height:188px !important;
+  padding:18px !important;
+  border:1px solid #dbe9e1 !important;
+  border-top:4px solid var(--ui-green2) !important;
+  border-radius:20px !important;
+  background:linear-gradient(145deg,#fff 0%,#fbfdfc 70%,#f1f9f4 100%) !important;
+  box-shadow:0 12px 30px rgba(9,68,45,.09),0 2px 0 rgba(217,167,45,.12) !important;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.kpi:hover{
+  transform:translateY(-2px);
+  box-shadow:0 17px 34px rgba(9,68,45,.13),0 3px 0 rgba(217,167,45,.24) !important;
+}
+.kpi:after{
+  width:135px !important;
+  height:135px !important;
+  right:-35px !important;
+  bottom:-58px !important;
+  background:radial-gradient(circle,rgba(25,162,105,.12),rgba(217,167,45,.05) 48%,transparent 70%) !important;
+}
+.kpiIcon{
+  position:relative !important;
+  left:auto !important;
+  top:auto !important;
+  width:88px !important;
+  height:88px !important;
+  min-height:88px !important;
+  margin:0 0 10px !important;
+  border-radius:20px !important;
+  background:linear-gradient(145deg,#eff9f3,#dff1e7) !important;
+  border:1px solid rgba(8,120,79,.08);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.8),0 6px 14px rgba(8,120,79,.08);
+}
+.kpiIcon img{
+  width:82px !important;
+  height:82px !important;
+  max-width:82px !important;
+  max-height:82px !important;
+  object-fit:contain !important;
+  filter:drop-shadow(0 5px 8px rgba(20,70,45,.14));
+}
+.kpi .label{
+  margin-left:0 !important;
+  margin-right:70px !important;
+  font-size:11px !important;
+  font-weight:900 !important;
+  letter-spacing:.10em !important;
+  color:#52645a !important;
+}
+.kpi .value{
+  margin-left:0 !important;
+  font-size:37px !important;
+  line-height:1 !important;
+  font-weight:950 !important;
+  letter-spacing:-.055em !important;
+  color:#10251b !important;
+}
+.kpi .delta,.kpi .small,.kpi .spark{margin-left:0 !important}
+.kpi .delta{font-size:10px !important;font-weight:850 !important}
+.kpi .small{font-size:9px !important}
+.kpi .confidence{
+  top:15px !important;
+  right:15px !important;
+  background:#edf8f2 !important;
+  border:1px solid #d5e9dc;
+  padding:5px 7px !important;
+}
+.kpiTruck{border-top-color:var(--ui-gold) !important}
+.kpiTruck .kpiIcon,.kpiRestan .kpiIcon{
+  background:linear-gradient(145deg,#fff9e9,#f7e8bd) !important;
+}
+.kpiRestan{border-top-color:#b88a22 !important}
+.kpiPeople{border-top-color:#48b97e !important}
+
+/* Trend dashboard preview + standalone Trend engine */
+.trendPanel{
+  margin-top:14px;
+  border:1px solid var(--ui-line) !important;
+  border-top:3px solid var(--ui-green) !important;
+  border-radius:20px !important;
+  background:linear-gradient(145deg,#fff,#f8fcfa) !important;
+  box-shadow:0 12px 30px rgba(9,68,45,.07) !important;
+}
+.trendHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.trendEyebrow{
+  color:var(--ui-green) !important;
+  font-weight:900 !important;
+  letter-spacing:.12em !important;
+}
+.trendHead h2{
+  color:var(--ui-deep) !important;
+  font-size:18px !important;
+}
+.trendHead p{color:var(--ui-muted) !important}
+.trendControls select,.trendControls label select{
+  border:1px solid #cfe0d6 !important;
+  background:#fff !important;
+  color:var(--ui-deep) !important;
+  border-radius:11px !important;
+}
+.downloadBtn,.trendControls .btn{
+  background:linear-gradient(135deg,#f3d47b,#d9a72d) !important;
+  color:#173723 !important;
+  border:1px solid #c69a28 !important;
+  font-weight:900 !important;
+  box-shadow:0 5px 12px rgba(183,133,26,.18);
+}
+.trendGrid{gap:12px !important}
+.trendCard{
+  border:1px solid var(--ui-line) !important;
+  border-radius:15px !important;
+  background:#fff !important;
+  box-shadow:0 5px 15px rgba(9,68,45,.045);
+}
+.trendCardTitle{
+  color:var(--ui-deep) !important;
+  font-weight:850 !important;
+}
+.trendValue{
+  color:var(--ui-green) !important;
+  font-weight:950 !important;
+}
+
+/* All engines / panels */
+.panel,.card{
+  border-color:var(--ui-line) !important;
+}
+.panelHead h2,.top .title{
+  color:var(--ui-deep);
+}
+.section .panel{
+  box-shadow:0 9px 25px rgba(9,68,45,.055) !important;
+}
+.section .btn{
+  border-color:#cbded3;
+}
+.section .btn:hover{
+  background:var(--ui-light);
+}
+.notice{
+  background:#f7fbf8 !important;
+  border-color:#cfe2d6 !important;
+}
+.tag,.rankBadge,.classPill.A{
+  background:#e5f4eb !important;
+  color:var(--ui-green) !important;
+}
+.periodStatus.closing{
+  background:#fff4d9 !important;
+  color:#8b6416 !important;
+}
+
+/* Tables: clean white + light green header + gold accent */
+.section table th{
+  background:#edf6f1 !important;
+  color:#52645a !important;
+}
+.section table tbody tr:hover td{
+  background:#f8fcf9 !important;
+}
+.section table td{
+  border-bottom-color:#e5eee9 !important;
+}
+
+/* Mobile: keep 4 KPI cards as an attractive 2x2 */
+@media(max-width:980px){
+  .grid.kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important}
+  .astraRight{min-width:120px}
+  .astraRight:before{width:120px;height:42px}
+}
+@media(max-width:560px){
+  .grid.kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:9px !important}
+  .kpi{
+    min-height:178px !important;
+    padding:13px !important;
+    border-radius:17px !important;
+  }
+  .kpiIcon{
+    width:68px !important;
+    height:68px !important;
+    min-height:68px !important;
+    border-radius:17px !important;
+  }
+  .kpiIcon img{
+    width:64px !important;
+    height:64px !important;
+    max-width:64px !important;
+    max-height:64px !important;
+  }
+  .kpi .label{
+    font-size:9px !important;
+    margin-right:0 !important;
+  }
+  .kpi .value{
+    font-size:28px !important;
+  }
+  .kpi .delta{font-size:8px !important}
+  .kpi .small{font-size:7.5px !important}
+  .kpi .confidence{font-size:7px !important;top:10px !important;right:10px !important}
+  .astraHead .adrianaMainLogo{height:32px !important;max-width:155px !important}
+  .astraHead .astra50Logo{height:27px !important;max-width:92px !important}
+  .astraRight:before{width:88px;height:34px}
+}
+
+
+/* =========================================================
+   ADRIANA POLISHED UI — VISUAL ONLY
+   No JavaScript / calculation / storage / historical logic changes.
+   ========================================================= */
+:root{
+  --ui-deep:#064c37;
+  --ui-green:#087a50;
+  --ui-green2:#18a56d;
+  --ui-light:#e9f7ef;
+  --ui-gold:#d9a52e;
+  --ui-gold2:#f2cc68;
+  --ui-white:#ffffff;
+  --ui-ink:#12231c;
+}
+
+/* Corporate header */
+.astraHead{
+  min-height:88px !important;
+  background:
+    radial-gradient(circle at 82% 20%,rgba(218,235,226,.85) 0 17%,transparent 17.5%),
+    linear-gradient(105deg,#ffffff 0%,#f7fbf8 58%,#edf7f1 100%) !important;
+  padding:10px 24px !important;
+}
+.astraHead:before{
+  content:"";
+  position:absolute;
+  right:19%;
+  top:-40px;
+  width:240px;height:130px;
+  background:linear-gradient(135deg,transparent 45%,rgba(21,120,80,.08) 46% 62%,transparent 63%);
+  transform:rotate(-12deg);
+  pointer-events:none;
+}
+.astraLestariLogo{
+  position:relative;
+  z-index:3;
+  width:126px;
+  height:60px;
+  object-fit:contain;
+  margin-left:auto;
+  margin-right:10px;
+  filter:drop-shadow(0 4px 8px rgba(10,70,48,.10));
+}
+.brandPair{
+  position:relative;
+  z-index:3;
+}
+
+/* Main KPI grid */
+.kpiGrid{
+  gap:14px !important;
+}
+.kpiGrid .kpi{
+  min-height:188px !important;
+  padding:18px 18px 15px !important;
+  border:1px solid rgba(14,94,62,.12) !important;
+  border-radius:20px !important;
+  background:
+    radial-gradient(circle at 10% 8%,rgba(231,248,238,.95) 0 13%,transparent 13.5%),
+    linear-gradient(145deg,#ffffff 0%,#ffffff 72%,#f2faf5 100%) !important;
+  box-shadow:0 12px 32px rgba(10,69,46,.09) !important;
+}
+.kpiGrid .kpi:after{
+  content:"";
+  position:absolute;
+  right:-30px;
+  bottom:-42px;
+  width:112px;height:112px;
+  border-radius:50%;
+  background:rgba(21,137,91,.08);
+  pointer-events:none;
+}
+.kpiGrid .kpi:nth-child(3),
+.kpiGrid .kpi:nth-child(4){
+  background:
+    radial-gradient(circle at 10% 8%,rgba(255,248,225,.98) 0 13%,transparent 13.5%),
+    linear-gradient(145deg,#ffffff 0%,#ffffff 72%,#fffaf0 100%) !important;
+}
+.kpiGrid .kpi:nth-child(3):after,
+.kpiGrid .kpi:nth-child(4):after{
+  background:rgba(217,165,46,.10);
+}
+
+/* Large KPI illustration zone */
+.kpiGrid .kpiIcon{
+  position:absolute !important;
+  left:16px !important;
+  top:17px !important;
+  width:106px !important;
+  height:106px !important;
+  min-height:106px !important;
+  border-radius:24px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  background:linear-gradient(145deg,#eef9f2,#dff1e7) !important;
+  opacity:1 !important;
+  z-index:2;
+  box-shadow:inset 0 0 0 1px rgba(21,121,80,.06);
+}
+.kpiGrid .kpi:nth-child(3) .kpiIcon,
+.kpiGrid .kpi:nth-child(4) .kpiIcon{
+  background:linear-gradient(145deg,#fff9e9,#f8edc9) !important;
+  box-shadow:inset 0 0 0 1px rgba(205,155,42,.12);
+}
+.kpiGrid .kpiIcon img{
+  width:98px !important;
+  height:98px !important;
+  max-width:98px !important;
+  max-height:98px !important;
+  object-fit:contain !important;
+  filter:drop-shadow(0 6px 7px rgba(20,65,44,.16));
+}
+
+/* KPI text: large but constrained so it never escapes the card */
+.kpiGrid .kpi .label,
+.kpiGrid .kpi .value,
+.kpiGrid .kpi .delta,
+.kpiGrid .kpi .small,
+.kpiGrid .kpi .spark{
+  margin-left:136px !important;
+  max-width:calc(100% - 148px);
+  position:relative;
+  z-index:2;
+}
+.kpiGrid .kpi .label{
+  margin-top:18px !important;
+  font-size:11px !important;
+  line-height:1.15 !important;
+  letter-spacing:.11em !important;
+  font-weight:900 !important;
+}
+.kpiGrid .kpi .value{
+  font-size:clamp(28px,3.2vw,42px) !important;
+  line-height:1.02 !important;
+  letter-spacing:-.055em !important;
+  font-weight:950 !important;
+  white-space:nowrap;
+  margin-top:8px !important;
+  margin-bottom:4px !important;
+}
+.kpiGrid .kpi:nth-child(4) .value{
+  font-size:clamp(24px,2.8vw,38px) !important;
+  letter-spacing:-.045em !important;
+}
+.kpiGrid .kpi .delta{
+  margin-top:3px !important;
+  font-size:10px !important;
+  line-height:1.15 !important;
+}
+.kpiGrid .kpi .small{
+  font-size:9px !important;
+  line-height:1.2 !important;
+  color:#687a71 !important;
+}
+.kpiGrid .kpi .spark{
+  margin-top:9px !important;
+  height:22px !important;
+}
+.kpiGrid .kpi .confidence{
+  top:16px !important;
+  right:16px !important;
+  z-index:4;
+  border:1px solid rgba(15,110,73,.10);
+}
+
+/* Gold/green accents */
+.kpiGrid .kpi:nth-child(1),
+.kpiGrid .kpi:nth-child(2){
+  border-top:3px solid rgba(24,165,109,.35) !important;
+}
+.kpiGrid .kpi:nth-child(3),
+.kpiGrid .kpi:nth-child(4){
+  border-top:3px solid rgba(217,165,46,.45) !important;
+}
+
+/* Trend/dashboard panels */
+.trendPanel{
+  border:1px solid rgba(8,122,80,.18) !important;
+  border-top:3px solid var(--ui-green) !important;
+  border-radius:20px !important;
+  background:linear-gradient(145deg,#ffffff,#f8fcf9) !important;
+  box-shadow:0 12px 32px rgba(10,69,46,.07) !important;
+}
+.trendHead h2{
+  font-size:20px !important;
+  color:var(--ui-ink) !important;
+}
+.trendEyebrow{
+  color:var(--ui-green) !important;
+  font-weight:900 !important;
+  letter-spacing:.13em !important;
+}
+.trendValue{
+  color:var(--ui-green) !important;
+  font-weight:950 !important;
+}
+.downloadBtn{
+  background:linear-gradient(135deg,#e8bd4f,#d79e20) !important;
+  color:#182219 !important;
+  border-color:#c99726 !important;
+  font-weight:900 !important;
+}
+
+/* All engines inherit the same corporate visual language */
+.section .panel,
+.section .upload,
+.section .notice,
+.section .miniCard,
+.section .peopleKpi{
+  border-radius:18px;
+}
+.section .panelHead h2,
+.section .top .title{
+  color:var(--ui-ink);
+}
+.section .btn:not(.downloadBtn){
+  border-color:rgba(8,122,80,.18);
+}
+.section table th{
+  background:#edf7f1;
+}
+.section .tag{
+  background:#fff6dc;
+  color:#9b7116;
+}
+
+/* Navigation */
+.nav button.active{
+  background:linear-gradient(135deg,#0a7951,#075d3f) !important;
+  border-color:#2aa979 !important;
+  box-shadow:0 6px 18px rgba(7,93,63,.25) !important;
+}
+.nav button:hover{
+  border-color:rgba(217,165,46,.65) !important;
+}
+
+/* Mobile KPI balance */
+@media(max-width:760px){
+  .astraHead{
+    min-height:78px !important;
+    padding:8px 14px !important;
+  }
+  .astraLestariLogo{
+    width:92px;
+    height:48px;
+    margin-right:0;
+  }
+  .kpiGrid{
+    gap:10px !important;
+  }
+  .kpiGrid .kpi{
+    min-height:178px !important;
+    padding:14px 12px !important;
+    border-radius:18px !important;
+  }
+  .kpiGrid .kpiIcon{
+    left:12px !important;
+    top:14px !important;
+    width:82px !important;
+    height:82px !important;
+    min-height:82px !important;
+    border-radius:19px !important;
+  }
+  .kpiGrid .kpiIcon img{
+    width:77px !important;
+    height:77px !important;
+    max-width:77px !important;
+    max-height:77px !important;
+  }
+  .kpiGrid .kpi .label,
+  .kpiGrid .kpi .value,
+  .kpiGrid .kpi .delta,
+  .kpiGrid .kpi .small,
+  .kpiGrid .kpi .spark{
+    margin-left:99px !important;
+    max-width:calc(100% - 108px);
+  }
+  .kpiGrid .kpi .label{
+    margin-top:12px !important;
+    font-size:9px !important;
+  }
+  .kpiGrid .kpi .value{
+    font-size:clamp(24px,7vw,31px) !important;
+    margin-top:7px !important;
+  }
+  .kpiGrid .kpi:nth-child(4) .value{
+    font-size:clamp(21px,6vw,27px) !important;
+  }
+  .kpiGrid .kpi .small{
+    font-size:8px !important;
+  }
+  .kpiGrid .kpi .confidence{
+    right:10px !important;
+    top:10px !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -112,6 +933,7 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
     <button data-target="closing">Daily Closing</button>
     <button data-target="rotation">Rotation</button>
     <button data-target="production">Production</button>
+    <button data-target="trend">Trend</button>
     <button data-target="quality">Harvest Quality</button>
     <button data-target="transport">Transport & Restan</button>
     <button data-target="exception">Exception & Priority</button>
@@ -123,7 +945,7 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
   </div>
 </aside>
 <main class="main">
-<div class="astraHead"><div class="brandPair"><img class="adrianaMainLogo" src="adriana-logo-main.png" alt="ADRIANA — Assistant Daily Reporting & Analytics"><span class="brandDivider"></span><img class="astra50Logo" src="astra-agro-50-header.png" alt="Astra Agro 50"></div><div class="astraRight"><b>Sustainable Plantation</b><span>Operational Intelligence · ADRIANA</span></div></div>
+<div class="astraHead"><div class="brandPair"><img class="adrianaMainLogo" src="adriana-logo-main.png" alt="ADRIANA — Assistant Daily Reporting & Analytics"><span class="brandDivider"></span><img class="astra50Logo" src="astra-agro-50-header.png" alt="Astra Agro 50"></div><div class="astraRight"><b>Sustainable Plantation</b><span>Operational Intelligence · ADRIANA</span></div><img class="astraLestariLogo" src="astra-agro-logo-compact.png" alt="Astra Agro Lestari"></div>
 <section id="dashboard" class="section active">
 <div class="dashWelcome"><div><div class="eyebrow">DAILY OPERATIONAL VIEW</div><div class="title">Welcome, <span class="welcomeName">Afdeling Head SYM!</span></div><div class="meta" id="activeMeta">Upload AMANTA files in Daily Closing</div><div class="afdFilter"><label>AFDELING</label><select id="afdFilter"><option value="ALL">Semua Afdeling</option><option value="OC">OCYM</option><option value="OE">OEYM</option></select></div></div><div class="dashControls"><div class="dateBox"><span>▣</span><div><small>Daily Operational View</small><strong id="activeDate">No dataset</strong></div><b>⌄</b></div><div class="lock" id="lockState">● NO DATASET</div></div></div>
 <div class="grid kpiGrid">
@@ -133,6 +955,35 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
 <div class="card kpi kpiRestan"><span class="confidence high">HIGH</span><div class="kpiIcon"><img src="kpi-bjr.png" alt="TBS Kelapa Sawit"></div><div class="label">BJR</div><div class="value">—</div><div class="small">kg/JJG · net tonnage ÷ JJG</div><div class="spark dashed"></div></div>
 </div>
 <div class="two dashTopGrid">
+<section id="productionTrendPanel" class="trendPanel">
+  <div class="trendHead">
+    <div>
+      <div class="trendEyebrow">PRODUCTION TREND</div>
+      <h2>Grafik Tren Produksi (Akumulasi)</h2>
+      <p>Akumulasi harian berdasarkan snapshot AMANTA · AFD aktif</p>
+    </div>
+    <div class="trendControls">
+      <label>Periode
+        <select id="trendPeriod">
+          <option value="7">7 Hari</option>
+          <option value="30" selected>30 Hari</option>
+        </select>
+      </label>
+      <label>Mode
+        <select id="trendMode">
+          <option value="accum" selected>Akumulasi</option>
+        </select>
+      </label>
+      <button type="button" class="btn downloadBtn" onclick="downloadProductionTrendCSV()">Download Trend CSV ↓</button>
+    </div>
+  </div>
+  <div class="trendGrid">
+    <div class="trendCard"><div class="trendCardTitle">Akumulasi Tonase Transport</div><div class="trendValue" id="trendTonaseValue">—</div><div class="trendCanvasWrap"><canvas id="trendTonase"></canvas></div></div>
+    <div class="trendCard"><div class="trendCardTitle">Akumulasi Producing HK</div><div class="trendValue" id="trendHKValue">—</div><div class="trendCanvasWrap"><canvas id="trendHK"></canvas></div></div>
+    <div class="trendCard"><div class="trendCardTitle">Akumulasi JJG</div><div class="trendValue" id="trendJJGValue">—</div><div class="trendCanvasWrap"><canvas id="trendJJG"></canvas></div></div>
+    <div class="trendCard"><div class="trendCardTitle">BJR Rata-rata</div><div class="trendValue" id="trendBJRValue">—</div><div class="trendCanvasWrap"><canvas id="trendBJR"></canvas></div></div>
+  </div>
+</section>
 <div class="panel signalsPanel"><div class="panelHead"><h2>Today's Operational Signals</h2><span>See All →</span></div><div id="dashboardSignals"><div class="notice">Upload and lock a daily dataset to generate operational signals.</div></div></div>
 <div class="panel decision decisionHero"><div class="decisionGlow"></div><div class="decisionHead"><h2>Assistant Decision</h2><span>AI RECOMMENDATION</span></div><div class="decisionLabel">Recommended focus</div><div id="dashboardDecision">—</div><div id="dashboardDecisionText" class="muted">No active dataset.</div><button class="btn" onclick="show('pdca')">CREATE ACTION PLAN&nbsp; →</button><div class="decisionLeaf">◌</div></div>
 </div>
@@ -190,6 +1041,46 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
 </div>
 </section>
 
+
+
+<section id="trend" class="section">
+  <div class="top">
+    <div>
+      <div class="eyebrow">ENGINE · PRODUCTION TREND</div>
+      <div class="title">Production Trend</div>
+      <div class="meta">Tren produksi berdasarkan historical snapshot AMANTA pada AFD aktif.</div>
+    </div>
+  </div>
+  <div class="trendPanel">
+    <div class="trendHead">
+      <div>
+        <div class="trendEyebrow">PRODUCTION TREND</div>
+        <h2>Grafik Tren Produksi (Akumulasi)</h2>
+        <p>Historical harian · AFD aktif · 7/30 hari</p>
+      </div>
+      <div class="trendControls">
+        <label>Periode
+          <select id="engineTrendPeriod">
+            <option value="7">7 Hari</option>
+            <option value="30" selected>30 Hari</option>
+          </select>
+        </label>
+        <label>Mode
+          <select id="engineTrendMode">
+            <option value="accum" selected>Akumulasi</option>
+          </select>
+        </label>
+        <button type="button" class="btn downloadBtn" onclick="downloadProductionTrendCSV()">Download Trend CSV ↓</button>
+      </div>
+    </div>
+    <div class="trendGrid">
+      <div class="trendCard"><div class="trendCardTitle">Akumulasi Tonase Transport</div><div class="trendValue" id="engineTrendTonaseValue">—</div><div class="trendCanvasWrap"><canvas id="engineTrendTonase"></canvas></div></div>
+      <div class="trendCard"><div class="trendCardTitle">Akumulasi Producing HK</div><div class="trendValue" id="engineTrendHKValue">—</div><div class="trendCanvasWrap"><canvas id="engineTrendHK"></canvas></div></div>
+      <div class="trendCard"><div class="trendCardTitle">Akumulasi JJG</div><div class="trendValue" id="engineTrendJJGValue">—</div><div class="trendCanvasWrap"><canvas id="engineTrendJJG"></canvas></div></div>
+      <div class="trendCard"><div class="trendCardTitle">BJR Rata-rata</div><div class="trendValue" id="engineTrendBJRValue">—</div><div class="trendCanvasWrap"><canvas id="engineTrendBJR"></canvas></div></div>
+    </div>
+  </div>
+</section>
 
 <section id="production" class="section"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap"><div><div class="title">Production</div><div class="meta">Actual production from reconciled AMANTA records.</div></div><button class="btn" type="button" onclick="downloadProductionCSV()">Download Production CSV</button></div><div id="bjrNotice" class="notice" style="margin-top:14px"><b>BJR:</b> —</div><div class="panel" style="margin-top:14px"><div class="panelHead"><h2>Harvest Performance — Mandoran</h2><span>AMANTA</span></div><table><thead><tr><th>Mandoran</th><th>HK</th><th>JJG</th><th>JJG/HK</th></tr></thead><tbody id="productionBody"><tr><td colspan="4" class="small">No active dataset.</td></tr></tbody></table></div><div class="panel harvestPerf"><div class="panelHead"><h2>Harvest Performance — Pemanen</h2><span>JJG per pemanen</span></div><div class="miniGrid"><div class="miniCard"><h3>Top Performer</h3><div id="topHarvester" class="big">—</div><div id="topHarvesterSub" class="small">—</div></div><div class="miniCard"><h3>Bottom Performer</h3><div id="bottomHarvester" class="big">—</div><div id="bottomHarvesterSub" class="small">—</div></div></div><div class="perfTable"><table><thead><tr><th>Rank</th><th>Pemanen</th><th>NPK</th><th>JJG</th><th>JJG/HK</th><th>Block</th><th>Mandoran</th></tr></thead><tbody id="harvesterBody"><tr><td colspan="7" class="small">No active dataset.</td></tr></tbody></table></div><div class="perfNote">Ranking menggunakan JJG aktual dari AMANTA. Peringkat rendah adalah signal untuk review, bukan otomatis penilaian kinerja.</div></div></section>
 
@@ -274,7 +1165,10 @@ table{width:100%;border-collapse:separate;border-spacing:0;font-size:9px}th{back
           <h2 style="margin:4px 0 2px">Premi Closing Periode</h2>
           <div id="peoplePeriodDetail" class="small">Periode Book —</div>
         </div>
-        <div id="peoplePeriodStatus" class="periodStatus">—</div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+          <div id="peoplePeriodStatus" class="periodStatus">—</div>
+          <button class="btn downloadBtn" type="button" onclick="downloadPremiClosingPeriodCSV()">Download Premi Closing CSV ↓</button>
+        </div>
       </div>
       <div class="peopleKpis periodKpis">
         <div class="peopleKpi"><small>OPEN BOOK</small><strong id="peopleOpenBook">—</strong></div>
@@ -970,6 +1864,24 @@ function renderPeopleAI(d){
     }));
     return {daily,agg:Object.values(agg)};
   };
+  window.downloadPremiClosingPeriodCSV=function(){
+    const activeDate=(window.ADRIANA_DATA&&window.ADRIANA_DATA.date)||window.ACTIVE?.date||null;
+    if(!activeDate){alert('Belum ada dataset aktif.');return;}
+    let hist=null;
+    try{ if(typeof buildPeopleHistory==='function') hist=buildPeopleHistory(activeDate,window.ADRIANA_DATA); }catch(e){}
+    if(!hist||!Array.isArray(hist.agg)||!hist.agg.length){alert('Data premi closing periode belum tersedia.');return;}
+    const rows=hist.agg.slice().sort((a,b)=>b.premi-a.premi);
+    const out=[
+      ['ADRIANA PREMI CLOSING PERIODE'],
+      ['Periode Book',`${hist.open} - ${hist.close}`],
+      ['Actual Through',hist.end],
+      [],
+      ['Rank','Pemanen','NPK','JJG Periode','Hari Panen','More Basis Periode','Premi Periode','JJG/HK','Avg Basis']
+    ];
+    rows.forEach((x,i)=>out.push([i+1,x.name||'—',x.npk||'—',x.jjg||0,x.hkDays||0,Number(x.more||0).toFixed(2),Number(x.premi||0).toFixed(0),Number(x.jjgPerHK||0).toFixed(2),x.avgBasis==null?'—':Number(x.avgBasis).toFixed(2)]));
+    downloadCSV(`ADRIANA_Premi_Closing_${hist.bookMonth||activeDate}.csv`,out);
+  };
+
   window.ADRIANA_PREMI_RENDER=function(d){
     const host=document.getElementById('peopleBody'), dashHost=document.getElementById('dashPeopleBody');
     if(!d?.date||d.date<PEOPLE_START_DATE||ACTIVE_AFD==='OE') return;
@@ -1423,8 +2335,7 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     const rows=basePeopleRows(snap),map=rosterMap();
     return rows.filter(r=>{let hit=map.get('N:'+npkKey(r.npk));if(!hit)hit=map.get('M:'+norm(r.name));return !!hit;});
   };
-  const prevRenderAll=renderAll;
-  renderAll=function(snap){prevRenderAll(snap);try{renderKKP(snap);renderHistory();}catch(e){console.warn('KKP:',e)}};
+  window.ADRIANA_RENDER_KKP=renderKKP;
   const oldExport=typeof downloadProductionCSV==='function'?downloadProductionCSV:null;
   window.downloadKKPProductionCSV=function(){
     if(!ACTIVE||!window.ADRIANA_DATA){alert('Belum ada dataset aktif.');return;}
@@ -1448,13 +2359,96 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
       if(typeof renderPeoplePerformance==='function') renderPeoplePerformance(d);
       if(typeof renderPeopleAI==='function') renderPeopleAI(d);
       if(typeof window.ADRIANA_RENDER_KKP==='function') window.ADRIANA_RENDER_KKP(snap);
+      if(typeof renderHistory==='function') renderHistory();
       if(typeof buildPeopleHistory==='function' && typeof renderPeriodClosing==='function'){
         const hist=buildPeopleHistory(snap.date,snap);
         if(hist) renderPeriodClosing(hist,snap.date);
       }
-    }catch(e){ console.warn('ADRIANA KKP/PEOPLE/PREMI render:',e); }
+      if(typeof window.renderProductionTrend==='function') window.renderProductionTrend();
+    }catch(e){ console.warn('ADRIANA unified render:',e); }
   };
 })();
 </script>
+<script>
+/* ADRIANA PRODUCTION TREND — 7/30 day accumulated view */
+(function(){
+  const $=id=>document.getElementById(id);
+  let lastTrendRows=[];
 
+  function isoPrev(d,n){const x=new Date(d+'T00:00:00');x.setDate(x.getDate()-n);return x.toISOString().slice(0,10);}
+  function snapsFor(afd,days){
+    let all=[];
+    try{all=(typeof getAfdSnapshotsHybrid==='function'?getAfdSnapshotsHybrid(afd||'OC'):[])||[];}catch(e){}
+    const activeDate=(window.ADRIANA_DATA&&window.ADRIANA_DATA.date)||((typeof ACTIVE!=='undefined'&&ACTIVE)?ACTIVE.date:null);
+    if(!activeDate)return [];
+    const from=isoPrev(activeDate,days-1);
+    return all.filter(s=>s&&s.date>=from&&s.date<=activeDate&&(s.afd||'OC')===(afd||'OC'))
+      .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+  }
+  function metrics(s){
+    try{const d=buildData(s);return {date:s.date,jjg:+d.jjg||0,hk:+d.producingHK||0,ton:+d.netTransportKg/1000||0,bjr:+d.bjrKgPerJjg||0};}
+    catch(e){return null}
+  }
+  function draw(id,values,labels){
+    const c=$(id);if(!c)return;
+    const r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1,w=Math.max(260,r.width),h=Math.max(120,r.height);
+    c.width=w*dpr;c.height=h*dpr;const ctx=c.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    if(!values.length)return;
+    const pad={l:8,r:8,t:10,b:22},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+    const max=Math.max(...values,1),min=0;
+    ctx.font='9px Arial';ctx.strokeStyle='#dfe9e3';ctx.fillStyle='#718077';
+    for(let i=0;i<=3;i++){const y=pad.t+ph*i/3;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();}
+    const pts=values.map((v,i)=>({x:pad.l+(values.length===1?pw/2:pw*i/(values.length-1)),y:pad.t+ph-(v-min)/(max-min)*ph}));
+    ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));
+    ctx.lineWidth=2.5;ctx.strokeStyle='#0a8050';ctx.stroke();
+    const last=pts[pts.length-1];ctx.beginPath();ctx.arc(last.x,last.y,4,0,Math.PI*2);ctx.fillStyle='#0a8050';ctx.fill();
+    ctx.fillStyle='#718077';
+    const picks=[0,Math.floor((labels.length-1)/2),labels.length-1].filter((v,i,a)=>a.indexOf(v)===i);
+    picks.forEach(i=>ctx.fillText(labels[i].slice(5),Math.max(0,Math.min(w-42,pts[i].x-15)),h-6));
+  }
+  function renderTrend(){
+    const d=window.ADRIANA_DATA;if(!d||!d.date)return;
+    const days=+$('trendPeriod')?.value||30, engineDays=+$('engineTrendPeriod')?.value||days, afd=(typeof ACTIVE_AFD!=='undefined'?ACTIVE_AFD:(d.afd||'OC'));
+    const actualDays=engineDays;
+    const rows=snapsFor(afd,actualDays).map(metrics).filter(Boolean);
+    lastTrendRows=rows;
+    let aTon=0,aHK=0,aJJG=0;const ton=[],hk=[],jjg=[],bjr=[],labs=[];
+    rows.forEach(x=>{aTon+=x.ton;aHK+=x.hk;aJJG+=x.jjg;ton.push(aTon);hk.push(aHK);jjg.push(aJJG);bjr.push(x.bjr);labs.push(x.date)});
+    const ids=['trendTonaseValue','trendHKValue','trendJJGValue','trendBJRValue','engineTrendTonaseValue','engineTrendHKValue','engineTrendJJGValue','engineTrendBJRValue'];
+    if($('trendTonaseValue'))$('trendTonaseValue').textContent=aTon.toFixed(2)+' T';
+    if($('trendHKValue'))$('trendHKValue').textContent=aHK.toLocaleString()+' HK';
+    if($('trendJJGValue'))$('trendJJGValue').textContent=aJJG.toLocaleString()+' JJG';
+    if($('trendBJRValue'))$('trendBJRValue').textContent=rows.length?bjr[bjr.length-1].toFixed(2)+' kg/JJG':'—';
+    if($('engineTrendTonaseValue'))$('engineTrendTonaseValue').textContent=aTon.toFixed(2)+' T';
+    if($('engineTrendHKValue'))$('engineTrendHKValue').textContent=aHK.toLocaleString()+' HK';
+    if($('engineTrendJJGValue'))$('engineTrendJJGValue').textContent=aJJG.toLocaleString()+' JJG';
+    if($('engineTrendBJRValue'))$('engineTrendBJRValue').textContent=rows.length?bjr[bjr.length-1].toFixed(2)+' kg/JJG':'—';
+    draw('trendTonase',ton,labs);draw('trendHK',hk,labs);draw('trendJJG',jjg,labs);draw('trendBJR',bjr,labs);
+    draw('engineTrendTonase',ton,labs);draw('engineTrendHK',hk,labs);draw('engineTrendJJG',jjg,labs);draw('engineTrendBJR',bjr,labs);
+  }
+  window.renderProductionTrend=renderTrend;
+  window.downloadProductionTrendCSV=function(){
+    if(!lastTrendRows.length){alert('Belum ada historical snapshot untuk grafik.');return;}
+    let aTon=0,aHK=0,aJJG=0;
+    const rows=[['ADRIANA PRODUCTION TREND'],['Tanggal','Akumulasi Tonase (T)','Akumulasi HK','Akumulasi JJG','BJR (kg/JJG)']];
+    lastTrendRows.forEach(x=>{aTon+=x.ton;aHK+=x.hk;aJJG+=x.jjg;rows.push([x.date,aTon.toFixed(3),aHK,aJJG,x.bjr.toFixed(2)])});
+    const esc=v=>{const s=String(v??'');return /[",\n\r]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+    const blob=new Blob(['\uFEFF'+rows.map(r=>r.map(esc).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`ADRIANA_Production_Trend_${($('trendPeriod')?.value||$('engineTrendPeriod')?.value||30)}D.csv`;a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),500);
+  };
+  document.addEventListener('change',e=>{if(e.target&&(e.target.id==='trendPeriod'||e.target.id==='engineTrendPeriod'))renderTrend();});
+  window.addEventListener('resize',()=>{if(window.ADRIANA_DATA)renderTrend();});
+
+  // Wrap the existing renderAll without replacing its logic.
+  const wait=setInterval(()=>{
+    if(typeof window.renderAll==='function'){
+      clearInterval(wait);
+      const original=window.renderAll;
+      window.renderAll=function(snap){original(snap);setTimeout(renderTrend,0);}
+    }
+  },50);
+})();
+</script>
 </body></html>
