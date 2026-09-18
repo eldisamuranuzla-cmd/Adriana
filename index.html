@@ -1336,6 +1336,68 @@ body{
 </style>
 <style id="adriana-ai-historical-style">
 .aiHistWrap{margin-top:14px}.aiHistControls{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin-bottom:12px}.aiHistControls label{font-size:10px;font-weight:800;color:var(--neo-muted);display:flex;flex-direction:column;gap:5px}.aiHistControls select,.aiHistControls input{border:1px solid var(--neo-line);background:var(--neo-surface);border-radius:9px;padding:8px 10px;font:inherit;color:var(--neo-deep);min-width:105px}.aiHistGrid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.aiHistTable{width:100%;border-collapse:collapse;font-size:10px}.aiHistTable th,.aiHistTable td{padding:8px 7px;border-bottom:1px solid var(--neo-line);text-align:right}.aiHistTable th:first-child,.aiHistTable td:first-child{text-align:left}.aiHistTable th{font-size:8px;text-transform:uppercase;color:var(--neo-muted)}.aiHistLow{background:#fff8e8}.aiHistCard{background:var(--neo-surface2);border:1px solid var(--neo-line);border-radius:12px;padding:12px}.aiHistCard h3{margin:0 0 8px;font-size:13px}.aiHistBig{font-size:24px;font-weight:900;color:var(--neo-deep)}.aiHistMuted{font-size:9px;line-height:1.5;color:var(--neo-muted)}.aiHistRec{background:linear-gradient(145deg,#073f2c,#0b7650);color:#fff;border-radius:12px;padding:14px}.aiHistRec .aiHistMuted{color:#d2eee3}.aiHistRec b{color:#fff}.aiHistBadge{display:inline-block;padding:4px 7px;border-radius:999px;background:#eaf4ed;color:#1d8050;font-size:8px;font-weight:900}.aiHistRec .aiHistBadge{background:rgba(255,255,255,.13);color:#d8f2e6}@media(max-width:760px){.aiHistGrid{grid-template-columns:1fr}.aiHistTable{font-size:9px}.aiHistTable th,.aiHistTable td{padding:7px 4px}}
+
+/* ADRIANA TOP ENGINE NAV — VISUAL ONLY
+   Mobile navigation moved from bottom to top, directly under the corporate header.
+   No JavaScript, data, storage, calculation, or engine logic changes.
+*/
+@media(max-width:980px){
+  body{padding-bottom:0!important;}
+  .side{
+    position:sticky!important;
+    top:0!important;
+    left:auto!important;
+    right:auto!important;
+    bottom:auto!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:66px!important;
+    padding:7px 7px!important;
+    margin:0!important;
+    z-index:1000!important;
+    border-top:0!important;
+    border-bottom:1px solid rgba(255,255,255,.14)!important;
+    box-shadow:0 7px 20px rgba(0,0,0,.12)!important;
+    border-radius:0 0 16px 16px!important;
+  }
+  .side .brandRow,.side .sub{display:none!important;}
+  .nav{
+    display:flex!important;
+    width:100%!important;
+    height:52px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    gap:6px!important;
+    align-items:center!important;
+    padding:0 2px!important;
+    scrollbar-width:none!important;
+    -webkit-overflow-scrolling:touch!important;
+  }
+  .nav::-webkit-scrollbar{display:none!important;}
+  .nav button{
+    flex:0 0 auto!important;
+    min-height:44px!important;
+    padding:8px 11px!important;
+    font-size:10px!important;
+    line-height:1.1!important;
+    white-space:nowrap!important;
+    border-radius:11px!important;
+  }
+  .nav button.active{
+    box-shadow:inset 0 -3px 0 #d9a72d,inset 0 0 0 1px rgba(255,255,255,.16)!important;
+  }
+  .main{
+    margin-left:0!important;
+    width:100%!important;
+    padding:0 14px 20px!important;
+  }
+}
+@media(max-width:520px){
+  .side{min-height:62px!important;padding:5px 6px!important;border-radius:0 0 14px 14px!important;}
+  .nav{height:52px!important;gap:5px!important;}
+  .nav button{min-height:43px!important;padding:7px 10px!important;font-size:9px!important;}
+  .main{padding:0 10px 16px!important;}
+}
 </style>
 </head>
 <body>
@@ -2985,3 +3047,534 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
 })();
 </script>
 </body></html>
+
+<style id="adriana-mobile-top-engine-corrected">
+/* ADRIANA MOBILE TOP ENGINE — CSS ONLY
+   Corrected for actual DOM order: side navigation precedes main/header. */
+@media (max-width:700px){
+  html,body{overflow-x:hidden !important;}
+
+  .app{
+    display:block !important;
+    min-height:100vh !important;
+  }
+
+  /* Top engine bar: fixed/absolute at the top of the app, not below content */
+  .side{
+    position:absolute !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:74px !important;
+    min-height:74px !important;
+    margin:0 !important;
+    padding:6px !important;
+    z-index:999 !important;
+    border-radius:0 0 16px 16px !important;
+    box-shadow:0 5px 16px rgba(10,65,43,.18) !important;
+    overflow:hidden !important;
+  }
+
+  .side > .brandRow,
+  .side > .sub{display:none !important;}
+
+  .nav{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch !important;
+    gap:4px !important;
+    width:100% !important;
+    height:62px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+  }
+  .nav::-webkit-scrollbar{display:none !important;}
+
+  .nav button{
+    flex:0 0 auto !important;
+    min-width:73px !important;
+    width:auto !important;
+    min-height:56px !important;
+    height:56px !important;
+    padding:7px 8px !important;
+    border-radius:11px !important;
+    font-size:9px !important;
+    line-height:1.05 !important;
+    text-align:center !important;
+    white-space:normal !important;
+  }
+
+  /* Main content is physically pushed below the top engine bar */
+  .main{
+    margin-left:0 !important;
+    width:100% !important;
+    padding:74px 10px 18px !important;
+  }
+
+  /* Brand/logo header gets its own full, unclipped band below nav */
+  .astraHead{
+    position:relative !important;
+    z-index:100 !important;
+    height:86px !important;
+    min-height:86px !important;
+    margin:0 -10px 0 !important;
+    padding:7px 10px !important;
+    overflow:visible !important;
+    border-radius:0 !important;
+  }
+
+  .brandPair{
+    min-width:0 !important;
+    gap:7px !important;
+    overflow:visible !important;
+  }
+
+  .adrianaMainLogo{
+    width:143px !important;
+    height:61px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .brandDivider{
+    height:39px !important;
+    flex:0 0 1px !important;
+  }
+
+  .astra50Logo{
+    width:91px !important;
+    height:55px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .astraLestariLogo{
+    width:78px !important;
+    height:58px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+    margin-left:4px !important;
+  }
+
+  /* Remove the old attempt's offset so dashboard follows header naturally */
+  .astraHead + .section{margin-top:0 !important;}
+
+  #dashboard,.section{
+    position:relative !important;
+    z-index:1 !important;
+  }
+}
+</style>
+
+
+<style id="adriana-mobile-top-engine-final-position">
+@media (max-width:700px){
+  /* Header/logo occupies the first band */
+  .main{
+    margin-left:0 !important;
+    width:100% !important;
+    padding:0 10px 18px !important;
+  }
+
+  .astraHead{
+    position:relative !important;
+    z-index:100 !important;
+    height:82px !important;
+    min-height:82px !important;
+    margin:0 -10px !important;
+    padding:5px 9px !important;
+    overflow:visible !important;
+  }
+
+  /* Engine bar is BELOW the logo, never over it */
+  .side{
+    position:absolute !important;
+    top:82px !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:58px !important;
+    min-height:58px !important;
+    padding:4px 6px !important;
+    margin:0 !important;
+    z-index:999 !important;
+    border-radius:0 0 13px 13px !important;
+    overflow:hidden !important;
+  }
+
+  .side > .brandRow,
+  .side > .sub{display:none !important;}
+
+  .nav{
+    height:50px !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    gap:3px !important;
+    align-items:center !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scrollbar-width:none !important;
+  }
+  .nav::-webkit-scrollbar{display:none !important;}
+
+  .nav button{
+    flex:0 0 auto !important;
+    min-width:68px !important;
+    height:46px !important;
+    min-height:46px !important;
+    padding:5px 6px !important;
+    border-radius:9px !important;
+    font-size:8px !important;
+    line-height:1.05 !important;
+  }
+
+  /* Content follows logo + engine naturally */
+  .astraHead + .section{margin-top:62px !important;}
+
+  .adrianaMainLogo{
+    width:139px !important;
+    height:58px !important;
+    object-fit:contain !important;
+  }
+  .astra50Logo{
+    width:88px !important;
+    height:53px !important;
+    object-fit:contain !important;
+  }
+  .astraLestariLogo{
+    width:73px !important;
+    height:55px !important;
+    object-fit:contain !important;
+  }
+}
+</style>
+
+
+<style id="adriana-mobile-final-reference-layout">
+@media (max-width:700px){
+  /* Reflow only the mobile presentation:
+     .main becomes transparent to the flex layout so the logo header
+     can sit ABOVE the engine bar without changing any application logic. */
+  .app{
+    display:flex !important;
+    flex-direction:column !important;
+    width:100% !important;
+    min-height:100vh !important;
+    overflow-x:hidden !important;
+  }
+
+  .main{
+    display:contents !important;
+    margin:0 !important;
+    padding:0 !important;
+  }
+
+  /* 1. BRAND HEADER */
+  .astraHead{
+    order:1 !important;
+    position:relative !important;
+    width:100% !important;
+    height:82px !important;
+    min-height:82px !important;
+    margin:0 !important;
+    padding:5px 8px !important;
+    box-sizing:border-box !important;
+    z-index:20 !important;
+    overflow:hidden !important;
+  }
+
+  .brandPair{
+    width:100% !important;
+    height:100% !important;
+    min-width:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    gap:6px !important;
+    overflow:visible !important;
+  }
+
+  .adrianaMainLogo{
+    width:137px !important;
+    height:58px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .brandDivider{
+    height:38px !important;
+    flex:0 0 1px !important;
+  }
+
+  .astra50Logo{
+    width:87px !important;
+    height:52px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .astraLestariLogo{
+    width:72px !important;
+    height:54px !important;
+    max-width:none !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+    margin-left:auto !important;
+  }
+
+  /* 2. FULL-WIDTH ENGINE BAR */
+  .side{
+    order:2 !important;
+    position:relative !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    width:100% !important;
+    height:55px !important;
+    min-height:55px !important;
+    margin:0 !important;
+    padding:3px 5px !important;
+    box-sizing:border-box !important;
+    z-index:30 !important;
+    border-radius:0 0 13px 13px !important;
+    overflow:hidden !important;
+  }
+
+  .side > .brandRow,
+  .side > .sub{
+    display:none !important;
+  }
+
+  .nav{
+    width:100% !important;
+    height:49px !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    gap:2px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scrollbar-width:none !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+  .nav::-webkit-scrollbar{display:none !important;}
+
+  .nav button{
+    flex:0 0 auto !important;
+    min-width:67px !important;
+    width:auto !important;
+    height:43px !important;
+    min-height:43px !important;
+    padding:4px 5px !important;
+    border-radius:8px !important;
+    font-size:8px !important;
+    line-height:1.05 !important;
+    white-space:normal !important;
+  }
+
+  /* 3. ALL APPLICATION SECTIONS FOLLOW BELOW */
+  .main > *:not(.astraHead){
+    order:3 !important;
+  }
+
+  .section,
+  #dashboard{
+    position:relative !important;
+    z-index:1 !important;
+    box-sizing:border-box !important;
+  }
+
+  /* The header-to-content gap is deliberately small and clean. */
+  .astraHead + .section{
+    margin-top:0 !important;
+  }
+}
+</style>
+
+
+<style id="adriana-desktop-header-horizontal">
+@media screen and (min-width:701px){
+  html,body{
+    overflow-x:hidden !important;
+  }
+
+  .app{
+    display:block !important;
+    min-height:100vh !important;
+    width:100% !important;
+  }
+
+  /* Engine bar becomes a full-width horizontal navigation */
+  .app > .side{
+    position:relative !important;
+    inset:auto !important;
+    top:auto !important;
+    left:auto !important;
+    right:auto !important;
+    width:100% !important;
+    height:68px !important;
+    min-height:68px !important;
+    margin:0 !important;
+    padding:7px 22px !important;
+    box-sizing:border-box !important;
+    border-radius:0 0 16px 16px !important;
+    z-index:50 !important;
+    overflow:hidden !important;
+    box-shadow:0 7px 20px rgba(10,65,43,.14) !important;
+  }
+
+  .app > .side > .brandRow,
+  .app > .side > .sub{
+    display:none !important;
+  }
+
+  .app > .side .nav{
+    width:100% !important;
+    height:54px !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:center !important;
+    justify-content:center !important;
+    gap:7px !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    scrollbar-width:none !important;
+  }
+
+  .app > .side .nav::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  .app > .side .nav button{
+    flex:0 0 auto !important;
+    min-width:92px !important;
+    height:48px !important;
+    min-height:48px !important;
+    padding:8px 13px !important;
+    border-radius:11px !important;
+    font-size:10px !important;
+    line-height:1.1 !important;
+    white-space:nowrap !important;
+  }
+
+  /* Corporate header becomes the first visual element */
+  .app > .main{
+    margin-left:0 !important;
+    width:100% !important;
+    padding:0 34px 28px !important;
+    box-sizing:border-box !important;
+  }
+
+  .app > .main > .astraHead{
+    position:relative !important;
+    width:calc(100% + 68px) !important;
+    height:96px !important;
+    min-height:96px !important;
+    margin:0 -34px 0 !important;
+    padding:10px 28px !important;
+    box-sizing:border-box !important;
+    z-index:60 !important;
+    overflow:hidden !important;
+  }
+
+  .app > .main > .astraHead .brandPair{
+    width:100% !important;
+    height:100% !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:12px !important;
+    overflow:visible !important;
+  }
+
+  .app > .main > .astraHead .adrianaMainLogo{
+    width:180px !important;
+    height:72px !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .app > .main > .astraHead .brandDivider{
+    height:48px !important;
+    flex:0 0 1px !important;
+  }
+
+  .app > .main > .astraHead .astra50Logo{
+    width:118px !important;
+    height:67px !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+  }
+
+  .app > .main > .astraHead .astraLestariLogo{
+    width:104px !important;
+    height:70px !important;
+    flex:0 0 auto !important;
+    object-fit:contain !important;
+    margin-left:auto !important;
+  }
+
+  /* Main content starts cleanly below the horizontal engine bar */
+  .app > .main > *:not(.astraHead){
+    position:relative !important;
+    z-index:1 !important;
+  }
+
+  .app > .main > .section:first-of-type{
+    margin-top:0 !important;
+  }
+}
+</style>
+
+
+<style id="adriana-engine-horizontal-scroll-fix">
+/* ENGINE NAV SCROLL FIX — visual/input only, no JS/data/logic changes */
+.app > .side .nav{
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  justify-content:flex-start !important;
+  touch-action:pan-x !important;
+  overscroll-behavior-x:contain !important;
+  -webkit-overflow-scrolling:touch !important;
+  scrollbar-width:none !important;
+}
+.app > .side .nav::-webkit-scrollbar{display:none !important;}
+
+@media screen and (max-width:700px){
+  .app > .side{
+    overflow:hidden !important;
+  }
+
+  .app > .side .nav{
+    justify-content:flex-start !important;
+    width:100% !important;
+    max-width:100% !important;
+    flex-wrap:nowrap !important;
+    touch-action:pan-x !important;
+    padding-left:2px !important;
+    padding-right:2px !important;
+  }
+
+  .app > .side .nav button{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+}
+
+@media screen and (min-width:701px){
+  .app > .side{
+    overflow:hidden !important;
+  }
+
+  .app > .side .nav{
+    justify-content:flex-start !important;
+  }
+}
+</style>
