@@ -2078,40 +2078,10 @@ function downloadProductionCSV(){
  rows.push(['SECTION','PRODUCTION BY BLOCK + AKP']);
  rows.push(['Type','Block','JJG','Ha Rotasi','Populasi Pokok Rotasi','JJG/Pokok','AKP','% Total JJG']);
  hd.rows.slice().sort((a,b)=>String(a.b).localeCompare(String(b.b),undefined,{numeric:true})).forEach(x=>rows.push(['BLOCK',x.b,x.j,x.haRotasi!=null?x.haRotasi.toFixed(2):'',x.populasiRotasi!=null?Math.round(x.populasiRotasi):'',x.jjgpokok!=null?x.jjgpokok.toFixed(3):'',x.akp!=null?x.akp.toFixed(1):'',d.jjg?((x.j/d.jjg)*100).toFixed(1):'']));
-
- // V24: Production CSV dibuat berurutan seperti kalender: JJG terlebih dahulu per blok + seksi,
- // kemudian HK di bawahnya per Seksi Panen. Logic perhitungan existing tidak diubah.
+ rows.push([]);
  const drp=buildDailyRotationProduction(d);
  rows.push([]);
- rows.push(['SECTION','JJG BY BLOK / SEKSI PANEN']);
- rows.push(['Tanggal','Seksi Panen','Rotasi','Blok','JJG']);
- drp.slice().sort((a,b)=>{
-   const sa=String(a.seksi||''),sb=String(b.seksi||'');
-   return sa.localeCompare(sb,undefined,{numeric:true})||String(a.rotasi).localeCompare(String(b.rotasi),undefined,{numeric:true})||String(a.block).localeCompare(String(b.block),undefined,{numeric:true});
- }).forEach(x=>rows.push([x.date,x.seksi,'R-'+x.rotasi,x.block,x.jjg]));
-
- rows.push([]);
- rows.push(['SECTION','HK BY SEKSI PANEN']);
- rows.push(['Tanggal','Seksi Panen','HK']);
- const hkBySection={};
- if(p){
-   const h=p.header||[],bi=h.indexOf('BLOK'),ni=h.indexOf('NPK');
-   if(bi>=0&&ni>=0){
-     (p.rows||[]).forEach(r=>{
-       const block=normalizeRotationBlock(r[bi],afd),npk=cleanCell(r[ni]);
-       if(!block||npk==='—'||!npk) return;
-       const key=block.replace(/^(OC|OE)/,'').replace(/^0+(?=\d)/,'');
-       let sec='Other';
-       for(const [name,blocks] of Object.entries(rotationSectionsForAfd(afd))) if(blocks.includes(key)){sec=name;break;}
-       hkBySection[sec]??=new Set();
-       hkBySection[sec].add(npk);
-     });
-   }
- }
- Object.keys(hkBySection).sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).forEach(sec=>rows.push([date,sec,hkBySection[sec].size]));
-
- rows.push([]);
- rows.push(['SECTION','DAILY ROTATION PRODUCTION DETAIL']);
+ rows.push(['SECTION','DAILY ROTATION PRODUCTION']);
  rows.push(['Tanggal','Seksi Panen','Rotasi','Blok','Ha Rotasi','Populasi Pokok Rotasi','JJG Actual','HK Actual','JJG/HK']);
  drp.forEach(x=>rows.push([x.date,x.seksi,'R-'+x.rotasi,x.block,x.ha!=null?x.ha.toFixed(2):'',x.populasiRotasi!=null?Math.round(x.populasiRotasi):'',x.jjg,x.hk,x.jjgPerHK!=null?x.jjgPerHK.toFixed(2):'']));
  rows.push([]);
@@ -2558,7 +2528,9 @@ function buildPeopleDay(snap){
  const transactions=Object.values(grouped).map(x=>{
    const bases=x.blocks.map(b=>peopleBasisForBlock(b)).filter(v=>Number.isFinite(v));
    const basis=bases.length?bases.reduce((a,b)=>a+b,0)/bases.length:null;
-   const more=isSun?0:(basis==null?0:Math.max(0,x.jjg-basis));
+   const isFriday=new Date(snap.date+'T00:00:00').getDay()===5;
+   const effectiveBasis=isFriday && basis!=null ? basis*0.8 : basis;
+   const more=isSun?0:(effectiveBasis==null?0:Math.max(0,x.jjg-effectiveBasis));
    const premi=isSun?x.jjg*2500:more*1500;
    return {
      npk:x.npk,name:x.name,jjg:x.jjg,section:null,
@@ -2651,9 +2623,11 @@ function renderPeopleAI(d){
     });
     const transactions=Object.values(by).map(x=>{
       const avg=x.bases.length ? x.bases.reduce((a,b)=>a+b,0)/x.bases.length : null;
-      const more=sunday?0:Math.max(0,x.jjg-(avg??0));
+      const isFriday=new Date(snap?.date+'T00:00:00').getDay()===5;
+      const effectiveBasis=isFriday && avg!=null ? avg*0.8 : avg;
+      const more=sunday?0:Math.max(0,x.jjg-(effectiveBasis??0));
       const premi=sunday?x.jjg*2500:more*1500;
-      return {npk:x.npk,name:x.name,jjg:x.jjg,blocks:x.blocks,blockBases:x.bases,avgBasis:avg,more,premi,isSunday:sunday,mandors:x.mandors};
+      return {npk:x.npk,name:x.name,jjg:x.jjg,blocks:x.blocks,blockBases:x.bases,avgBasis:avg,effectiveBasis,more,premi,isSunday:sunday,isFriday,mandors:x.mandors};
     });
     return {date:snap?.date||null,rows:transactions,transactions,totalJjg:rows.reduce((a,r)=>a+r.jjg,0),totalMore:transactions.reduce((a,r)=>a+r.more,0),totalPremi:transactions.reduce((a,r)=>a+r.premi,0),isSunday:sunday};
   };
