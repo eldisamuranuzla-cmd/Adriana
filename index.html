@@ -2439,6 +2439,13 @@ function renderPeopleAI(d){
  const host=document.getElementById('aiAnalysis');if(!host||!d?.date||d.date<PEOPLE_START_DATE||ACTIVE_AFD!=='OC')return;const pm=peopleMtdRows(d.date,d),rows=pm.rows,under=rows.filter(x=>x.cluster.key==='C').sort((a,b)=>(a.achievement??999)-(b.achievement??999)).slice(0,5);const blockTotals={};(d.sections?.PRODUKSIBLOK?.rows||[]).forEach(r=>{const h=d.sections.PRODUKSIBLOK.header,bi=h.indexOf('BLOK'),ji=h.indexOf('JJG'),b=cleanCell(r[bi]);if(b!=='—')blockTotals[b]=(blockTotals[b]||0)+num(r[ji]);});const focusBlock=Object.entries(blockTotals).sort((a,b)=>a[1]-b[1])[0];const peopleText=under.length?under.map(x=>`<b>${html.escape(x.name!=='—'?x.name:x.npk)}</b> — ${x.jjg.toLocaleString('id-ID')} JJG today, achievement ${x.achievement?.toFixed(1)}%, Class C. Coaching: verify harvest execution with Mandor Panen/Mandor 1.`).join('<br>'):'No Class C harvester signal today.';const blockText=focusBlock?`<b>${html.escape(focusBlock[0])}</b> — ${focusBlock[1].toLocaleString('id-ID')} JJG today; use as intervention review point alongside rotation and quality evidence.`:'No block intervention signal available.';host.innerHTML=`<b>People coaching signal</b><br><br>${peopleText}<br><br><b>Block intervention signal</b><br><br>${blockText}<br><br><span class="small">AI is a coaching/support signal only. Premi is deterministic and is not calculated by AI.</span>`;
 }
 
+function peoplePremiRate(basis){
+  return Number(basis)===70 ? 1550 : Number(basis)===90 ? 2000 : 0;
+}
+function peopleDateFriday(date){
+  return new Date(date+'T00:00:00').getDay()===5;
+}
+
 /* V25 HARD FIX — PREMI IS PER HARVESTER, PER DAY, BASED ONLY ON THE BLOCKS THAT HARVESTER ACTUALLY HARVESTED.
    No section basis is used in the premi comparison.
    Mon-Sat: max(0, harvester JJG - average of that harvester's harvested-block bases) * 1500.
@@ -2486,9 +2493,10 @@ function renderPeopleAI(d){
       const hkShare=blockCount?1/blockCount:0;
       const blockDetails=blockList.map(b=>{
         const hk=hkShare;
-        const effectiveBasis=b.basis*hk;
+        const friday=peopleDateFriday(snap?.date);
+        const effectiveBasis=b.basis*hk*(friday?0.20:1);
         const more=sunday?0:Math.max(0,b.jjg-effectiveBasis);
-        const premi=sunday?b.jjg*2500:more*1500;
+        const premi=sunday?b.jjg*2500:more*peoplePremiRate(b.basis);
         return {
           block:b.block,jjg:b.jjg,basis:b.basis,hk,effectiveBasis,more,premi
         };
