@@ -3858,3 +3858,218 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
   window.ADRIANA_DOWNLOAD_PDF=downloadSectionPdf;
 })();
 </script>
+
+
+<style id="adriana-quality-addon-style">
+  .adrianaQualityAddon{margin-top:14px}
+  .adrianaQualityToolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .adrianaQualityToolbar h2{margin:0;font-size:14px}
+  .adrianaQualityToolbar .adrianaQualityBtns{display:flex;gap:7px;flex-wrap:wrap}
+  .adrianaQualityBtns .btn{margin-top:0}
+  .adrianaQualityGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .adrianaQualityCard{background:var(--neo-surface,#fff);border:1px solid var(--neo-line,#dce7e0);border-radius:15px;padding:15px;box-shadow:var(--neo-shadow,0 10px 30px rgba(15,55,38,.08))}
+  .adrianaQualityCard .panelHead{margin-bottom:10px}
+  .adrianaQualityCard table{min-width:760px}
+  .adrianaQualityTableWrap{overflow:auto;border-radius:10px}
+  .adrianaQualityNote{font-size:9px;color:var(--neo-muted,#6b776f);margin-top:9px;line-height:1.45}
+  @media(max-width:900px){.adrianaQualityGrid{grid-template-columns:1fr}}
+</style>
+<script id="adriana-quality-addon">
+(function(){
+  'use strict';
+
+  const NS='ADRIANA_QUALITY_ADDON';
+  let lastData=null;
+
+  function esc(v){
+    return String(v??'').replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function csvEsc(v){
+    const x=String(v??'');
+    return /[",\r\n]/.test(x)?'"'+x.replace(/"/g,'""')+'"':x;
+  }
+  function num(v){
+    const x=Number(String(v??'').replace(/[^0-9.-]/g,''));
+    return Number.isFinite(x)?x:0;
+  }
+  function pct(v,total){
+    return total>0?(v/total*100).toFixed(2):'0.00';
+  }
+  function clean(v){
+    const x=String(v??'').trim();
+    return (!x||/^null$/i.test(x)||/^undefined$/i.test(x))?'—':x;
+  }
+  function activeData(){
+    const d=window.ADRIANA_DATA;
+    return d&&d.sections&&d.sections.PRODUKSIBLOK?d:null;
+  }
+  function qualityRows(d){
+    const p=d?.sections?.PRODUKSIBLOK;
+    if(!p)return {harvesters:[],mandorans:[]};
+    const h=p.header||[];
+    const ix={
+      npk:h.indexOf('NPK'),name:h.indexOf('NAMA'),mand:h.indexOf('KEMANDORAN'),
+      jjg:h.indexOf('JJG'),bb:h.indexOf('BB'),bm:h.indexOf('BM'),tp:h.indexOf('TP')
+    };
+    if(ix.jjg<0)return {harvesters:[],mandorans:[]};
+
+    const hm=new Map(), mm=new Map();
+    for(const r of (p.rows||[])){
+      const npk=clean(ix.npk>=0?r[ix.npk]:'');
+      const name=clean(ix.name>=0?r[ix.name]:'');
+      const mand=clean(ix.mand>=0?r[ix.mand]:'');
+      const jjg=num(r[ix.jjg]);
+      const bb=ix.bb>=0?num(r[ix.bb]):0;
+      const bm=ix.bm>=0?num(r[ix.bm]):0;
+      const tp=ix.tp>=0?num(r[ix.tp]):0;
+      if(npk!=='—'){
+        if(!hm.has(npk))hm.set(npk,{npk,name,mand,jjg:0,bb:0,bm:0,tp:0});
+        const x=hm.get(npk);x.jjg+=jjg;x.bb+=bb;x.bm+=bm;x.tp+=tp;
+        if(x.name==='—'&&name!=='—')x.name=name;
+        if(x.mand==='—'&&mand!=='—')x.mand=mand;
+      }
+      const mk=mand==='—'?'—':mand;
+      if(!mm.has(mk))mm.set(mk,{mand:mk,hk:new Set(),jjg:0,bb:0,bm:0,tp:0});
+      const m=mm.get(mk);m.jjg+=jjg;m.bb+=bb;m.bm+=bm;m.tp+=tp;
+      if(npk!=='—')m.hk.add(npk);
+    }
+    const harvesters=[...hm.values()].sort((a,b)=>b.jjg-a.jjg);
+    const mandorans=[...mm.values()].sort((a,b)=>b.jjg-a.jjg).map(x=>({...x,hk:x.hk.size}));
+    return {harvesters,mandorans};
+  }
+
+  function rowsForCsvHarv(rows){
+    return rows.map((x,i)=>[
+      i+1,x.npk,x.name,x.mand,x.jjg,x.bb,x.bm,x.tp,
+      x.bb+x.bm+x.tp,pct(x.bb,x.jjg),pct(x.bm,x.jjg),pct(x.tp,x.jjg),
+      pct(x.bb+x.bm+x.tp,x.jjg)
+    ]);
+  }
+  function rowsForCsvMand(rows){
+    return rows.map((x,i)=>[
+      i+1,x.mand,x.hk,x.jjg,x.bb,x.bm,x.tp,
+      x.bb+x.bm+x.tp,pct(x.bb,x.jjg),pct(x.bm,x.jjg),pct(x.tp,x.jjg),
+      pct(x.bb+x.bm+x.tp,x.jjg)
+    ]);
+  }
+  function downloadCsv(fileName,headers,rows){
+    const csv=[headers,...rows].map(r=>r.map(csvEsc).join(',')).join('\r\n');
+    const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8;'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download=fileName+'.csv';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500);
+  }
+
+  const HHEAD=['Rank','NPK','Pemanen','Kemandoran','JJG','BB','BM','TP','Total Quality Issue','BB %','BM %','TP %','Total Issue %'];
+  const MHEAD=['Rank','Kemandoran','HK','JJG','BB','BM','TP','Total Quality Issue','BB %','BM %','TP %','Total Issue %'];
+
+  function render(){
+    const root=document.getElementById('quality');
+    if(!root)return;
+    const d=activeData();
+    if(!d){
+      const empty=document.getElementById('adrianaHarvesterQualityBody');
+      const empty2=document.getElementById('adrianaMandoranQualityBody');
+      if(empty)empty.innerHTML='<tr><td colspan="13" class="small">No active dataset.</td></tr>';
+      if(empty2)empty2.innerHTML='<tr><td colspan="12" class="small">No active dataset.</td></tr>';
+      return;
+    }
+    const {harvesters,mandorans}=qualityRows(d);
+    const hb=document.getElementById('adrianaHarvesterQualityBody');
+    const mb=document.getElementById('adrianaMandoranQualityBody');
+    if(hb)hb.innerHTML=harvesters.map((x,i)=>`<tr>
+      <td>${i+1}</td><td><b>${esc(x.npk)}</b></td><td>${esc(x.name)}</td><td>${esc(x.mand)}</td>
+      <td>${x.jjg.toLocaleString()}</td><td>${x.bb.toLocaleString()}</td><td>${x.bm.toLocaleString()}</td><td>${x.tp.toLocaleString()}</td>
+      <td>${(x.bb+x.bm+x.tp).toLocaleString()}</td><td>${pct(x.bb,x.jjg)}%</td><td>${pct(x.bm,x.jjg)}%</td><td>${pct(x.tp,x.jjg)}%</td><td>${pct(x.bb+x.bm+x.tp,x.jjg)}%</td>
+    </tr>`).join('')||'<tr><td colspan="13" class="small">No harvester quality data.</td></tr>';
+    if(mb)mb.innerHTML=mandorans.map((x,i)=>`<tr>
+      <td>${i+1}</td><td><b>${esc(x.mand)}</b></td><td>${x.hk}</td><td>${x.jjg.toLocaleString()}</td>
+      <td>${x.bb.toLocaleString()}</td><td>${x.bm.toLocaleString()}</td><td>${x.tp.toLocaleString()}</td>
+      <td>${(x.bb+x.bm+x.tp).toLocaleString()}</td><td>${pct(x.bb,x.jjg)}%</td><td>${pct(x.bm,x.jjg)}%</td><td>${pct(x.tp,x.jjg)}%</td><td>${pct(x.bb+x.bm+x.tp,x.jjg)}%</td>
+    </tr>`).join('')||'<tr><td colspan="12" class="small">No mandoran quality data.</td></tr>';
+    const period=document.getElementById('adrianaQualityPeriod');
+    if(period)period.textContent='Dataset: '+esc(d.date||'—')+' · Source: PRODUKSIBLOK';
+  }
+
+  function csvHarvester(){
+    const d=activeData();if(!d)return alert('Upload & lock AMANTA terlebih dahulu.');
+    const rows=qualityRows(d).harvesters;
+    downloadCsv('ADRIANA_Kualitas_Pemanen_'+(d.date||'report'),HHEAD,rowsForCsvHarv(rows));
+  }
+  function csvMandoran(){
+    const d=activeData();if(!d)return alert('Upload & lock AMANTA terlebih dahulu.');
+    const rows=qualityRows(d).mandorans;
+    downloadCsv('ADRIANA_Kualitas_Mandoran_'+(d.date||'report'),MHEAD,rowsForCsvMand(rows));
+  }
+  function csvAll(){
+    const d=activeData();if(!d)return alert('Upload & lock AMANTA terlebih dahulu.');
+    const q=qualityRows(d);
+    const out=[
+      ['SECTION','PEMANEN'],
+      HHEAD,
+      ...rowsForCsvHarv(q.harvesters),
+      [],
+      ['SECTION','MANDORAN'],
+      MHEAD,
+      ...rowsForCsvMand(q.mandorans)
+    ];
+    downloadCsv('ADRIANA_Kualitas_Panen_All_'+(d.date||'report'),[],out);
+  }
+  function pdf(){
+    const d=activeData();if(!d)return alert('Upload & lock AMANTA terlebih dahulu.');
+    if(typeof window.ADRIANA_DOWNLOAD_PDF==='function'){
+      window.ADRIANA_DOWNLOAD_PDF('quality','Harvest Quality','ADRIANA_Harvest_Quality_'+(d.date||'report'));
+    }else{
+      alert('Engine PDF belum tersedia. Pastikan koneksi internet tersedia.');
+    }
+  }
+  function button(label,fn,cls){
+    const b=document.createElement('button');b.type='button';b.className='btn '+(cls||'');b.textContent=label+' ↓';b.addEventListener('click',fn);return b;
+  }
+  function inject(){
+    const sec=document.getElementById('quality');
+    if(!sec)return;
+    if(!document.getElementById('adrianaQualityAddon')){
+      const wrap=document.createElement('div');wrap.id='adrianaQualityAddon';wrap.className='adrianaQualityAddon';
+      wrap.innerHTML=`<div class="adrianaQualityToolbar">
+        <div><h2>Kualitas Pemanen &amp; Kualitas Mandoran</h2><div id="adrianaQualityPeriod" class="small">Menunggu dataset aktif.</div></div>
+        <div class="adrianaQualityBtns"></div>
+      </div>
+      <div class="adrianaQualityGrid">
+        <div class="adrianaQualityCard">
+          <div class="panelHead"><h2>Kualitas Panen per Pemanen</h2><span>PRODUKSIBLOK</span></div>
+          <div class="adrianaQualityTableWrap"><table><thead><tr><th>Rank</th><th>NPK</th><th>Pemanen</th><th>Kemandoran</th><th>JJG</th><th>BB</th><th>BM</th><th>TP</th><th>Total Issue</th><th>BB %</th><th>BM %</th><th>TP %</th><th>Issue %</th></tr></thead><tbody id="adrianaHarvesterQualityBody"><tr><td colspan="13" class="small">No active dataset.</td></tr></tbody></table></div>
+          <div class="adrianaQualityNote">BB = Buah Busuk, BM = Buah Mentah, TP = Tangkai Panjang. Persentase dihitung terhadap JJG pemanen.</div>
+        </div>
+        <div class="adrianaQualityCard">
+          <div class="panelHead"><h2>Kualitas Panen per Kemandoran</h2><span>PRODUKSIBLOK</span></div>
+          <div class="adrianaQualityTableWrap"><table><thead><tr><th>Rank</th><th>Kemandoran</th><th>HK</th><th>JJG</th><th>BB</th><th>BM</th><th>TP</th><th>Total Issue</th><th>BB %</th><th>BM %</th><th>TP %</th><th>Issue %</th></tr></thead><tbody id="adrianaMandoranQualityBody"><tr><td colspan="12" class="small">No active dataset.</td></tr></tbody></table></div>
+          <div class="adrianaQualityNote">HK = jumlah NPK unik dalam kemandoran pada dataset aktif. Persentase dihitung terhadap JJG kemandoran.</div>
+        </div>
+      </div>`;
+      sec.appendChild(wrap);
+      const box=wrap.querySelector('.adrianaQualityBtns');
+      box.appendChild(button('Download Kualitas Pemanen CSV',csvHarvester));
+      box.appendChild(button('Download Kualitas Mandoran CSV',csvMandoran));
+      box.appendChild(button('Download Semua Kualitas CSV',csvAll));
+      box.appendChild(button('Download Kualitas PDF',pdf,'adrianaPdfBtn'));
+    }
+    render();
+  }
+
+  function tryRender(){
+    inject();
+    const d=activeData();
+    if(d&&d!==lastData){lastData=d;render();}
+  }
+
+  document.addEventListener('DOMContentLoaded',function(){
+    setTimeout(tryRender,400);
+    setInterval(tryRender,1200);
+  });
+  window[NS]={render,qualityRows,csvHarvester,csvMandoran,csvAll,pdf};
+})();
+</script>
+
