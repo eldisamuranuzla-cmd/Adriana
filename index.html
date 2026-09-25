@@ -2534,7 +2534,7 @@ function peopleDateFriday(date){
       const blockDetails=blockList.map(b=>{
         const hk=hkShare;
         const friday=peopleDateFriday(snap?.date);
-        const effectiveBasis=b.basis*hk*(friday?0.20:1);
+        const effectiveBasis=b.basis*hk*(friday?0.80:1);
         const more=sunday?0:Math.max(0,b.jjg-effectiveBasis);
         const premi=sunday?b.jjg*2500:more*peoplePremiRate(b.basis);
         return {
