@@ -1420,6 +1420,7 @@ body{
     <button data-target="ai">AI Analysis</button>
     <button data-target="pdca">PDCA / Decision Log</button>
     <button data-target="history">History & Effectiveness</button>
+    <button data-target="trackingImpact">GITA × Tracking Impact</button>
   </div>
 </aside>
 <main class="main">
@@ -1818,6 +1819,37 @@ body{
 </section>
 
 <div class="footer">ADRIANA v24 · AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
+<section id="trackingImpact" class="section">
+  <div class="top"><div><div class="eyebrow">FIELD INTELLIGENCE · GITA × ADRIANA</div><div class="title">Tracking Impact Analysis</div><div class="meta">Uji hubungan kualitas/cakupan tracking GITA dengan produktivitas panen ADRIANA. Data produksi AMANTA tidak diubah.</div></div></div>
+  <div class="panel" style="margin-bottom:14px">
+    <h2 style="margin-top:0">1. Import laporan GITA</h2>
+    <div class="small" style="margin-bottom:12px">Pilih HTML laporan GITA yang sudah dihasilkan. Rincian pemanen dibaca dari tabel laporan. Riwayat tersimpan lokal di browser ini; untuk akses pimpinan lintas perangkat diperlukan database bersama.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:end">
+      <label style="display:flex;flex-direction:column;gap:6px">File laporan GITA<input id="tiGitaFile" type="file" accept=".html,.htm,text/html" class="input" /></label>
+      <label style="display:flex;flex-direction:column;gap:6px">Tanggal tracking<input id="tiDate" type="date" /></label>
+      <button id="tiImportBtn" type="button" class="btn">Import GITA</button>
+      <button id="tiReloadBtn" type="button" class="btn downloadBtn">Muat Data Tersimpan</button>
+      <label style="display:flex;flex-direction:column;gap:6px">Pilih riwayat GITA<select id="tiHistorySelect" class="input"><option value="">Riwayat belum dimuat</option></select></label>
+    </div>
+    <div id="tiImportMsg" class="small" style="margin-top:10px">Belum ada laporan GITA yang diimport.</div>
+  </div>
+  <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
+    <div class="panel"><div class="small">PEMANEN GITA</div><div class="value" id="tiKpiPeople">—</div></div>
+    <div class="panel"><div class="small">MATCH DENGAN ADRIANA</div><div class="value" id="tiKpiMatched">—</div></div>
+    <div class="panel"><div class="small">CORR. COVERAGE × JJG</div><div class="value" id="tiKpiCoverage">—</div></div>
+    <div class="panel"><div class="small">CORR. TITIK × JJG</div><div class="value" id="tiKpiPoints">—</div></div>
+  </div>
+  <div class="panel" style="margin-bottom:14px">
+    <h2 style="margin-top:0">2. Hasil analisis</h2>
+    <div id="tiAnalysisNote" class="small">Import laporan GITA dan pastikan dataset ADRIANA/AMANTA yang aktif sesuai tanggal tracking.</div>
+    <div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Pemanen</th><th>Coverage (ha)</th><th>Total titik</th><th>Durasi</th><th>JJG ADRIANA</th><th>Blok GITA</th><th>Status match</th></tr></thead><tbody id="tiRows"><tr><td colspan="7" class="small">Belum ada data.</td></tr></tbody></table></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="tiExportBtn" class="btn downloadBtn" type="button">Export Analisis CSV</button><button id="tiClearBtn" class="btn downloadBtn" type="button">Hapus Data Tracking Tersimpan</button></div>
+  </div>
+  <div class="panel" style="margin-bottom:14px"><h2 style="margin-top:0">3. Coverage per blok — GITA × ADRIANA</h2><div id="tiBlockNote" class="small">Luas master ADRIANA dan coverage aktual GITA akan dibandingkan jika kode blok cocok.</div><div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Blok GITA</th><th>Coverage H+0 (ha)</th><th>Coverage akumulasi 2 laporan (ha-kunjungan)</th><th>JJG tanggal H+0</th><th>Akumulasi JJG tanggal laporan terkait</th><th>Hari panen dengan data JJG</th><th>Luas master (ha)</th><th>Coverage akumulasi / master</th><th>Status</th></tr></thead><tbody id="tiBlockRows"><tr><td colspan="5" class="small">Belum ada data blok.</td></tr></tbody></table></div></div>
+  <div class="panel" style="margin-bottom:14px"><h2 style="margin-top:0">4. Riwayat GITA & evaluasi rotasi</h2><div class="small">Membandingkan blok yang muncul pada laporan GITA lintas hari. Blok berulang adalah kandidat kunjungan ulang; konfirmasi penyebab tidak tuntas dengan histori rotasi dan data produksi ADRIANA.</div><div id="tiHistorySummary" class="small" style="margin-top:8px">Muat riwayat GITA untuk melihat pola antarhari.</div><div class="small" style="margin-top:6px;padding:8px;background:#fff7e6;border-radius:8px">Riwayat saat ini tersimpan lokal di browser ini. Agar pimpinan dapat melihat riwayat yang sama dari perangkat lain, perlu sinkronisasi ke database bersama (mis. Supabase/Firebase) dengan autentikasi dan hak akses.</div><div style="overflow-x:auto;margin-top:8px"><table><thead><tr><th>Blok</th><th>Tanggal GITA</th><th>Coverage hari ini</th><th>Coverage sebelumnya</th><th>Akumulasi coverage tercatat*</th><th>JJG sebelumnya</th><th>JJG hari ini</th><th>Interpretasi</th></tr></thead><tbody id="tiRepeatRows"><tr><td colspan="7" class="small">Belum ada riwayat lintas hari.</td></tr></tbody></table></div></div>
+  <div class="panel" style="margin-bottom:14px"><h2 style="margin-top:0">5. NEXUS Daily Harvest Intelligence — H+0 Decision Brief</h2><div class="small" style="margin-bottom:10px">Bahan meeting sore dan apel pagi berikutnya. Menggabungkan tracking GITA dengan JJG ADRIANA pada tanggal dan afdeling yang sama. Hasil adalah sinyal investigasi, bukan keputusan otomatis.</div><div id="tiAIInsight" class="small">Import laporan GITA dan cocokkan dengan dataset produksi ADRIANA pada tanggal yang sama.</div></div>
+  <div class="panel"><h2 style="margin-top:0">Catatan interpretasi</h2><ul class="small"><li>Korelasi positif berarti nilai tracking yang lebih tinggi cenderung berjalan bersama JJG yang lebih tinggi pada data yang cocok; ini bukan bukti sebab-akibat.</li><li>Matching awal menggunakan normalisasi nama pemanen. Perbedaan ejaan/nama atau data tanggal/afdeling dapat menyebabkan data tidak cocok.</li><li>Analisis yang adil perlu mempertimbangkan luas ancak, AKP/kerapatan buah, kondisi blok, rotasi, dan HK. Korelasi dihitung hanya dari pasangan pemanen yang berhasil dicocokkan.</li><li>Data GITA disimpan di IndexedDB terpisah. Modul ini tidak menimpa AMANTA, snapshot terkunci, atau logika produksi ADRIANA.</li></ul></div>
+</section>
 </main></div>
 <script>
 const ADRIANA_BUILD='v24_ROTATION_PRODUCTION_ADD';
@@ -3375,6 +3407,234 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
     }
   },50);
   setTimeout(()=>clearInterval(hookReady),10000);
+})();
+</script>
+<script>
+(()=>{
+ const DB='adriana_tracking_impact_db',STORE='gita_reports';let currentReport=null,currentRows=[],currentBlocks=[];
+ const $=id=>document.getElementById(id);
+ const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const num=v=>{const m=String(v??'').replace(/,/g,'.').match(/-?\d+(?:\.\d+)?/);const x=m?Number(m[0]):0;return Number.isFinite(x)?x:0};
+ const norm=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/[^A-Z0-9]/g,'');
+ const blockKey=s=>{
+  const x=norm(s);
+  if(!x)return '';
+  // Normalize equivalent block labels across GITA and AMANTA/ADRIANA, e.g.
+  // SYMIC030, SYMOC030, OC30, and 030 -> 30. AFD is matched separately.
+  const m=x.match(/(\d+)(A?)$/);
+  if(m)return String(Number(m[1]))+m[2];
+  return x.replace(/^SYM1/,'');
+};
+ const FALLBACK_KEY='adriana_gita_reports_fallback_v1';
+ function readFallback(){try{const x=JSON.parse(localStorage.getItem(FALLBACK_KEY)||'[]');return Array.isArray(x)?x:[]}catch(e){return []}}
+ function writeFallback(rows){try{localStorage.setItem(FALLBACK_KEY,JSON.stringify(rows));return true}catch(e){throw new Error('IndexedDB gagal dan penyimpanan lokal alternatif juga gagal ('+(e?.name||e?.message||'storage error')+'). Ekspor/backup data browser dan coba buka melalui HTTPS GitHub Pages.')}}
+ function openDB(){return new Promise((res,rej)=>{if(!window.indexedDB){rej(new Error('IndexedDB tidak tersedia pada konteks file ini.'));return}let q;try{q=indexedDB.open(DB,1)}catch(e){rej(e);return}q.onupgradeneeded=()=>{if(!q.result.objectStoreNames.contains(STORE))q.result.createObjectStore(STORE,{keyPath:'id'})};q.onsuccess=()=>res(q.result);q.onerror=()=>rej(q.error||new Error('Gagal membuka IndexedDB'));q.onblocked=()=>rej(new Error('Database GITA sedang diblokir tab lain. Tutup tab ADRIANA lain lalu coba lagi.'))})}
+ async function putReport(v){try{const db=await openDB();return await new Promise((res,rej)=>{let tx;try{tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put(v)}catch(e){db.close();rej(e);return}tx.oncomplete=()=>{db.close();res()};tx.onerror=()=>{db.close();rej(tx.error||new Error('Gagal menyimpan laporan GITA'))};tx.onabort=()=>{db.close();rej(tx.error||new Error('Penyimpanan GITA dibatalkan'))}})}catch(idbError){const rows=readFallback();const i=rows.findIndex(x=>x.id===v.id);if(i>=0)rows[i]=v;else rows.push(v);writeFallback(rows);v.storageMode='localStorage-fallback';}}
+ async function getReports(){try{const db=await openDB();const rows=await new Promise((res,rej)=>{let q;try{q=db.transaction(STORE,'readonly').objectStore(STORE).getAll()}catch(e){db.close();rej(e);return}q.onsuccess=()=>{db.close();res(q.result||[])};q.onerror=()=>{db.close();rej(q.error||new Error('Gagal membaca laporan GITA'))}});const fallback=readFallback();const map=new Map();[...rows,...fallback].forEach(r=>map.set(r.id,r));return [...map.values()]}catch(e){return readFallback()}}
+ async function deleteReports(){let idbError=null;try{const db=await openDB();await new Promise((res,rej)=>{let tx;try{tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).clear()}catch(e){db.close();rej(e);return}tx.oncomplete=()=>{db.close();res()};tx.onerror=()=>{db.close();rej(tx.error||new Error('Gagal menghapus laporan GITA'))};tx.onabort=()=>{db.close();rej(tx.error||new Error('Penghapusan dibatalkan'))}})}catch(e){idbError=e}try{localStorage.removeItem(FALLBACK_KEY)}catch(e){if(idbError)throw e}}
+ function reportBlocks(r){
+  /* Only count a block as a GITA tracking visit when the report's block-level table
+     contains a positive, numeric coverage value. A block name mentioned in a harvester
+     detail alone is not proof of a visit or harvest (prevents false repeats like block 24). */
+  const out=new Map();
+  (r.blocks||[]).forEach(b=>{
+    const raw=b.coverageHa;
+    if(raw===null||raw===undefined||String(raw).trim()==='')return;
+    const coverage=num(raw);
+    if(!Number.isFinite(coverage)||coverage<=0)return;
+    const key=blockKey(b.name);if(!key)return;
+    const prior=out.get(key);
+    if(!prior||coverage>prior.coverageHa)out.set(key,{name:b.name,coverageHa:coverage});
+  });
+  return out;
+}
+ function rotationBlockJjgByDate(afd){
+  const out=new Map(), snaps=[], seen=new Set();
+  // Read all AMANTA locked snapshots directly from the IndexedDB cache; do not require
+  // the operator to open each historical date in the UI.
+  try{(window.ADRIANA_LOCK_IDB_CACHE||[]).forEach(s=>{if(s&&s.date){const k=String(s.afd||'OC')+'|'+String(s.date);if(!seen.has(k)){seen.add(k);snaps.push(s)}}})}catch(e){}
+  // Legacy localStorage snapshots remain supported for older ADRIANA datasets.
+  try{
+    const idx=JSON.parse(localStorage.getItem('adriana_afd_index')||'[]');
+    if(Array.isArray(idx))idx.forEach(x=>{try{const k='adriana_afd_'+x.date+'_'+x.afd;const s=JSON.parse(localStorage.getItem(k)||'null');if(s&&s.date){const z=String(s.afd||x.afd||'OC')+'|'+String(s.date);if(!seen.has(z)){seen.add(z);snaps.push(s)}}}catch(e){}});
+    const dates=JSON.parse(localStorage.getItem('adriana_daily_index')||'[]');
+    if(Array.isArray(dates))dates.forEach(d=>{try{const s=JSON.parse(localStorage.getItem('adriana_daily_'+d)||'null');if(s&&s.date){const z=String(s.afd||'OC')+'|'+String(s.date);if(!seen.has(z)){seen.add(z);snaps.push(s)}}}catch(e){}});
+  }catch(e){}
+  // Use existing snapshot selector only as a final compatibility source.
+  if(!snaps.length){try{if(typeof rotationVisibleSnapshots==='function')snaps.push(...(rotationVisibleSnapshots(afd||'ALL','9999-12-31')||[]))}catch(e){}}
+  for(const snap of snaps){
+    const snapAfd=String(snap.afd||'OC');
+    if(afd&&afd!=='ALL'&&snapAfd!==String(afd))continue;
+    const p=snap.sections?.PRODUKSIBLOK;if(!p)continue;
+    const h=p.header||[],bi=h.indexOf('BLOK'),ji=h.indexOf('JJG'),hi=h.indexOf('HARVDATE');if(bi<0||ji<0)continue;
+    for(const row of p.rows||[]){
+      const raw=String(row[bi]||'').trim();
+      const block=typeof normalizeRotationBlock==='function'?normalizeRotationBlock(raw,snapAfd):raw;
+      const date=(hi>=0&&typeof normalizeAmantaDate==='function'?normalizeAmantaDate(row[hi]):null)||snap.date;
+      if(!block||!date)continue;
+      const key=String(date)+'|'+blockKey(block);out.set(key,(out.get(key)||0)+num(row[ji]));
+    }
+  }
+  return out;
+}
+ async function renderHistory(){
+  try{if(window.ADRIANA_LOCK_IDB_READY)await window.ADRIANA_LOCK_IDB_READY;}catch(e){}
+  const all=(await getReports()).sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.importedAt).localeCompare(String(b.importedAt)));
+  const sel=$('tiHistorySelect'),currentVal=currentReport?.id||'';
+  sel.innerHTML='<option value="">Pilih tanggal laporan…</option>'+all.slice().reverse().map(r=>`<option value="${safe(r.id)}">${safe(r.date)} · ${safe(r.afd||'AFD?')} · ${safe(r.title||'GITA')}</option>`).join('');
+  if(currentVal)sel.value=currentVal;
+  const tbody=$('tiRepeatRows');
+  if(!all.length){$('tiHistorySummary').textContent='Belum ada laporan GITA tersimpan.';tbody.innerHTML='<tr><td colspan="7" class="small">Belum ada riwayat.</td></tr>';return}
+  const byBlock=new Map(), jjgByDate=rotationBlockJjgByDate(currentReport?.afd||'ALL');
+  let comparisons=0;
+  for(const rep of all){
+    const afd=String(rep.afd||'');
+    const blocks=reportBlocks(rep);
+    for(const [k,v] of blocks){
+      if(!byBlock.has(afd+'|'+k))byBlock.set(afd+'|'+k,[]);
+      byBlock.get(afd+'|'+k).push({report:rep,key:k,name:v.name,coverageHa:v.coverageHa});
+    }
+  }
+  const repeats=[];
+  for(const entries of byBlock.values()){
+    entries.sort((a,b)=>String(a.report.date).localeCompare(String(b.report.date)));
+    if(entries.length<2)continue;
+    let cumulative=0,knownCoverageCount=0;
+    entries.forEach((e,i)=>{
+      if(e.coverageHa!=null&&Number.isFinite(Number(e.coverageHa))){cumulative+=Number(e.coverageHa);knownCoverageCount++;}
+      if(i===0)return;
+      const prev=entries[i-1],sameOrGapDays=Math.round((new Date(e.report.date+'T00:00:00')-new Date(prev.report.date+'T00:00:00'))/86400000);
+      const jjgPrev=jjgByDate.get(prev.report.date+'|'+e.key),jjgCur=jjgByDate.get(e.report.date+'|'+e.key);
+      comparisons++;
+      repeats.push({name:e.name,date:e.report.date,coverage:e.coverageHa,prev:prev.coverageHa,prevDate:prev.report.date,cumulative,visitCount:i+1,delta:e.coverageHa!=null&&prev.coverageHa!=null?e.coverageHa-prev.coverageHa:null,jjgPrev,jjgCur,harvestBoth:jjgPrev>0&&jjgCur>0,gapDays:sameOrGapDays});
+    });
+  }
+  const uniqueDays=new Set(all.map(r=>r.date)).size;
+  const totalBlocks=[...byBlock.values()].filter(x=>x.length>1).length;
+  $('tiHistorySummary').innerHTML=`Riwayat lokal: <b>${all.length} laporan</b> · <b>${uniqueDays} tanggal</b> · <b>${totalBlocks} blok</b> muncul di lebih dari satu laporan. Coverage akumulasi di tabel adalah jumlah coverage yang dilaporkan setiap tanggal (ha-kunjungan), <b>bukan luas unik</b>; area yang tumpang tindih tidak bisa dikurangi tanpa data spasial per tanggal.`;
+  tbody.innerHTML=repeats.length?repeats.slice().reverse().slice(0,60).map(r=>`<tr><td>${safe(r.name)}</td><td>${safe(r.prevDate)} → ${safe(r.date)}</td><td>${r.coverage==null?'—':r.coverage.toFixed(2)+' ha'}</td><td>${r.prev==null?'—':r.prev.toFixed(2)+' ha'}</td><td>${r.cumulative.toFixed(2)} ha-kunjungan (${r.visitCount} laporan)</td><td>${r.jjgPrev==null?'—':r.jjgPrev.toLocaleString('id-ID')}</td><td>${r.jjgCur==null?'—':r.jjgCur.toLocaleString('id-ID')}</td><td>${r.harvestBoth?'JJG tercatat pada kedua tanggal; kandidat panen ulang/tidak tuntas—verifikasi status rotasi.':r.gapDays>1?'Blok muncul lagi setelah '+r.gapDays+' hari; cek apakah area baru atau kunjungan ulang.':'Blok muncul di laporan berurutan; verifikasi status penyelesaian dan rotasi.'}</td></tr>`).join(''):'<tr><td colspan="8" class="small">Belum ada blok yang muncul di lebih dari satu laporan. Pastikan kedua tanggal sudah diimpor untuk afdeling yang sama.</td></tr>';
+ }
+ function parseGita(html){const doc=new DOMParser().parseFromString(html,'text/html');const table=doc.querySelector('#personTable');if(!table)throw new Error('Tabel #personTable tidak ditemukan. Pastikan file adalah laporan HTML GITA lengkap.');const rows=[];table.querySelectorAll('tbody tr').forEach(tr=>{const cells=[...tr.querySelectorAll('td')];if(cells.length!==8||cells.some(c=>c.hasAttribute('colspan')))return;const vals=cells.map(c=>c.innerText.trim());const name=vals[0].replace(/\s+/g,' ').trim();if(!name||/^MANDOR\s*:/i.test(name)||/^TOTAL/i.test(name))return;const detail=tr.nextElementSibling?.innerText||'';const blockMatches=[...detail.matchAll(/\b(?:SYM1)?[A-Z]{2,}\d{3}[A-Z]?\b/g)].map(m=>m[0]);const blocks=[...new Set(blockMatches)].join(', ')||vals[7];rows.push({name,totalPoints:num(vals[1]),pointsInBlock:num(vals[2]),accuracyM:num(vals[3]),coverageHa:num(vals[4]),duration:vals[5],checkout:vals[6],blocks,nameKey:norm(name)})});if(!rows.length)throw new Error('Tabel ditemukan tetapi rincian pemanen tidak berhasil dibaca.');
+ const blockTable=doc.querySelector('#blokTable'),blocks=[];if(blockTable)blockTable.querySelectorAll('tbody tr').forEach(tr=>{const c=[...tr.querySelectorAll('td')];if(c.length<5)return;const name=(c[0].innerText||'').trim();if(!name)return;const vals=c.map(x=>x.innerText.trim());blocks.push({name,key:blockKey(name),coverageHa:num(vals[1]),masterHa:num(vals[2]),hestiHa:num(vals[3]),completionPct:num(vals[4])})});
+ const title=doc.title||'Laporan GITA';const dateMatch=(title+' '+(doc.body?.innerText||'').slice(0,600)).match(/(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i);let reportDate='';if(dateMatch){const mm={januari:'01',februari:'02',maret:'03',april:'04',mei:'05',juni:'06',juli:'07',agustus:'08',september:'09',oktober:'10',november:'11',desember:'12'};reportDate=`${dateMatch[3]}-${mm[dateMatch[2].toLowerCase()]}-${String(dateMatch[1]).padStart(2,'0')}`}
+ return {rows,blocks,title,reportDate,reportText:(doc.body?.innerText||'').slice(0,5000),aiReport:(doc.querySelector('#aiInsightContent')?.innerText||doc.querySelector('#aiInsightBox')?.innerText||'').trim()}}
+ function activeProduction(requestedDate,requestedAfd){
+  let snap=window.ADRIANA_DATA||null;
+  if(requestedDate){
+    let afd=String(requestedAfd||snap?.afd||((typeof ACTIVE_AFD!=='undefined'&&ACTIVE_AFD!=='ALL')?ACTIVE_AFD:'OC')||'OC');
+    let historical=null;
+    try{
+      if(typeof getAfdSnapshotsHybrid==='function'){
+        const list=getAfdSnapshotsHybrid(afd)||[];
+        historical=list.find(x=>String(x.date)===String(requestedDate)&&String(x.afd||'OC')===afd)||null;
+      }
+    }catch(e){}
+    if(!historical){
+      try{
+        const cache=window.ADRIANA_LOCK_IDB_CACHE||[];
+        historical=cache.find(x=>String(x.date)===String(requestedDate)&&String(x.afd||'OC')===afd)||null;
+      }catch(e){}
+    }
+    // Never silently pair a historical GITA report with the currently active
+    // production snapshot from another date.
+    snap=historical;
+  }
+  const sections=snap?.sections;if(!sections?.PRODUKSIBLOK)return {snap,people:[],blocks:[]};const t=sections.PRODUKSIBLOK,h=t.header||[],idx={name:h.indexOf('NAMA'),npk:h.indexOf('NPK'),jjg:h.indexOf('JJG'),block:h.indexOf('BLOK')},map={},blockMap={};(t.rows||[]).forEach(r=>{const name=String(r[idx.name]||'').trim(),npk=String(r[idx.npk]||'').trim(),key=norm(name),b=idx.block>=0?String(r[idx.block]||'').trim():'';if(key){map[key]??={name,npk,jjg:0,blocks:new Set()};map[key].jjg+=num(r[idx.jjg]);if(b)map[key].blocks.add(b)}if(b){const bk=blockKey(b);blockMap[bk]??={name:b,jjg:0};blockMap[bk].jjg+=num(r[idx.jjg])}});let master={};const afd=String(snap?.afd||'').toUpperCase();try{master=afd==='OE'?HESTI_MASTER_OE:HESTI_MASTER}catch(e){}const masterHaFor=(key)=>{const m=String(key||'').match(/^(\\d+)(A?)$/);if(!m)return 0;const n=m[1],a=m[2],prefix=afd==='OE'?'OE':'OC';const candidate=a?prefix+n.padStart(2,'0')+a:prefix+n.padStart(3,'0');return num(master[candidate]?.luasTanam)};return {snap,people:Object.values(map).map(x=>({...x,blocks:[...x.blocks]})),blocks:Object.entries(blockMap).map(([key,v])=>({...v,key,masterHa:masterHaFor(key)}))}}
+ function corr(xs,ys){if(xs.length<3)return null;const mx=xs.reduce((a,b)=>a+b,0)/xs.length,my=ys.reduce((a,b)=>a+b,0)/ys.length;let a=0,b=0,c=0;for(let i=0;i<xs.length;i++){a+=(xs[i]-mx)*(ys[i]-my);b+=(xs[i]-mx)**2;c+=(ys[i]-my)**2}return b&&c?a/Math.sqrt(b*c):null}
+ function fmtCorr(v){return v==null?'—':(v>0?'+':'')+v.toFixed(2)}
+ async function render(){try{if(window.ADRIANA_LOCK_IDB_READY)await window.ADRIANA_LOCK_IDB_READY;}catch(e){}const prod=activeProduction(currentReport?.date,currentReport?.afd),sameDate=!!currentReport&&!!prod.snap&&String(currentReport.date)===String(prod.snap.date),byName=new Map(prod.people.map(p=>[norm(p.name),p]));currentRows=(currentReport?.rows||[]).map(g=>{const p=byName.get(g.nameKey);const matched=!!p&&sameDate;return {...g,jjg:matched?p.jjg:null,amantaName:p?.name||'',matched,amantaBlocks:p?.blocks||[],matchReason:!p?'PEMANEN TIDAK DITEMUKAN':!sameDate?'TANGGAL BERBEDA':'MATCH'}});const matched=currentRows.filter(r=>r.matched);$('tiKpiPeople').textContent=currentRows.length||'—';$('tiKpiMatched').textContent=currentRows.length?`${matched.length}/${currentRows.length}`:'—';$('tiKpiCoverage').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.coverageHa),matched.map(r=>r.jjg))):'—';$('tiKpiPoints').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.totalPoints),matched.map(r=>r.jjg))):'—';$('tiRows').innerHTML=currentRows.length?currentRows.map(r=>`<tr><td>${safe(r.name)}</td><td>${r.coverageHa.toFixed(2)}</td><td>${r.totalPoints.toLocaleString('id-ID')}</td><td>${safe(r.duration)}</td><td>${r.matched?r.jjg.toLocaleString('id-ID'):'—'}</td><td>${safe(r.blocks||'—')}</td><td>${r.matched?'<b style="color:#15803d">MATCH</b>':`<span style="color:#b45309">${safe(r.matchReason)}</span>`}</td></tr>`).join(''):'<tr><td colspan="7" class="small">Belum ada data.</td></tr>';
+ const blockMaster=new Map(prod.blocks.map(b=>[blockKey(b.key||b.name),b]));
+ const histReports=await getReports();
+ const reportDateObj=currentReport?.date?new Date(currentReport.date+'T00:00:00'):null;
+ const eligibleReports=histReports.filter(r=>String(r.afd||'')===String(currentReport?.afd||'')&&r.date&&reportDateObj&&new Date(r.date+'T00:00:00')<=reportDateObj);
+ const selectedDate=String(currentReport?.date||'');
+ const priorDates=[...new Set(eligibleReports.map(r=>String(r.date)).filter(d=>d<selectedDate))].sort((a,b)=>b.localeCompare(a));
+ const priorDate=priorDates[0]||'';
+ // H+0 always shows every positively tracked block in the selected GITA report.
+ // If the same block also appears in the immediately previous distinct GITA report,
+ // add the two reported coverages; do not hide single-day H+0 blocks.
+ const latestByBlock=new Map();
+ eligibleReports.filter(r=>String(r.date)===selectedDate).forEach(r=>reportBlocks(r).forEach((v,k)=>{
+   const key=blockKey(k||v.name);if(!key||!(Number(v.coverageHa)>0))return;
+   const old=latestByBlock.get(key);
+   // Avoid double-counting duplicate imports of the same report date.
+   if(!old||Number(v.coverageHa)>old.coverageHa)latestByBlock.set(key,{name:v.name,key,coverageHa:Number(v.coverageHa),date:selectedDate});
+ }));
+ const priorByBlock=new Map();
+ if(priorDate)eligibleReports.filter(r=>String(r.date)===priorDate).forEach(r=>reportBlocks(r).forEach((v,k)=>{
+   const key=blockKey(k||v.name);if(!key||!(Number(v.coverageHa)>0))return;
+   const old=priorByBlock.get(key);
+   if(!old||Number(v.coverageHa)>old.coverageHa)priorByBlock.set(key,{name:v.name,key,coverageHa:Number(v.coverageHa),date:priorDate});
+ }));
+ const jjgByDateBlock=rotationBlockJjgByDate(currentReport?.afd||'ALL');
+ currentBlocks=[...latestByBlock.values()].map(h=>{
+   const key=blockKey(h.key||h.name),prev=priorByBlock.get(key),b=blockMaster.get(key);
+   const reportMaster=(currentReport?.blocks||[]).find(g=>blockKey(g.key||g.name)===key);
+   const masterHa=Number(b?.masterHa)||Number(reportMaster?.masterHa)||0;
+   const repeated=!!prev;
+   const histCoverage=h.coverageHa+(prev?.coverageHa||0);
+   const trackingDates=repeated?[priorDate,selectedDate]:[selectedDate];
+   const jjgByDay=trackingDates.map(d=>({date:d,jjg:jjgByDateBlock.get(d+'|'+key)})).filter(x=>Number.isFinite(x.jjg));
+   const jjgToday=jjgByDateBlock.get(selectedDate+'|'+key);
+   const jjgAccum=jjgByDay.reduce((sum,x)=>sum+x.jjg,0);
+   const pct=masterHa>0?histCoverage/masterHa*100:null;
+   return {name:h.name,key,coverageHa:h.coverageHa,masterHa,pct,coverageForPct:histCoverage,histCoverage,histDays:trackingDates.length,repeated,matched:!!b||masterHa>0,coverageByDate:{...(prev?{[priorDate]:prev.coverageHa}:{}),[selectedDate]:h.coverageHa},trackingDates,jjgToday:Number.isFinite(jjgToday)?jjgToday:null,jjg:jjgByDay.length?jjgAccum:null,jjgDays:jjgByDay.length,jjgDates:jjgByDay.map(x=>x.date)};
+ }).sort((a,b)=>a.key.localeCompare(b.key,undefined,{numeric:true}));
+ $('tiBlockNote').textContent=priorDate
+   ?`Menampilkan seluruh blok yang memiliki coverage positif pada laporan H+0 ${selectedDate}. Jika blok juga tercatat pada laporan GITA sebelumnya (${priorDate}), coverage dan JJG dijumlahkan untuk dua tanggal tersebut. Blok yang hanya muncul H+0 tetap ditampilkan tanpa pengulangan. JJG diambil otomatis dari snapshot AMANTA/ADRIANA berdasarkan tanggal panen dan kode blok; hari tanpa data yang cocok tidak dianggap nol.`
+   :`Menampilkan seluruh blok dengan coverage positif pada laporan GITA ${selectedDate}. Belum ada tanggal GITA sebelumnya untuk akumulasi dua laporan. JJG ditarik otomatis dari snapshot AMANTA/ADRIANA berdasarkan tanggal panen dan kode blok.`;
+ $('tiBlockRows').innerHTML=currentBlocks.length?currentBlocks.map(b=>`<tr><td>${safe(b.name)}</td><td>${b.coverageHa.toFixed(2)}</td><td>${b.histCoverage.toFixed(2)} ha-kunjungan ${b.repeated?`<small>(${safe(priorDate)} + ${safe(selectedDate)})</small>`:`<small>(H+0 saja)</small>`}</td><td>${b.jjgToday==null?'—':b.jjgToday.toLocaleString('id-ID')}</td><td>${b.jjg==null?'—':b.jjg.toLocaleString('id-ID')}</td><td>${b.jjgDays} hari</td><td>${b.masterHa?b.masterHa.toFixed(2):'—'}</td><td>${b.pct==null?'—':b.pct.toFixed(1)+'%'} <small>${b.repeated?'(akumulasi)':'(H+0)'}</small></td><td>${b.matched?'<b style="color:#15803d">LUAS TERSEDIA</b>':'<span style="color:#b45309">CEK MASTER BLOK</span>'}</td></tr>`).join(''):'<tr><td colspan="9" class="small">Belum ada blok dengan coverage positif pada laporan GITA terpilih.</td></tr>';
+ const date=currentReport?.date||'—',activeDate=prod.snap?.date||'—',afd=prod.snap?.afdLabel||prod.snap?.afd||'—';let note=currentReport?`Laporan: ${safe(currentReport.title)} · Tanggal GITA: ${safe(date)} · Dataset ADRIANA aktif: ${safe(activeDate)} / ${safe(afd)}. `:'Import laporan GITA terlebih dahulu. ';if(!prod.snap)note+='Snapshot AMANTA/ADRIANA untuk tanggal GITA terpilih belum ditemukan pada histori yang tersimpan. Pastikan tanggal tersebut sudah di-CLOSE & LOCK di ADRIANA.';else if(!sameDate)note+='MATCH JJG DINONAKTIFKAN: tanggal GITA dan dataset ADRIANA berbeda. Pilih snapshot harian yang sama sebelum menghitung korelasi.';else if(matched.length<3)note+='Dibutuhkan minimal 3 pasangan pemanen yang valid untuk menghitung korelasi.';else note+=`Analisis dihitung dari ${matched.length} pasangan pemanen pada tanggal yang sama.`;$('tiAnalysisNote').innerHTML=note;$('tiBlockNote').textContent += ` Luas master diambil dari ADRIANA atau laporan GITA bila tersedia; persentase membandingkan akumulasi coverage dua tanggal terhadap luas master dan perlu dibaca sebagai ha-kunjungan/master, bukan luas unik.`;
+ const c=corr(matched.map(r=>r.coverageHa),matched.map(r=>r.jjg)),cp=corr(matched.map(r=>r.totalPoints),matched.map(r=>r.jjg));
+ const panel=(title,body)=>`<div style="border:1px solid #dce7df;border-radius:10px;padding:12px;margin:10px 0"><b>${safe(title)}</b><div style="margin-top:6px">${body}</div></div>`;
+ const escList=arr=>arr.length?`<ul style="margin:6px 0;padding-left:18px">${arr.map(x=>`<li style="margin:4px 0">${safe(x)}</li>`).join('')}</ul>`:'<p>Belum ada temuan yang dapat dibuat dari pasangan data valid.</p>';
+ let aiHtml='';
+ if(!currentReport){aiHtml=panel('Status analisis','Import laporan GITA terlebih dahulu.');}
+ else if(!prod.snap){aiHtml=panel('Status analisis','Dataset produksi ADRIANA belum aktif. Aktifkan snapshot AMANTA yang sesuai sebelum membuat kesimpulan.');}
+ else if(!sameDate){aiHtml=panel('Status analisis','<b style="color:#b45309">BELUM DAPAT DISIMPULKAN — PERIODE BERBEDA.</b> Laporan GITA dan dataset ADRIANA tidak memiliki tanggal yang sama. Pilih snapshot produksi untuk tanggal GITA; JJG dan korelasi tidak boleh dipasangkan lintas tanggal.');}
+ else if(matched.length<3){aiHtml=panel('Status analisis',`<b style="color:#b45309">DATA BELUM MEMADAI.</b> Baru ${matched.length} pemanen yang cocok. Diperlukan setidaknya 3 pasangan untuk statistik awal; interpretasi yang stabil memerlukan lebih banyak hari observasi.`);}
+ else {
+   const median=a=>{const v=a.filter(Number.isFinite).slice().sort((x,y)=>x-y);if(!v.length)return 0;const m=Math.floor(v.length/2);return v.length%2?v[m]:(v[m-1]+v[m])/2};
+   const medCov=median(matched.map(r=>r.coverageHa)),medJjg=median(matched.map(r=>r.jjg));
+   const buckets={goodGood:[],lowHigh:[],goodLow:[],lowLow:[]};
+   matched.forEach(r=>{const highC=r.coverageHa>=medCov,highJ=r.jjg>=medJjg;const key=highC?(highJ?'goodGood':'goodLow'):(highJ?'lowHigh':'lowLow');buckets[key].push(r)});
+   const describe=v=>v==null?'belum dapat dihitung':Math.abs(v)<.2?'sangat lemah':Math.abs(v)<.4?'lemah':Math.abs(v)<.7?'sedang':'kuat';
+   const sign=v=>v==null?'belum dapat dihitung':v>=.2?'positif':v<=-.2?'negatif':'sangat lemah/tidak tampak jelas';
+   const blockCoverage=currentBlocks.filter(b=>b.pct!=null),lowBlocks=blockCoverage.filter(b=>b.pct<50),highBlocks=blockCoverage.filter(b=>b.pct>=80);
+   const cCase=buckets.lowHigh.map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg} — produktivitas relatif tinggi meski coverage di bawah median; verifikasi kelengkapan GPS dan konteks ancak.`);
+   const dCase=buckets.goodLow.map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg} — coverage relatif tinggi tetapi JJG di bawah median; evaluasi kondisi buah, luas ancak, rotasi, dan hambatan kerja.`);
+   const gCase=buckets.goodGood.map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg} — coverage dan JJG sama-sama di atas/sama dengan median; pola selaras, bukan bukti sebab-akibat.`);
+   const lCase=buckets.lowLow.map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg} — keduanya di bawah median; cek apakah coverage rendah mencerminkan tracking tidak lengkap atau kendala operasional.`);
+   const summary=`Dataset valid: ${matched.length} dari ${currentRows.length} pemanen pada ${date}. Median coverage ${medCov.toFixed(2)} ha; median JJG ${medJjg.toLocaleString('id-ID')}. Korelasi coverage × JJG ${fmtCorr(c)} (${describe(c)}); jumlah titik × JJG ${fmtCorr(cp)} (${describe(cp)}).`;
+   const coverageSummary=blockCoverage.length?`${blockCoverage.length} blok memiliki persentase coverage/master yang dapat dihitung. ${lowBlocks.length} blok berada di bawah 50% dan ${highBlocks.length} blok mencapai minimal 80%. Ambang ini hanya penanda awal dan harus disesuaikan dengan target coverage operasional.`:'Persentase coverage per blok belum dapat dinilai karena luas master belum tersedia/cocok.';
+   const conclusion=(c!=null&&Math.abs(c)>=.4)?`Terdapat sinyal ${sign(c)} dengan kekuatan ${describe(c)} antara coverage dan JJG pada sampel hari ini. Satu hari data tidak cukup untuk menyimpulkan dampak tracking terhadap produktivitas.`:`Pada sampel hari ini, hubungan coverage dan JJG ${sign(c)}. Ini belum membuktikan tidak adanya hubungan; evaluasi lintas hari diperlukan dan faktor operasional perlu dikontrol.`;
+   const gitaAI=currentReport.aiReport?currentReport.aiReport.split(/\n+/).map(x=>x.trim()).filter(Boolean):[];
+   aiHtml+=panel('H+0 — Kesimpulan untuk meeting',safe(conclusion));
+   const peopleLowHigh=buckets.lowHigh.slice().sort((a,b)=>b.jjg-a.jjg);
+   const peopleHighLow=buckets.goodLow.slice().sort((a,b)=>a.jjg-b.jjg);
+   const jjgByDateBlock=rotationBlockJjgByDate(currentReport?.afd||'ALL');
+   const validBlockPairs=blockCoverage.map(b=>{const key=b.key||blockKey(b.name),dates=b.trackingDates?.length?b.trackingDates:[currentReport?.date].filter(Boolean);const jjgByDay=dates.map(d=>({date:d,jjg:jjgByDateBlock.get(d+'|'+key)})).filter(x=>Number.isFinite(x.jjg));const jjgAccum=jjgByDay.reduce((sum,x)=>sum+x.jjg,0);const jjgToday=jjgByDateBlock.get(String(currentReport?.date)+'|'+key);return {...b,jjg:jjgByDay.length?jjgAccum:null,jjgToday:Number.isFinite(jjgToday)?jjgToday:null,jjgDays:jjgByDay.length,jjgDates:jjgByDay.map(x=>x.date)}}).filter(b=>b.jjg!=null);
+   const medBlockJjg=median(validBlockPairs.map(b=>b.jjg));
+   const blockLowHigh=validBlockPairs.filter(b=>b.pct<50&&b.jjg>=medBlockJjg).sort((a,b)=>b.jjg-a.jjg);
+   const blockHighLow=validBlockPairs.filter(b=>b.pct>=80&&b.jjg<medBlockJjg).sort((a,b)=>a.jjg-b.jjg);
+   const blockRows=validBlockPairs.slice().sort((a,b)=>a.pct-b.pct).map(b=>`<tr><td>${safe(b.name)}</td><td>${b.pct.toFixed(1)}%</td><td>${b.jjgToday==null?'—':b.jjgToday.toLocaleString('id-ID')}</td><td><b>${Number(b.jjg).toLocaleString('id-ID')}</b></td><td>${b.jjgDays} hari</td><td>${b.pct<50&&b.jjg>=medBlockJjg?'<b style="color:#b45309">COVERAGE RENDAH · JJG KUMULATIF RELATIF TINGGI</b>':b.pct>=80&&b.jjg<medBlockJjg?'<b style="color:#b91c1c">COVERAGE TINGGI · JJG KUMULATIF RELATIF RENDAH</b>':b.pct>=80&&b.jjg>=medBlockJjg?'<b style="color:#15803d">KEDUANYA RELATIF TINGGI</b>':'Perlu ditinjau'}</td></tr>`).join('');
+   aiHtml+=panel('Blok produktif dengan tracking rendah',`<b>${blockLowHigh.length}</b> blok memiliki coverage di bawah 50% master tetapi JJG blok setidaknya mencapai median JJG antarblok (${medBlockJjg.toLocaleString('id-ID')}). Ini kandidat untuk memeriksa kelengkapan tracking, bukan bukti otomatis bahwa tracking bermasalah.`+escList(blockLowHigh.slice(0,8).map(b=>`${b.name}: coverage ${b.pct.toFixed(1)}%, JJG ${b.jjg.toLocaleString('id-ID')}; verifikasi GPS, ancak, rotasi dan luas yang benar-benar dipanen.`)));
+   aiHtml+=panel('Pemanen — tracking relatif rendah vs JJG relatif tinggi',`<b>${peopleLowHigh.length}</b> pemanen berada pada kelompok coverage di bawah median dan JJG setidaknya median pemanen (${medJjg.toLocaleString('id-ID')} JJG).`+escList(peopleLowHigh.slice(0,8).map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, ${r.totalPoints.toLocaleString('id-ID')} titik, JJG ${r.jjg.toLocaleString('id-ID')}; validasi kelengkapan tracking dan penugasan blok.`)));
+   aiHtml+=panel('Anomali kebalikan — tracking relatif tinggi vs JJG relatif rendah',`<b>${peopleHighLow.length}</b> pemanen perlu ditinjau karena coverage relatif tinggi tetapi JJG di bawah median. `+escList(peopleHighLow.slice(0,8).map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg.toLocaleString('id-ID')}; evaluasi basis, luas ancak, AKP, rotasi dan hambatan kerja.`)));
+   if(blockRows) aiHtml+=panel('Matriks blok H+0 — coverage × JJG otomatis',`<div style="overflow-x:auto"><table><thead><tr><th>Blok</th><th>Coverage/master kumulatif</th><th>JJG tanggal terpilih</th><th>Akumulasi JJG</th><th>Hari panen tercatat</th><th>Interpretasi awal</th></tr></thead><tbody>${blockRows}</tbody></table></div><div class="small" style="margin-top:6px">Matriks ini menampilkan seluruh blok aktif pada laporan GITA terpilih. Jika suatu blok juga muncul pada laporan GITA sebelumnya, coverage dan JJG dari kedua tanggal dijumlahkan; blok yang hanya muncul H+0 tetap ditampilkan. JJG ditarik otomatis dari snapshot AMANTA/ADRIANA berdasarkan tanggal panen dan kode blok. Hari tanpa data produksi yang cocok tidak dianggap nol. Angka JJG total belum dinormalisasi terhadap HK, luas panen, atau jumlah pemanen.</div>`);
+   aiHtml+=panel('Kasus prioritas',`<b>${lowBlocks.length}</b> blok coverage di bawah 50% master · <b>${highBlocks.length}</b> blok coverage ≥80% master · <b>${buckets.lowHigh.length}</b> pemanen coverage relatif rendah/JJG tinggi · <b>${buckets.goodLow.length}</b> pemanen coverage relatif tinggi/JJG rendah.`+escList([...lowBlocks.slice(0,3).map(b=>`${b.name}: ${b.pct.toFixed(1)}% coverage/master; validasi area target.`),...peopleHighLow.slice(0,3).map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg}; evaluasi AKP, luas ancak dan rotasi.`),...peopleLowHigh.slice(0,3).map(r=>`${r.name}: coverage ${r.coverageHa.toFixed(2)} ha, JJG ${r.jjg}; cek kelengkapan GPS.`)]));
+   aiHtml+=panel('Hubungan tracking × produktivitas',`Coverage × JJG: <b>${fmtCorr(c)}</b> (${describe(c)}); titik × JJG: <b>${fmtCorr(cp)}</b> (${describe(cp)}). Sampel: ${matched.length} pemanen pada ${safe(date)}. ${safe(coverageSummary)}`);
+   aiHtml+=panel('Tindak lanjut untuk apel pagi',escList(['Validasi blok dengan coverage rendah tetapi JJG relatif tinggi sebelum memberi penilaian terhadap pemanen.','Periksa blok/pemanen dengan tracking tinggi tetapi JJG relatif rendah; cek basis, luas ancak, AKP, rotasi dan kendala lapangan.','Tetapkan penanggung jawab dan batas waktu verifikasi pada hasil meeting sore.','Gunakan beberapa hari data yang tanggal, afdeling, blok, dan identitas pemanennya cocok sebelum menyimpulkan hubungan.']));
+ }
+ $('tiAIInsight').innerHTML=aiHtml;}
+
+ $('tiGitaFile').addEventListener('change',()=>{const f=$('tiGitaFile').files?.[0];if(!f)return;const m=f.name.match(/(\d{1,2})\s+(Januari|Februari|Maret|April|Mei|Juni|Juli|Agustus|September|Oktober|November|Desember)\s+(\d{4})/i);if(m){const months={januari:'01',februari:'02',maret:'03',april:'04',mei:'05',juni:'06',juli:'07',agustus:'08',september:'09',oktober:'10',november:'11',desember:'12'};$('tiDate').value=`${m[3]}-${months[m[2].toLowerCase()]}-${String(m[1]).padStart(2,'0')}`}});
+ $('tiImportBtn').addEventListener('click',async()=>{const f=$('tiGitaFile').files?.[0],date=$('tiDate').value;if(!f){$('tiImportMsg').textContent='Pilih file HTML GITA terlebih dahulu.';return}if(!date){$('tiImportMsg').textContent='Isi tanggal tracking terlebih dahulu.';return}try{$('tiImportMsg').textContent='Membaca laporan GITA…';const parsed=parseGita(await f.text());currentReport={id:date+'|'+(window.ADRIANA_DATA?.afd||'NA'),date,afd:window.ADRIANA_DATA?.afd||'',title:f.name,importedAt:new Date().toISOString(),rows:parsed.rows,blocks:parsed.blocks,reportDate:parsed.reportDate,aiReport:parsed.aiReport||''};await putReport(currentReport);render();await renderHistory();$('tiImportMsg').textContent=`Import berhasil: ${parsed.rows.length} pemanen dan ${parsed.blocks.length} blok. Data tersimpan terpisah di penyimpanan browser${currentReport.storageMode==='localStorage-fallback'?' (fallback localStorage karena IndexedDB gagal)':' (IndexedDB atau fallback jika diperlukan)'}.${parsed.reportDate&&parsed.reportDate!==date?' PERINGATAN: tanggal pada isi/nama laporan tidak sama dengan tanggal input.':''}`}catch(e){$('tiImportMsg').textContent='Gagal import: '+e.message}});
+ $('tiReloadBtn').addEventListener('click',async()=>{try{const all=await getReports();if(!all.length){$('tiImportMsg').textContent='Belum ada data GITA tersimpan.';return}all.sort((a,b)=>String(b.importedAt).localeCompare(String(a.importedAt)));currentReport=all[0];$('tiDate').value=currentReport.date||'';render();await renderHistory();$('tiImportMsg').textContent=`Memuat laporan tersimpan: ${currentReport.title} · ${currentReport.rows.length} pemanen · ${(currentReport.blocks||[]).length} blok.`}catch(e){$('tiImportMsg').textContent='Gagal membaca IndexedDB: '+e.message}});
+ $('tiHistorySelect').addEventListener('change',async()=>{const id=$('tiHistorySelect').value;if(!id)return;const all=await getReports();currentReport=all.find(r=>r.id===id)||null;if(currentReport){$('tiDate').value=currentReport.date||'';await render();await renderHistory();$('tiImportMsg').textContent=`Riwayat dipilih: ${currentReport.title} · ${currentReport.date}`}});
+ $('tiClearBtn').addEventListener('click',async()=>{if(!confirm('Hapus semua data laporan GITA yang tersimpan pada modul ini di browser ini? Data AMANTA/ADRIANA tidak terpengaruh.'))return;await deleteReports();currentReport=null;currentRows=[];currentBlocks=[];render();await renderHistory();$('tiImportMsg').textContent='Data tracking tersimpan telah dihapus.'});
+ $('tiExportBtn').addEventListener('click',()=>{if(!currentRows.length){alert('Belum ada hasil analisis untuk diekspor.');return}const head=['Tanggal GITA','Tanggal ADRIANA','Nama GITA','Coverage Ha','Total Titik','Titik Dalam Blok','Durasi','Jam Pulang','Blok Dikunjungi','Nama ADRIANA','JJG ADRIANA','Status Match'];const esc=v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};const lines=[head,...currentRows.map(r=>[currentReport.date,window.ADRIANA_DATA?.date||'',r.name,r.coverageHa,r.totalPoints,r.pointsInBlock,r.duration,r.checkout,r.blocks,r.amantaName,r.jjg??'',r.matched?'MATCH':r.matchReason])].map(row=>row.map(esc).join(','));const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ADRIANA_Tracking_Impact_'+(currentReport?.date||'report')+'.csv';a.click();URL.revokeObjectURL(url)});
+ document.addEventListener('DOMContentLoaded',()=>{const d=new Date();$('tiDate').value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');renderHistory().catch(()=>{});document.querySelectorAll('.nav button[data-target="trackingImpact"]').forEach(b=>b.addEventListener('click',()=>{render();renderHistory().catch(()=>{})}));});
 })();
 </script>
 </body></html>
