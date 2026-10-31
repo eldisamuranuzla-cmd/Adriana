@@ -1507,7 +1507,7 @@ body{
 <div class="footer">ADRIANA v24 · Rotation Production additive &nbsp;|&nbsp; AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
 </section>
 <section id="closing" class="section"><div class="top"><div><div class="eyebrow">CONTROL</div><div class="title">Daily Closing</div><div class="meta">AMANTA as source of truth · one dashboard for all SYM afdeling.</div></div></div>
-<div class="panel"><h2>AMANTA Upload — 1 Daily Dataset</h2><div class="upload">Pilih AMANTA sesuai afdeling · OCYM maksimal 2 file · OEYM maksimal 3 file<br><input id="amantaFiles" type="file" accept=".csv" multiple><div id="uploadMsg" class="small">Belum ada file.</div></div><div id="reconBox" class="notice">Menunggu upload. Sistem akan mendeteksi tanggal, site, versi, overlap dan melakukan reconciliation tanpa double-count.</div><button class="btn" id="processBtn" onclick="processAMANTA()" disabled>UPLOAD &amp; PROCESS</button><button class="btn" id="lockBtn" onclick="closeDataset()" disabled>CLOSE & LOCK DATASET</button>
+<div class="panel"><h2>AMANTA Upload — 1 Daily Dataset</h2><div class="upload">Pilih AMANTA sesuai afdeling · OCYM maksimal 2 file · OEYM maksimal 3 file<br><input id="amantaFiles" type="file" accept=".csv" multiple><div id="uploadMsg" class="small">Belum ada file.</div></div><div id="reconBox" class="notice">Menunggu upload. Sistem akan mendeteksi tanggal, site, versi, overlap dan melakukan reconciliation tanpa double-count.</div><button class="btn" id="processBtn" onclick="processAMANTA()" disabled>UPLOAD &amp; PROCESS</button><button class="btn" id="backupBtn" onclick="exportStagedBackup()" disabled>EMERGENCY BACKUP JSON</button><button class="btn" id="lockBtn" onclick="closeDataset()" disabled>CLOSE & LOCK DATASET</button>
 <div class="notice"><b>Lock rule:</b> after closing, source values must not be silently edited. Corrections should create a new dataset version with reason, evidence, requester and approval.</div></div></section>
 
 
@@ -2368,7 +2368,7 @@ async function processAMANTA(){
  document.getElementById('uploadMsg').innerHTML='<b>Parsed:</b> '+parsed.length+' file(s) · '+AFD_LABEL[afd]+' · '+html.escape(parsed.map(x=>x.name).join(' + '));
  const dup=report.reduce((a,x)=>a+(x.duplicates||0),0),raw=parsed.reduce((a,x)=>a+Object.values(x.sections).reduce((n,s)=>n+s.rows.length,0),0),fin=Object.values(merged).reduce((n,s)=>n+s.rows.length,0);
  document.getElementById('reconBox').innerHTML=`<b>READY TO CLOSE</b><br>Afdeling: <b>${AFD_LABEL[afd]}</b> · Tanggal: <b>${fmtDate(STAGED.date)}</b> · Site: ${html.escape(STAGED.site)} · ${parsed.length} file<br>Raw rows: ${raw.toLocaleString()} · Duplicate rows removed: ${dup.toLocaleString()} · Final reconciled rows: ${fin.toLocaleString()}<br><span class="small">Identical rows are deduplicated; records are not blindly summed across files.</span>`;
- document.getElementById('lockBtn').disabled=false;renderStagedPreview(STAGED);
+ document.getElementById('lockBtn').disabled=false;const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=false;renderStagedPreview(STAGED);
 }
 function closeDataset(){
  if(!STAGED)return;const k=afdKeyHybrid(STAGED.date,STAGED.afd),existing=JSON.parse(localStorage.getItem(k)||'null'),closingId=existing?.closingId||('CLOSE-'+STAGED.afd+'-'+STAGED.date);
@@ -2931,6 +2931,31 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
    Full locked snapshots use IndexedDB; localStorage keeps only indexes/legacy snapshots.
    KKP roster is the supplied OC PN1 / OC PN2 master. */
 (function(){
+  window.exportStagedBackup=function(){
+    if(!STAGED){alert('Tidak ada dataset aktif untuk di-backup.');return;}
+    try{
+      const payload={
+        backupType:'ADRIANA_STAGED_EMERGENCY_BACKUP',
+        exportedAt:new Date().toISOString(),
+        appVersion:'v30-storage-fix',
+        dataset:STAGED
+      };
+      const blob=new Blob([JSON.stringify(payload)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download=`ADRIANA_EMERGENCY_${STAGED.afd||'OC'}_${STAGED.date||'dataset'}.json`;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);
+      const box=document.getElementById('reconBox');
+      if(box)box.innerHTML+='<br><b>BACKUP JSON DIMINTA.</b> Pastikan file muncul di folder Download sebelum meninggalkan halaman.';
+      return true;
+    }catch(e){
+      console.error('Emergency backup failed:',e);
+      alert('Backup JSON gagal dibuat: '+(e?.message||e)+'. Jangan refresh atau tutup halaman.');
+      return false;
+    }
+  };
   const IDB_NAME='adriana_v26_lock_store';
   const IDB_STORE='snapshots';
   const LOCK_FALLBACK_KEY='adriana_locked_snapshots_fallback_v1';
@@ -2962,7 +2987,11 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
         tx.onerror=()=>{db.close();reject(tx.error||new Error('IndexedDB write failed'))};
         tx.onabort=()=>{db.close();reject(tx.error||new Error('IndexedDB transaction aborted'))};
       });
-    }catch(idbError){writeLockFallback(item);console.warn('ADRIANA menggunakan localStorage fallback:',idbError);return true}
+    }catch(idbError){
+      console.error('ADRIANA IndexedDB write failed; full snapshot was NOT copied to localStorage:',idbError);
+      const detail=idbError?.name||idbError?.message||'IndexedDB unavailable';
+      throw new Error('Penyimpanan IndexedDB gagal ('+detail+'). Dataset tetap berada di sesi aktif. Gunakan EMERGENCY BACKUP JSON sebelum meninggalkan halaman; jangan refresh/menutup halaman.');
+    }
   };
   const idbAll=async()=>{
     let rows=[];try{
@@ -3016,22 +3045,43 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     try{
       const existing=(await merged(snap.afd)).find(x=>x.date===snap.date);
       if(existing){snap.closingId=existing.closingId||snap.closingId;snap.versionNumber=existing.versionNumber||1;}
+
+      // Full dataset must be committed to IndexedDB before STAGED is cleared.
+      // No large localStorage fallback: quota failure must never destroy the active session.
       await idbPut(snap);
-      // Update the in-memory cache immediately so OC and OEYM remain visible as
-      // separate afdeling datasets in the existing multi-AFD UI.
+
       const c=window.ADRIANA_LOCK_IDB_CACHE||[];
       const ci=c.findIndex(x=>(x.afd||'OC')===(snap.afd||'OC')&&x.date===snap.date);
       if(ci>=0)c[ci]=snap;else c.push(snap);
       window.ADRIANA_LOCK_IDB_CACHE=c;
-      let idx=parseLS('adriana_afd_index',[]);if(!Array.isArray(idx))idx=[];
-      idx=idx.filter(x=>!(x.date===snap.date&&x.afd===snap.afd));idx.push({date:snap.date,afd:snap.afd});idx.sort((a,b)=>String(b.date).localeCompare(String(a.date)));localStorage.setItem('adriana_afd_index',JSON.stringify(idx));
-      // Keep only the legacy OC mirror when one already exists; do not create another large snapshot.
-      ACTIVE=snap;STAGED=null;window.ADRIANA_DATA=buildData(snap);renderAll(snap);
+
+      // The localStorage index is only a convenience pointer. Its failure must
+      // not turn a successfully committed IndexedDB snapshot into a failed close.
+      try{
+        let idx=parseLS('adriana_afd_index',[]);
+        if(!Array.isArray(idx))idx=[];
+        idx=idx.filter(x=>!(x.date===snap.date&&x.afd===snap.afd));
+        idx.push({date:snap.date,afd:snap.afd});
+        idx.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+        localStorage.setItem('adriana_afd_index',JSON.stringify(idx));
+      }catch(indexError){console.warn('ADRIANA index pointer not updated; dataset is safely stored in IndexedDB:',indexError);}
+
+      ACTIVE=snap;
+      STAGED=null;
+      window.ADRIANA_DATA=buildData(snap);
+      renderAll(snap);
       document.getElementById('lockState').textContent='● DATA LOCKED · VALIDATED';
       document.getElementById('uploadMsg').innerHTML+='<br><b>LOCKED:</b> '+fmtDate(snap.date)+' · '+snap.closingId;
+      const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=true;
       await renderHistory();
-      alert('Dataset '+fmtDate(snap.date)+' berhasil di-CLOSE & LOCK. '+(snap.storageMode==='localStorage-fallback'?'Tersimpan melalui localStorage fallback pada browser/perangkat ini.':'Tersimpan di IndexedDB.'));
-    }catch(e){console.error(e);alert('Gagal menyimpan CLOSE & LOCK: '+(e?.message||e));}
+      alert('Dataset '+fmtDate(snap.date)+' berhasil di-CLOSE & LOCK. Tersimpan di IndexedDB.');
+    }catch(e){
+      console.error(e);
+      const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=false;
+      const msg='CLOSE & LOCK belum berhasil. Dataset tetap berada di sesi aktif dan tidak dihapus. '+(e?.message||e)+' Klik EMERGENCY BACKUP JSON untuk mengunduh salinan sebelum mencoba lagi.';
+      const box=document.getElementById('reconBox');if(box)box.innerHTML='<b>LOCK BELUM BERHASIL</b><br>'+html.escape(msg);
+      alert(msg);
+    }
   };
   renderHistory=async function(){
     const host=document.getElementById('evalHistory');if(!host)return;
