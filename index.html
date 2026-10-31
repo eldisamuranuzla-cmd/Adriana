@@ -2965,7 +2965,7 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     let req;
     try{req=window.indexedDB.open(IDB_NAME,1)}catch(e){reject(e);return}
     req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(IDB_STORE))db.createObjectStore(IDB_STORE,{keyPath:'id'});};
-    req.onsuccess=()=>{const db=req.result;db.onversionchange=()=>db.close();resolve(db)};
+    req.onsuccess=()=>{const db=req.result;db.onversionchange=()=>{db.close();dbPromise=null;};resolve(db)};
     req.onerror=()=>{dbPromise=null;reject(req.error||new Error('IndexedDB gagal dibuka'))};
     req.onblocked=()=>{dbPromise=null;reject(new Error('IndexedDB diblokir tab lain. Tutup tab ADRIANA lain lalu coba lagi.'))};
   }));
@@ -2982,10 +2982,10 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     try{
       const db=await openDB();
       return await new Promise((resolve,reject)=>{
-        let tx;try{tx=db.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(item)}catch(e){db.close();reject(e);return}
-        tx.oncomplete=()=>{db.close();resolve(true)};
-        tx.onerror=()=>{db.close();reject(tx.error||new Error('IndexedDB write failed'))};
-        tx.onabort=()=>{db.close();reject(tx.error||new Error('IndexedDB transaction aborted'))};
+        let tx;try{tx=db.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(item)}catch(e){reject(e);return}
+        tx.oncomplete=()=>{resolve(true)};
+        tx.onerror=()=>{reject(tx.error||new Error('IndexedDB write failed'))};
+        tx.onabort=()=>{reject(tx.error||new Error('IndexedDB transaction aborted'))};
       });
     }catch(idbError){
       console.error('ADRIANA IndexedDB write failed; full snapshot was NOT copied to localStorage:',idbError);
@@ -2997,8 +2997,8 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     let rows=[];try{
       const db=await openDB();
       rows=await new Promise((resolve,reject)=>{
-        let tx;try{tx=db.transaction(IDB_STORE,'readonly');const r=tx.objectStore(IDB_STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error||new Error('IndexedDB read failed'));tx.oncomplete=()=>db.close();tx.onerror=()=>{db.close();reject(tx.error)};
-        }catch(e){db.close();reject(e)}
+        let tx;try{tx=db.transaction(IDB_STORE,'readonly');const r=tx.objectStore(IDB_STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error||new Error('IndexedDB read failed'));tx.onerror=()=>reject(tx.error||new Error('IndexedDB read transaction failed'));tx.onabort=()=>reject(tx.error||new Error('IndexedDB read transaction aborted'));
+        }catch(e){reject(e)}
       });
     }catch(e){console.warn('ADRIANA IDB read fallback:',e)}
     const map=new Map();[...rows,...readLockFallback()].forEach(x=>{if(x?.date)map.set(x.id||`${x.afd||'OC'}_${x.date}`,x)});return [...map.values()];
