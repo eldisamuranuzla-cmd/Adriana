@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ADRIANA v30 — Assistant Daily Reporting & Analytics</title>
+<title>ADRIANA v31 — Assistant Daily Reporting & Analytics</title>
 <style>
 :root{--bg:#f3f6f2;--panel:#fff;--ink:#17211b;--muted:#68746c;--line:#dce4dd;--green:#155c3b;--green2:#e7f1eb;--amber:#a36a12;--red:#a94332}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;color:var(--ink)}
@@ -1420,7 +1420,7 @@ body{
     <button data-target="ai">AI Analysis</button>
     <button data-target="pdca">PDCA / Decision Log</button>
     <button data-target="history">History & Effectiveness</button>
-    <button data-target="trackingImpact">GITA × Tracking Impact</button>
+    <button data-target="trackingImpact">GITA × ADRIANA</button>
   </div>
 </aside>
 <main class="main">
@@ -1818,10 +1818,10 @@ body{
 </div>
 </section>
 
-<div class="footer">ADRIANA v30 · AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
+<div class="footer">ADRIANA v31 · AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
 <section id="trackingImpact" class="section">
-  <div class="top"><div><div class="eyebrow">FIELD INTELLIGENCE · GITA × ADRIANA</div><div class="title">Tracking Impact Analysis</div><div class="meta">Uji hubungan kualitas/cakupan tracking GITA dengan produktivitas panen ADRIANA. Data produksi AMANTA tidak diubah.</div></div></div>
-  <div class="ti-launcher" aria-label="Navigasi modul GITA Tracking Impact">
+  <div class="top"><div><div class="eyebrow">FIELD INTELLIGENCE · GITA × ADRIANA</div><div class="title">GITA × ADRIANA</div><div class="meta">Uji hubungan kualitas/cakupan tracking GITA dengan produktivitas panen ADRIANA. Data produksi AMANTA tidak diubah.</div></div></div>
+  <div class="ti-launcher" aria-label="Navigasi modul GITA × ADRIANA">
     <button type="button" data-ti-target="tiImportPanel"><span>01</span><b>Import GITA</b></button>
     <button type="button" data-ti-target="tiHarvesterPanel"><span>02</span><b>Analisis</b></button>
     <button type="button" data-ti-target="tiCoveragePanel"><span>03</span><b>Coverage Blok</b></button>
@@ -1854,6 +1854,20 @@ body{
     <div id="tiAnalysisNote" class="small">Import laporan GITA dan pastikan dataset ADRIANA/AMANTA yang aktif sesuai tanggal tracking.</div>
     <div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Pemanen</th><th>Coverage (ha)</th><th>Total titik</th><th>Durasi</th><th>JJG ADRIANA</th><th>BM</th><th>BM%</th><th>BB</th><th>BB%</th><th>JJG/Ha</th><th>Blok GITA</th><th>Status match</th></tr></thead><tbody id="tiRows"><tr><td colspan="12" class="small">Belum ada data.</td></tr></tbody></table></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="tiExportBtn" class="btn downloadBtn" type="button">Export Analisis CSV</button><button id="tiClearBtn" class="btn downloadBtn" type="button">Hapus Data Tracking Tersimpan</button></div>
+  
+    <div class="panel" id="tiWeeklyPanel" style="margin-top:14px;padding:14px;background:#fbfdfb">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+        <div><h3 style="margin:0 0 4px;font-size:13px">2A. Akumulasi Mingguan Pemanen — Senin–Sabtu</h3>
+        <div id="tiWeeklyPeriod" class="small">Menghitung minggu kalender berjalan…</div></div>
+        <button id="tiWeeklyExportBtn" class="btn downloadBtn" type="button">Download Excel (CSV)</button>
+      </div>
+      <div id="tiWeeklyNote" class="small" style="margin:8px 0 10px">Coverage ditampilkan sebagai rata-rata total coverage ÷ 6 hari kerja. Durasi kerja dibagi jumlah hari kerja. JJG/BM/BB dijumlahkan hanya pada tanggal dengan snapshot produksi ADRIANA yang cocok.</div>
+      <div style="overflow-x:auto"><table id="tiWeeklyTable">
+        <thead><tr><th>Pemanen</th><th>Hari kerja</th><th>Rata-rata coverage/6 hari (Ha)</th><th>Rata-rata durasi/hari kerja</th><th>JJG ADRIANA</th><th>BM</th><th>BB</th><th>Hari produksi match</th></tr></thead>
+        <tbody id="tiWeeklyRows"><tr><td colspan="8" class="small">Belum ada data mingguan.</td></tr></tbody>
+      </table></div>
+    </div>
+
   </div>
   <div class="panel ti-panel" id="tiCorrelationPanel" style="margin-bottom:14px">
     <h2 style="margin-top:0">3. Correlation & Harvest Quality Impact</h2>
@@ -1870,10 +1884,10 @@ body{
 </section>
 </main></div>
 <script>
-const ADRIANA_BUILD='v24_ROTATION_PRODUCTION_ADD';
+const ADRIANA_BUILD='v31_SROC_GITA_ADRIANA_WEEKLY';
 const ROTATION_MASTER={"27":{ha:30.10},"23":{ha:30.90},"19":{ha:28.40},"15":{ha:30.40},"11":{ha:28.70},"7":{ha:30.60},"4":{ha:28.10},"2":{ha:28.18},"5":{ha:12.81},"8":{ha:15.00},"12":{ha:24.20},"13":{ha:25.00},"9":{ha:25.00},"6":{ha:20.03},"3":{ha:29.03},"1":{ha:25.81},"1A":{ha:13.01},"10A":{ha:25.88},"10":{ha:23.11},"14":{ha:26.19},"18":{ha:24.94},"22":{ha:21.36},"26":{ha:18.70},"30":{ha:22.55},"29":{ha:25.30},"25":{ha:20.70},"21":{ha:24.60},"17":{ha:21.80},"16":{ha:25.50},"20":{ha:27.90},"24":{ha:29.10},"28":{ha:29.40}};
 const HESTI_MASTER_OE={"OE001":{"pokok":3589.0,"luasTanam":26.91944314},"OE002":{"pokok":2542.0,"luasTanam":19.85497456},"OE003":{"pokok":3488.0,"luasTanam":26.55820312},"OE004":{"pokok":1266.0,"luasTanam":95.1671226},"OE005":{"pokok":3558.0,"luasTanam":25.94507197},"OE006":{"pokok":3200.0,"luasTanam":24.94766771},"OE007":{"pokok":2066.0,"luasTanam":16.54120073},"OE008":{"pokok":3465.0,"luasTanam":26.58031081},"OE009":{"pokok":3333.0,"luasTanam":25.93411358},"OE010":{"pokok":4500.0,"luasTanam":35.56777532},"OE011":{"pokok":3188.0,"luasTanam":24.94363652},"OE012":{"pokok":3752.0,"luasTanam":28.71596063},"OE013":{"pokok":3263.0,"luasTanam":26.41899908},"OE014":{"pokok":3806.0,"luasTanam":28.69147332},"OE015":{"pokok":3503.0,"luasTanam":26.63941795},"OE016":{"pokok":2500.0,"luasTanam":19.75559531},"OE017":{"pokok":4470.0,"luasTanam":34.88447624},"OE018":{"pokok":4749.0,"luasTanam":35.61982953},"OE019":{"pokok":3345.0,"luasTanam":27.1428005},"OE020":{"pokok":3397.0,"luasTanam":24.91802494},"OE021":{"pokok":3759.0,"luasTanam":27.71113264},"OE022":{"pokok":4470.0,"luasTanam":33.33066711},"OE023":{"pokok":4387.0,"luasTanam":32.71381439},"OE024":{"pokok":2861.0,"luasTanam":21.90972628},"OE025":{"pokok":3200.0,"luasTanam":24.72320791},"OE026":{"pokok":4814.0,"luasTanam":36.01416106},"OE027":{"pokok":3813.0,"luasTanam":28.380691},"OE028":{"pokok":3441.0,"luasTanam":25.49371143},"OE029":{"pokok":4385.0,"luasTanam":32.26155674},"OE030":{"pokok":3685.0,"luasTanam":27.51230728},"OE031":{"pokok":3310.0,"luasTanam":24.33521674},"OE004A":{"pokok":323.0,"luasTanam":24.6541168}};
-const HESTI_MASTER={"OC001":{"pokok":2584,"luasTanam":20.47497497},"OC002":{"pokok":1410,"luasTanam":10.8253085},"OC003":{"pokok":2204,"luasTanam":17.62431598},"OC004":{"pokok":3661,"luasTanam":28.25422515},"OC005":{"pokok":1854,"luasTanam":14.82759822},"OC006":{"pokok":2836,"luasTanam":23.10242366},"OC007":{"pokok":3981,"luasTanam":31.50547782},"OC008":{"pokok":1879,"luasTanam":17.0306481},"OC009":{"pokok":3287,"luasTanam":25.37608088},"OC010":{"pokok":2137,"luasTanam":16.97904717},"OC011":{"pokok":3539,"luasTanam":27.33788509},"OC012":{"pokok":2778,"luasTanam":23.36623628},"OC013":{"pokok":3504,"luasTanam":27.51786459},"OC014":{"pokok":2338,"luasTanam":18.90177491},"OC015":{"pokok":3332,"luasTanam":25.82564332},"OC016":{"pokok":3649,"luasTanam":30.42393538},"OC017":{"pokok":2962,"luasTanam":24.24650447},"OC018":{"pokok":2090,"luasTanam":15.9536477},"OC019":{"pokok":3250,"luasTanam":24.52063412},"OC01A":{"pokok":1153,"luasTanam":91.1615659},"OC020":{"pokok":3645,"luasTanam":28.92360449},"OC021":{"pokok":3007,"luasTanam":24.71175678},"OC022":{"pokok":1132,"luasTanam":88.4578401},"OC023":{"pokok":3819,"luasTanam":29.11726513},"OC024":{"pokok":3762,"luasTanam":29.4182184},"OC025":{"pokok":3338,"luasTanam":27.20928095},"OC026":{"pokok":2570,"luasTanam":20.27915272},"OC027":{"pokok":4216,"luasTanam":33.56746583},"OC028":{"pokok":3923,"luasTanam":32.18303737},"OC029":{"pokok":3338,"luasTanam":26.39474437},"OC030":{"pokok":2506,"luasTanam":19.3703675},"OC10A":{"pokok":1954,"luasTanam":14.74141087}};
+const HESTI_MASTER={"OC001":{"pokok":3092.0,"luasTanam":25.41},"OC002":{"pokok":2768.0,"luasTanam":20.62},"OC003":{"pokok":3382.0,"luasTanam":27.87},"OC004":{"pokok":3661.0,"luasTanam":28.25},"OC005":{"pokok":2207.0,"luasTanam":18.88},"OC006":{"pokok":3326.0,"luasTanam":27.37},"OC007":{"pokok":3981.0,"luasTanam":31.51},"OC008":{"pokok":2043.0,"luasTanam":18.74},"OC009":{"pokok":3293.0,"luasTanam":25.49},"OC010":{"pokok":2811.0,"luasTanam":23.11},"OC011":{"pokok":3720.0,"luasTanam":28.71},"OC012":{"pokok":2778.0,"luasTanam":23.37},"OC013":{"pokok":3505.0,"luasTanam":27.53},"OC014":{"pokok":2760.0,"luasTanam":26.19},"OC015":{"pokok":3750.0,"luasTanam":29.49},"OC016":{"pokok":3649.0,"luasTanam":30.42},"OC017":{"pokok":2962.0,"luasTanam":11.4},"OC018":{"pokok":2092.0,"luasTanam":15.99},"OC019":{"pokok":3599.0,"luasTanam":27.24},"OC01A":{"pokok":1695.0,"luasTanam":14.32},"OC020":{"pokok":3987.0,"luasTanam":27.9},"OC021":{"pokok":3009.0,"luasTanam":24.71},"OC022":{"pokok":1449.0,"luasTanam":13.68},"OC023":{"pokok":4107.0,"luasTanam":31.64},"OC024":{"pokok":3762.0,"luasTanam":29.42},"OC025":{"pokok":3080.0,"luasTanam":20.7},"OC026":{"pokok":2396.0,"luasTanam":18.7},"OC027":{"pokok":4216.0,"luasTanam":33.57},"OC028":{"pokok":3923.0,"luasTanam":32.18},"OC029":{"pokok":3338.0,"luasTanam":26.39},"OC030":{"pokok":2507.0,"luasTanam":19.38},"OC10A":{"pokok":3126.0,"luasTanam":24.94}};
 const AFD_LABEL={ALL:'Semua Afdeling',OC:'OCYM',OE:'OEYM'};
 let ACTIVE_AFD=localStorage.getItem('adriana_active_afd')||'ALL';
 const html={escape:(x)=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))};
@@ -3681,6 +3695,62 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
     snap=historical;
   }
   const sections=snap?.sections;if(!sections?.PRODUKSIBLOK)return {snap,people:[],blocks:[]};const t=sections.PRODUKSIBLOK,h=t.header||[],idx={name:h.indexOf('NAMA'),npk:h.indexOf('NPK'),jjg:h.indexOf('JJG'),bb:h.indexOf('BB'),bm:h.indexOf('BM'),block:h.indexOf('BLOK')},map={},blockMap={};(t.rows||[]).forEach(r=>{const name=String(r[idx.name]||'').trim(),npk=String(r[idx.npk]||'').trim(),key=norm(name),b=idx.block>=0?String(r[idx.block]||'').trim():'';if(key){map[key]??={name,npk,jjg:0,bb:0,bm:0,blocks:new Set()};map[key].jjg+=num(r[idx.jjg]);map[key].bb+=idx.bb>=0?num(r[idx.bb]):0;map[key].bm+=idx.bm>=0?num(r[idx.bm]):0;if(b)map[key].blocks.add(b)}if(b){const bk=blockKey(b);blockMap[bk]??={name:b,jjg:0,bm:0,bb:0};blockMap[bk].jjg+=num(r[idx.jjg]);blockMap[bk].bm+=idx.bm>=0?num(r[idx.bm]):0;blockMap[bk].bb+=idx.bb>=0?num(r[idx.bb]):0}});let master={};const afd=String(snap?.afd||'').toUpperCase();try{master=afd==='OE'?HESTI_MASTER_OE:HESTI_MASTER}catch(e){}const masterHaFor=(key)=>{const m=String(key||'').match(/^(\\d+)(A?)$/);if(!m)return 0;const n=m[1],a=m[2],prefix=afd==='OE'?'OE':'OC';const candidate=a?prefix+n.padStart(2,'0')+a:prefix+n.padStart(3,'0');return num(master[candidate]?.luasTanam)};return {snap,people:Object.values(map).map(x=>({...x,blocks:[...x.blocks]})),blocks:Object.entries(blockMap).map(([key,v])=>({...v,key,masterHa:masterHaFor(key)}))}}
+
+ function tiDurationMinutes(value){
+   const text=String(value||'').trim();
+   let m=text.match(/^(\d{1,3}):(\d{2})(?::(\d{2}))?$/);
+   if(m)return Number(m[1])*60+Number(m[2])+(Number(m[3]||0)/60);
+   m=text.match(/(?:(\d+)\s*jam)?\s*(?:(\d+)\s*menit)?/i);
+   if(m&&(m[1]||m[2]))return Number(m[1]||0)*60+Number(m[2]||0);
+   return null;
+ }
+ function tiMinutesLabel(value){
+   if(!Number.isFinite(value))return '—';
+   const total=Math.round(value),h=Math.floor(total/60),m=total%60;
+   return `${h} jam ${String(m).padStart(2,'0')} menit`;
+ }
+ function tiWeekWindow(){
+   const now=new Date(),day=now.getDay(),offset=day===0?-6:1-day;
+   const monday=new Date(now.getFullYear(),now.getMonth(),now.getDate()+offset);
+   const saturday=new Date(monday.getFullYear(),monday.getMonth(),monday.getDate()+5);
+   const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+   return {start:iso(monday),end:iso(saturday)};
+ }
+ async function renderWeeklyHarvesterSummary(allReports,afd){
+   const body=$('tiWeeklyRows'),period=$('tiWeeklyPeriod'),note=$('tiWeeklyNote');
+   if(!body||!period)return;
+   const {start,end}=tiWeekWindow();
+   period.textContent=`Periode kalender berjalan: ${start} s.d. ${end} · ${String(afd||'AFD?')}`;
+   const reports=(allReports||[]).filter(r=>String(r.afd||'')===String(afd||'')&&r.date>=start&&r.date<=end);
+   const byPerson=new Map(),snapshots=new Map();
+   for(const report of reports){
+     const date=String(report.date);
+     if(!snapshots.has(date))snapshots.set(date,activeProduction(date,afd));
+     const production=snapshots.get(date);
+     const prodByName=new Map((production.people||[]).map(p=>[norm(p.name),p]));
+     (report.rows||[]).forEach(g=>{
+       const key=g.nameKey||norm(g.name);if(!key)return;
+       if(!byPerson.has(key))byPerson.set(key,{name:g.name,days:new Map(),jjg:0,bm:0,bb:0,matchedDates:new Set()});
+       const item=byPerson.get(key),prior=item.days.get(date);
+       if(!prior||num(g.coverageHa)>num(prior.coverage))item.days.set(date,{coverage:num(g.coverageHa),duration:g.duration||''});
+       const person=prodByName.get(key);
+       if(production.snap&&String(production.snap.date)===date&&person&&!item.matchedDates.has(date)){
+         item.jjg+=num(person.jjg);item.bm+=num(person.bm);item.bb+=num(person.bb);item.matchedDates.add(date);
+       }
+     });
+   }
+   const rows=[...byPerson.values()].map(item=>{
+     const days=[...item.days.values()],workDays=item.days.size;
+     const durationTotal=days.reduce((sum,d)=>sum+(tiDurationMinutes(d.duration)||0),0);
+     const durationDays=days.filter(d=>tiDurationMinutes(d.duration)!=null).length;
+     return {name:item.name,workDays,coverageAverage:days.reduce((sum,d)=>sum+d.coverage,0)/6,
+       durationAverage:durationDays?durationTotal/workDays:null,jjg:item.jjg,bm:item.bm,bb:item.bb,matchedDays:item.matchedDates.size};
+   }).sort((a,b)=>a.name.localeCompare(b.name,'id'));
+   window.__ADRIANA_GITA_WEEKLY_ROWS=rows;window.__ADRIANA_GITA_WEEKLY_PERIOD={start,end,afd};
+   body.innerHTML=rows.length?rows.map(r=>`<tr><td>${safe(r.name)}</td><td>${r.workDays}</td><td>${r.coverageAverage.toFixed(2)}</td><td>${tiMinutesLabel(r.durationAverage)}</td><td>${r.matchedDays?r.jjg.toLocaleString('id-ID'):'—'}</td><td>${r.matchedDays?r.bm.toLocaleString('id-ID'):'—'}</td><td>${r.matchedDays?r.bb.toLocaleString('id-ID'):'—'}</td><td>${r.matchedDays}</td></tr>`).join(''):'<tr><td colspan="8" class="small">Belum ada laporan GITA untuk minggu kalender berjalan pada afdeling ini.</td></tr>';
+   if(note)note.textContent=`Coverage = total coverage Senin–Sabtu ÷ 6, termasuk hari tanpa tracking. Durasi = total durasi ÷ jumlah hari kerja yang memiliki laporan tracking. JJG/BM/BB dijumlahkan dari snapshot ADRIANA yang tanggal dan afdelingnya cocok.`;
+ }
+
  function corr(xs,ys){if(xs.length<3)return null;const mx=xs.reduce((a,b)=>a+b,0)/xs.length,my=ys.reduce((a,b)=>a+b,0)/ys.length;let a=0,b=0,c=0;for(let i=0;i<xs.length;i++){a+=(xs[i]-mx)*(ys[i]-my);b+=(xs[i]-mx)**2;c+=(ys[i]-my)**2}return b&&c?a/Math.sqrt(b*c):null}
  function fmtCorr(v){return v==null?'—':(v>0?'+':'')+v.toFixed(2)}
  function tiChart(title,xLabel,yLabel,rows,xKey,yKey){
@@ -3711,6 +3781,7 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
  async function render(){try{if(window.ADRIANA_LOCK_IDB_READY)await window.ADRIANA_LOCK_IDB_READY;}catch(e){}const prod=activeProduction(currentReport?.date,currentReport?.afd),sameDate=!!currentReport&&!!prod.snap&&String(currentReport.date)===String(prod.snap.date),byName=new Map(prod.people.map(p=>[norm(p.name),p]));currentRows=(currentReport?.rows||[]).map(g=>{const p=byName.get(g.nameKey);const matched=!!p&&sameDate;return {...g,jjg:matched?p.jjg:null,bm:matched?p.bm:null,bb:matched?p.bb:null,bmPct:matched&&p.jjg>0?p.bm/p.jjg*100:null,bbPct:matched&&p.jjg>0?p.bb/p.jjg*100:null,jjgHa:matched&&g.coverageHa>0?p.jjg/g.coverageHa:null,amantaName:p?.name||'',matched,amantaBlocks:p?.blocks||[],matchReason:!p?'PEMANEN TIDAK DITEMUKAN':!sameDate?'TANGGAL BERBEDA':'MATCH'}});const matched=currentRows.filter(r=>r.matched);$('tiKpiPeople').textContent=currentRows.length||'—';$('tiKpiMatched').textContent=currentRows.length?`${matched.length}/${currentRows.length}`:'—';$('tiKpiCoverage').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.coverageHa),matched.map(r=>r.jjg))):'—';$('tiKpiPoints').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.totalPoints),matched.map(r=>r.jjg))):'—';$('tiRows').innerHTML=currentRows.length?currentRows.map(r=>`<tr><td>${safe(r.name)}</td><td>${r.coverageHa.toFixed(2)}</td><td>${r.totalPoints.toLocaleString('id-ID')}</td><td>${safe(r.duration)}</td><td>${r.matched?r.jjg.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bm.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bmPct.toFixed(2)+'%':'—'}</td><td>${r.matched?r.bb.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bbPct.toFixed(2)+'%':'—'}</td><td>${r.matched&&r.jjgHa!=null?r.jjgHa.toFixed(2):'—'}</td><td>${safe(r.blocks||'—')}</td><td>${r.matched?'<b style="color:#15803d">MATCH</b>':`<span style="color:#b45309">${safe(r.matchReason)}</span>`}</td></tr>`).join(''):'<tr><td colspan="12" class="small">Belum ada data.</td></tr>';renderTiCorrelations(currentRows,sameDate);
  const blockMaster=new Map(prod.blocks.map(b=>[blockKey(b.key||b.name),b]));
  const histReports=await getReports();
+ await renderWeeklyHarvesterSummary(histReports,currentReport?.afd);
  const reportDateObj=currentReport?.date?new Date(currentReport.date+'T00:00:00'):null;
  const eligibleReports=histReports.filter(r=>String(r.afd||'')===String(currentReport?.afd||'')&&r.date&&reportDateObj&&new Date(r.date+'T00:00:00')<=reportDateObj);
  const selectedDate=String(currentReport?.date||'');
@@ -3808,6 +3879,17 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
  $('tiReloadBtn').addEventListener('click',async()=>{try{const all=await getReports();if(!all.length){$('tiImportMsg').textContent='Belum ada data GITA tersimpan.';return}all.sort((a,b)=>String(b.importedAt).localeCompare(String(a.importedAt)));currentReport=all[0];$('tiDate').value=currentReport.date||'';render();await renderHistory();$('tiImportMsg').textContent=`Memuat laporan tersimpan: ${currentReport.title} · ${currentReport.rows.length} pemanen · ${(currentReport.blocks||[]).length} blok.`}catch(e){$('tiImportMsg').textContent='Gagal membaca IndexedDB: '+e.message}});
  $('tiHistorySelect').addEventListener('change',async()=>{const id=$('tiHistorySelect').value;if(!id)return;const all=await getReports();currentReport=all.find(r=>r.id===id)||null;if(currentReport){$('tiDate').value=currentReport.date||'';await render();await renderHistory();$('tiImportMsg').textContent=`Riwayat dipilih: ${currentReport.title} · ${currentReport.date}`}});
  $('tiClearBtn').addEventListener('click',async()=>{if(!confirm('Hapus semua data laporan GITA yang tersimpan pada modul ini di browser ini? Data AMANTA/ADRIANA tidak terpengaruh.'))return;await deleteReports();currentReport=null;currentRows=[];currentBlocks=[];render();await renderHistory();$('tiImportMsg').textContent='Data tracking tersimpan telah dihapus.'});
+
+ $('tiWeeklyExportBtn').addEventListener('click',()=>{
+   const rows=window.__ADRIANA_GITA_WEEKLY_ROWS||[],period=window.__ADRIANA_GITA_WEEKLY_PERIOD||{};
+   if(!rows.length){alert('Belum ada rekap mingguan untuk diekspor.');return}
+   const head=['Periode Mulai','Periode Akhir','Afdeling','Pemanen','Hari Kerja','Rata-rata Coverage per 6 Hari (Ha)','Rata-rata Durasi per Hari Kerja','JJG ADRIANA','BM','BB','Hari Produksi Match'];
+   const esc=v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+   const lines=[head,...rows.map(r=>[period.start,period.end,period.afd,r.name,r.workDays,r.coverageAverage,tiMinutesLabel(r.durationAverage),r.matchedDays?r.jjg:'',r.matchedDays?r.bm:'',r.matchedDays?r.bb:'',r.matchedDays])].map(row=>row.map(esc).join(','));
+   const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
+   a.href=url;a.download=`ADRIANA_GITA_Akumulasi_Mingguan_${period.afd||'AFD'}_${period.start||'week'}.csv`;a.click();URL.revokeObjectURL(url);
+ });
+
  $('tiExportBtn').addEventListener('click',()=>{if(!currentRows.length){alert('Belum ada hasil analisis untuk diekspor.');return}const head=['Tanggal GITA','Tanggal ADRIANA','Nama GITA','Coverage Ha','Total Titik','Titik Dalam Blok','Durasi','Jam Pulang','Blok Dikunjungi','Nama ADRIANA','JJG ADRIANA','BM','BM %','BB','BB %','JJG per Ha','Status Match'];const esc=v=>{v=String(v??'');return /[",\n\r]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};const lines=[head,...currentRows.map(r=>[currentReport.date,window.ADRIANA_DATA?.date||'',r.name,r.coverageHa,r.totalPoints,r.pointsInBlock,r.duration,r.checkout,r.blocks,r.amantaName,r.jjg??'',r.bm??'',r.bmPct??'',r.bb??'',r.bbPct??'',r.jjgHa??'',r.matched?'MATCH':r.matchReason])].map(row=>row.map(esc).join(','));const blob=new Blob(['\ufeff'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ADRIANA_Tracking_Impact_'+(currentReport?.date||'report')+'.csv';a.click();URL.revokeObjectURL(url)});
  document.addEventListener('DOMContentLoaded',()=>{const d=new Date();$('tiDate').value=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');renderHistory().catch(()=>{});document.querySelectorAll('.nav button[data-target="trackingImpact"]').forEach(b=>b.addEventListener('click',()=>{render();renderHistory().catch(()=>{})}));});
 })();
