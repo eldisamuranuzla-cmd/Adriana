@@ -1420,7 +1420,7 @@ body{
     <button data-target="ai">AI Analysis</button>
     <button data-target="pdca">PDCA / Decision Log</button>
     <button data-target="history">History & Effectiveness</button>
-    <button data-target="trackingImpact">GITA × ADRIANA</button>
+    <button data-target="trackingImpact">GITA × Tracking Impact</button>
   </div>
 </aside>
 <main class="main">
@@ -1507,7 +1507,7 @@ body{
 <div class="footer">ADRIANA v24 · Rotation Production additive &nbsp;|&nbsp; AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
 </section>
 <section id="closing" class="section"><div class="top"><div><div class="eyebrow">CONTROL</div><div class="title">Daily Closing</div><div class="meta">AMANTA as source of truth · one dashboard for all SYM afdeling.</div></div></div>
-<div class="panel"><h2>AMANTA Upload — 1 Daily Dataset</h2><div class="upload">Pilih AMANTA sesuai afdeling · OCYM maksimal 2 file · OEYM maksimal 3 file<br><input id="amantaFiles" type="file" accept=".csv" multiple><div id="uploadMsg" class="small">Belum ada file.</div></div><div id="reconBox" class="notice">Menunggu upload. Sistem akan mendeteksi tanggal, site, versi, overlap dan melakukan reconciliation tanpa double-count.</div><button class="btn" id="processBtn" onclick="processAMANTA()" disabled>UPLOAD &amp; PROCESS</button><button class="btn" id="lockBtn" onclick="closeDataset()" disabled>CLOSE & LOCK DATASET</button>
+<div class="panel"><h2>AMANTA Upload — 1 Daily Dataset</h2><div class="upload">Pilih AMANTA sesuai afdeling · OCYM maksimal 2 file · OEYM maksimal 3 file<br><input id="amantaFiles" type="file" accept=".csv" multiple><div id="uploadMsg" class="small">Belum ada file.</div></div><div id="reconBox" class="notice">Menunggu upload. Sistem akan mendeteksi tanggal, site, versi, overlap dan melakukan reconciliation tanpa double-count.</div><button class="btn" id="processBtn" onclick="processAMANTA()" disabled>UPLOAD &amp; PROCESS</button><button class="btn" id="backupBtn" onclick="exportStagedBackup()" disabled>EMERGENCY BACKUP JSON</button><button class="btn" id="lockBtn" onclick="closeDataset()" disabled>CLOSE & LOCK DATASET</button>
 <div class="notice"><b>Lock rule:</b> after closing, source values must not be silently edited. Corrections should create a new dataset version with reason, evidence, requester and approval.</div></div></section>
 
 
@@ -1820,8 +1820,8 @@ body{
 
 <div class="footer">ADRIANA v30 · AMANTA as source of truth · Unconfirmed semantics are displayed as unavailable.</div>
 <section id="trackingImpact" class="section">
-  <div class="top"><div><div class="eyebrow">FIELD INTELLIGENCE · GITA × ADRIANA</div><div class="title">GITA × ADRIANA</div><div class="meta">Uji hubungan kualitas/cakupan tracking GITA dengan produktivitas panen ADRIANA. Data produksi AMANTA tidak diubah.</div></div></div>
-  <div class="ti-launcher" aria-label="Navigasi modul GITA × ADRIANA">
+  <div class="top"><div><div class="eyebrow">FIELD INTELLIGENCE · GITA × ADRIANA</div><div class="title">Tracking Impact Analysis</div><div class="meta">Uji hubungan kualitas/cakupan tracking GITA dengan produktivitas panen ADRIANA. Data produksi AMANTA tidak diubah.</div></div></div>
+  <div class="ti-launcher" aria-label="Navigasi modul GITA Tracking Impact">
     <button type="button" data-ti-target="tiImportPanel"><span>01</span><b>Import GITA</b></button>
     <button type="button" data-ti-target="tiHarvesterPanel"><span>02</span><b>Analisis</b></button>
     <button type="button" data-ti-target="tiCoveragePanel"><span>03</span><b>Coverage Blok</b></button>
@@ -1854,13 +1854,6 @@ body{
     <div id="tiAnalysisNote" class="small">Import laporan GITA dan pastikan dataset ADRIANA/AMANTA yang aktif sesuai tanggal tracking.</div>
     <div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Pemanen</th><th>Coverage (ha)</th><th>Total titik</th><th>Durasi</th><th>JJG ADRIANA</th><th>BM</th><th>BM%</th><th>BB</th><th>BB%</th><th>JJG/Ha</th><th>Blok GITA</th><th>Status match</th></tr></thead><tbody id="tiRows"><tr><td colspan="12" class="small">Belum ada data.</td></tr></tbody></table></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button id="tiExportBtn" class="btn downloadBtn" type="button">Export Analisis CSV</button><button id="tiClearBtn" class="btn downloadBtn" type="button">Hapus Data Tracking Tersimpan</button></div>
-  
-  <div class="panel ti-panel" id="tiWeeklyPanel" style="margin-bottom:14px">
-    <h2 style="margin-top:0">2A. Akumulasi Mingguan Pemanen — Senin–Sabtu</h2>
-    <div id="tiWeeklyNote" class="small">Akumulasi per pemanen untuk minggu kalender yang dipilih.</div>
-    <div style="display:flex;justify-content:flex-end;margin-top:10px"><button id="tiWeeklyExportBtn" class="btn downloadBtn" type="button">Download Excel (CSV)</button></div>
-    <div style="overflow-x:auto;margin-top:10px"><table><thead><tr><th>Pemanen</th><th>Hari kerja</th><th>Rata-rata Coverage/6 hari (Ha)</th><th>Rata-rata durasi/hari kerja</th><th>JJG ADRIANA</th><th>BM</th><th>BB</th><th>Hari produksi match</th></tr></thead><tbody id="tiWeeklyRows"><tr><td colspan="8" class="small">Import laporan GITA untuk melihat akumulasi mingguan.</td></tr></tbody></table></div>
-  </div>
   </div>
   <div class="panel ti-panel" id="tiCorrelationPanel" style="margin-bottom:14px">
     <h2 style="margin-top:0">3. Correlation & Harvest Quality Impact</h2>
@@ -1880,7 +1873,7 @@ body{
 const ADRIANA_BUILD='v24_ROTATION_PRODUCTION_ADD';
 const ROTATION_MASTER={"27":{ha:30.10},"23":{ha:30.90},"19":{ha:28.40},"15":{ha:30.40},"11":{ha:28.70},"7":{ha:30.60},"4":{ha:28.10},"2":{ha:28.18},"5":{ha:12.81},"8":{ha:15.00},"12":{ha:24.20},"13":{ha:25.00},"9":{ha:25.00},"6":{ha:20.03},"3":{ha:29.03},"1":{ha:25.81},"1A":{ha:13.01},"10A":{ha:25.88},"10":{ha:23.11},"14":{ha:26.19},"18":{ha:24.94},"22":{ha:21.36},"26":{ha:18.70},"30":{ha:22.55},"29":{ha:25.30},"25":{ha:20.70},"21":{ha:24.60},"17":{ha:21.80},"16":{ha:25.50},"20":{ha:27.90},"24":{ha:29.10},"28":{ha:29.40}};
 const HESTI_MASTER_OE={"OE001":{"pokok":3589.0,"luasTanam":26.91944314},"OE002":{"pokok":2542.0,"luasTanam":19.85497456},"OE003":{"pokok":3488.0,"luasTanam":26.55820312},"OE004":{"pokok":1266.0,"luasTanam":95.1671226},"OE005":{"pokok":3558.0,"luasTanam":25.94507197},"OE006":{"pokok":3200.0,"luasTanam":24.94766771},"OE007":{"pokok":2066.0,"luasTanam":16.54120073},"OE008":{"pokok":3465.0,"luasTanam":26.58031081},"OE009":{"pokok":3333.0,"luasTanam":25.93411358},"OE010":{"pokok":4500.0,"luasTanam":35.56777532},"OE011":{"pokok":3188.0,"luasTanam":24.94363652},"OE012":{"pokok":3752.0,"luasTanam":28.71596063},"OE013":{"pokok":3263.0,"luasTanam":26.41899908},"OE014":{"pokok":3806.0,"luasTanam":28.69147332},"OE015":{"pokok":3503.0,"luasTanam":26.63941795},"OE016":{"pokok":2500.0,"luasTanam":19.75559531},"OE017":{"pokok":4470.0,"luasTanam":34.88447624},"OE018":{"pokok":4749.0,"luasTanam":35.61982953},"OE019":{"pokok":3345.0,"luasTanam":27.1428005},"OE020":{"pokok":3397.0,"luasTanam":24.91802494},"OE021":{"pokok":3759.0,"luasTanam":27.71113264},"OE022":{"pokok":4470.0,"luasTanam":33.33066711},"OE023":{"pokok":4387.0,"luasTanam":32.71381439},"OE024":{"pokok":2861.0,"luasTanam":21.90972628},"OE025":{"pokok":3200.0,"luasTanam":24.72320791},"OE026":{"pokok":4814.0,"luasTanam":36.01416106},"OE027":{"pokok":3813.0,"luasTanam":28.380691},"OE028":{"pokok":3441.0,"luasTanam":25.49371143},"OE029":{"pokok":4385.0,"luasTanam":32.26155674},"OE030":{"pokok":3685.0,"luasTanam":27.51230728},"OE031":{"pokok":3310.0,"luasTanam":24.33521674},"OE004A":{"pokok":323.0,"luasTanam":24.6541168}};
-const HESTI_MASTER={"OC001":{"pokok":3092.0,"luasTanam":25.41},"OC002":{"pokok":2768.0,"luasTanam":20.62},"OC003":{"pokok":3382.0,"luasTanam":27.87},"OC004":{"pokok":3661.0,"luasTanam":28.25},"OC005":{"pokok":2207.0,"luasTanam":18.88},"OC006":{"pokok":3326.0,"luasTanam":27.37},"OC007":{"pokok":3981.0,"luasTanam":31.51},"OC008":{"pokok":2043.0,"luasTanam":18.74},"OC009":{"pokok":3293.0,"luasTanam":25.49},"OC010":{"pokok":2811.0,"luasTanam":23.11},"OC011":{"pokok":3720.0,"luasTanam":28.71},"OC012":{"pokok":2778.0,"luasTanam":23.37},"OC013":{"pokok":3505.0,"luasTanam":27.53},"OC014":{"pokok":2760.0,"luasTanam":26.19},"OC015":{"pokok":3750.0,"luasTanam":29.49},"OC016":{"pokok":3649.0,"luasTanam":30.42},"OC017":{"pokok":2962.0,"luasTanam":11.40},"OC018":{"pokok":2092.0,"luasTanam":15.99},"OC019":{"pokok":3599.0,"luasTanam":27.24},"OC01A":{"pokok":1695.0,"luasTanam":14.32},"OC020":{"pokok":3987.0,"luasTanam":27.90},"OC021":{"pokok":3009.0,"luasTanam":24.71},"OC022":{"pokok":1449.0,"luasTanam":13.68},"OC023":{"pokok":4107.0,"luasTanam":31.64},"OC024":{"pokok":3762.0,"luasTanam":29.42},"OC025":{"pokok":3080.0,"luasTanam":20.70},"OC026":{"pokok":2396.0,"luasTanam":18.70},"OC027":{"pokok":4216.0,"luasTanam":33.57},"OC028":{"pokok":3923.0,"luasTanam":32.18},"OC029":{"pokok":3338.0,"luasTanam":26.39},"OC030":{"pokok":2507.0,"luasTanam":19.38},"OC10A":{"pokok":3126.0,"luasTanam":24.94}};
+const HESTI_MASTER={"OC001":{"pokok":2584,"luasTanam":20.47497497},"OC002":{"pokok":1410,"luasTanam":10.8253085},"OC003":{"pokok":2204,"luasTanam":17.62431598},"OC004":{"pokok":3661,"luasTanam":28.25422515},"OC005":{"pokok":1854,"luasTanam":14.82759822},"OC006":{"pokok":2836,"luasTanam":23.10242366},"OC007":{"pokok":3981,"luasTanam":31.50547782},"OC008":{"pokok":1879,"luasTanam":17.0306481},"OC009":{"pokok":3287,"luasTanam":25.37608088},"OC010":{"pokok":2137,"luasTanam":16.97904717},"OC011":{"pokok":3539,"luasTanam":27.33788509},"OC012":{"pokok":2778,"luasTanam":23.36623628},"OC013":{"pokok":3504,"luasTanam":27.51786459},"OC014":{"pokok":2338,"luasTanam":18.90177491},"OC015":{"pokok":3332,"luasTanam":25.82564332},"OC016":{"pokok":3649,"luasTanam":30.42393538},"OC017":{"pokok":2962,"luasTanam":24.24650447},"OC018":{"pokok":2090,"luasTanam":15.9536477},"OC019":{"pokok":3250,"luasTanam":24.52063412},"OC01A":{"pokok":1153,"luasTanam":91.1615659},"OC020":{"pokok":3645,"luasTanam":28.92360449},"OC021":{"pokok":3007,"luasTanam":24.71175678},"OC022":{"pokok":1132,"luasTanam":88.4578401},"OC023":{"pokok":3819,"luasTanam":29.11726513},"OC024":{"pokok":3762,"luasTanam":29.4182184},"OC025":{"pokok":3338,"luasTanam":27.20928095},"OC026":{"pokok":2570,"luasTanam":20.27915272},"OC027":{"pokok":4216,"luasTanam":33.56746583},"OC028":{"pokok":3923,"luasTanam":32.18303737},"OC029":{"pokok":3338,"luasTanam":26.39474437},"OC030":{"pokok":2506,"luasTanam":19.3703675},"OC10A":{"pokok":1954,"luasTanam":14.74141087}};
 const AFD_LABEL={ALL:'Semua Afdeling',OC:'OCYM',OE:'OEYM'};
 let ACTIVE_AFD=localStorage.getItem('adriana_active_afd')||'ALL';
 const html={escape:(x)=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))};
@@ -2375,7 +2368,7 @@ async function processAMANTA(){
  document.getElementById('uploadMsg').innerHTML='<b>Parsed:</b> '+parsed.length+' file(s) · '+AFD_LABEL[afd]+' · '+html.escape(parsed.map(x=>x.name).join(' + '));
  const dup=report.reduce((a,x)=>a+(x.duplicates||0),0),raw=parsed.reduce((a,x)=>a+Object.values(x.sections).reduce((n,s)=>n+s.rows.length,0),0),fin=Object.values(merged).reduce((n,s)=>n+s.rows.length,0);
  document.getElementById('reconBox').innerHTML=`<b>READY TO CLOSE</b><br>Afdeling: <b>${AFD_LABEL[afd]}</b> · Tanggal: <b>${fmtDate(STAGED.date)}</b> · Site: ${html.escape(STAGED.site)} · ${parsed.length} file<br>Raw rows: ${raw.toLocaleString()} · Duplicate rows removed: ${dup.toLocaleString()} · Final reconciled rows: ${fin.toLocaleString()}<br><span class="small">Identical rows are deduplicated; records are not blindly summed across files.</span>`;
- document.getElementById('lockBtn').disabled=false;renderStagedPreview(STAGED);
+ document.getElementById('lockBtn').disabled=false;const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=false;renderStagedPreview(STAGED);
 }
 function closeDataset(){
  if(!STAGED)return;const k=afdKeyHybrid(STAGED.date,STAGED.afd),existing=JSON.parse(localStorage.getItem(k)||'null'),closingId=existing?.closingId||('CLOSE-'+STAGED.afd+'-'+STAGED.date);
@@ -2938,19 +2931,93 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
    Full locked snapshots use IndexedDB; localStorage keeps only indexes/legacy snapshots.
    KKP roster is the supplied OC PN1 / OC PN2 master. */
 (function(){
+  window.exportStagedBackup=function(){
+    if(!STAGED){alert('Tidak ada dataset aktif untuk di-backup.');return;}
+    try{
+      const payload={
+        backupType:'ADRIANA_STAGED_EMERGENCY_BACKUP',
+        exportedAt:new Date().toISOString(),
+        appVersion:'v30-storage-fix3',
+        dataset:STAGED
+      };
+      const blob=new Blob([JSON.stringify(payload)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download=`ADRIANA_EMERGENCY_${STAGED.afd||'OC'}_${STAGED.date||'dataset'}.json`;
+      document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1500);
+      const box=document.getElementById('reconBox');
+      if(box)box.innerHTML+='<br><b>BACKUP JSON DIMINTA.</b> Pastikan file muncul di folder Download sebelum meninggalkan halaman.';
+      return true;
+    }catch(e){
+      console.error('Emergency backup failed:',e);
+      alert('Backup JSON gagal dibuat: '+(e?.message||e)+'. Jangan refresh atau tutup halaman.');
+      return false;
+    }
+  };
   const IDB_NAME='adriana_v26_lock_store';
   const IDB_STORE='snapshots';
+  const IDB_VERSION=1;
   const LOCK_FALLBACK_KEY='adriana_locked_snapshots_fallback_v1';
-  let dbPromise=null;
-  const openDB=()=>dbPromise||(dbPromise=new Promise((resolve,reject)=>{
-    if(!window.indexedDB)return reject(new Error('IndexedDB tidak tersedia pada browser/content URI ini.'));
-    let req;
-    try{req=window.indexedDB.open(IDB_NAME,1)}catch(e){reject(e);return}
-    req.onupgradeneeded=()=>{const db=req.result;if(!db.objectStoreNames.contains(IDB_STORE))db.createObjectStore(IDB_STORE,{keyPath:'id'});};
-    req.onsuccess=()=>{const db=req.result;db.onversionchange=()=>db.close();resolve(db)};
-    req.onerror=()=>{dbPromise=null;reject(req.error||new Error('IndexedDB gagal dibuka'))};
-    req.onblocked=()=>{dbPromise=null;reject(new Error('IndexedDB diblokir tab lain. Tutup tab ADRIANA lain lalu coba lagi.'))};
-  }));
+  // IMPORTANT: do not cache an IDB connection or its Promise. Android WebView/Chrome
+  // can close a connection after tab suspension, page restore, or version changes.
+  // A cached resolved Promise then points to a closed connection and causes
+  // InvalidStateError on the next transaction.
+  const openDB=()=>new Promise((resolve,reject)=>{
+    if(!window.indexedDB){reject(new Error('IndexedDB tidak tersedia pada browser ini. Buka ADRIANA melalui HTTPS di Chrome.'));return;}
+    let req,settled=false;
+    const fail=(err)=>{if(settled)return;settled=true;reject(err||new Error('IndexedDB gagal dibuka'));};
+    try{req=window.indexedDB.open(IDB_NAME,IDB_VERSION)}catch(e){fail(e);return;}
+    req.onupgradeneeded=()=>{
+      const db=req.result;
+      if(!db.objectStoreNames.contains(IDB_STORE))db.createObjectStore(IDB_STORE,{keyPath:'id'});
+    };
+    req.onsuccess=()=>{
+      const db=req.result;
+      if(!db.objectStoreNames.contains(IDB_STORE)){
+        try{db.close()}catch(e){}
+        fail(new Error('Object store snapshots tidak ditemukan setelah database dibuka.'));return;
+      }
+      db.onversionchange=()=>{try{db.close()}catch(e){}};
+      db.onclose=()=>{console.warn('ADRIANA IndexedDB connection closed; next operation will reopen it.');};
+      if(settled){try{db.close()}catch(e){};return;}
+      settled=true;resolve(db);
+    };
+    req.onerror=()=>fail(req.error||new Error('IndexedDB gagal dibuka'));
+    req.onblocked=()=>fail(new Error('Upgrade IndexedDB diblokir tab ADRIANA lain. Tutup tab ADRIANA lain, lalu buka ulang halaman.'));
+  });
+  const idbTransaction=(mode,work)=>new Promise(async(resolve,reject)=>{
+    let lastError=null;
+    for(let attempt=0;attempt<2;attempt++){
+      let db=null;
+      try{
+        db=await openDB();
+        const result=await new Promise((res,rej)=>{
+          let tx,request;
+          try{
+            tx=db.transaction(IDB_STORE,mode);
+            request=work(tx);
+            if(request){request.onerror=()=>rej(request.error||new Error('IndexedDB request failed'));}
+          }catch(e){rej(e);return;}
+          // Resolve only after transaction commit. Resolving on request.onsuccess
+          // and closing the DB early can interrupt a write before it commits.
+          tx.oncomplete=()=>res(request?request.result:true);
+          tx.onerror=()=>rej(tx.error||new Error('IndexedDB transaction failed'));
+          tx.onabort=()=>rej(tx.error||new Error('IndexedDB transaction aborted'));
+        });
+        try{db.close()}catch(e){}
+        resolve(result);return;
+      }catch(e){
+        lastError=e;
+        try{if(db)db.close()}catch(closeError){}
+        const retryable=e?.name==='InvalidStateError'||e?.name==='TransactionInactiveError'||e?.name==='NotFoundError';
+        if(!retryable||attempt===1)break;
+        await new Promise(r=>setTimeout(r,80));
+      }
+    }
+    reject(lastError||new Error('Operasi IndexedDB gagal.'));
+  });
   const readLockFallback=()=>{try{const v=JSON.parse(localStorage.getItem(LOCK_FALLBACK_KEY)||'[]');return Array.isArray(v)?v:[]}catch(e){return []}};
   const writeLockFallback=(snap)=>{
     const rows=readLockFallback(),id=`${snap.afd||'OC'}_${snap.date}`,i=rows.findIndex(x=>x.id===id);
@@ -2962,22 +3029,18 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
   const idbPut=async(snap)=>{
     const item={...snap,id:`${snap.afd||'OC'}_${snap.date}`};
     try{
-      const db=await openDB();
-      return await new Promise((resolve,reject)=>{
-        let tx;try{tx=db.transaction(IDB_STORE,'readwrite');tx.objectStore(IDB_STORE).put(item)}catch(e){db.close();reject(e);return}
-        tx.oncomplete=()=>{db.close();resolve(true)};
-        tx.onerror=()=>{db.close();reject(tx.error||new Error('IndexedDB write failed'))};
-        tx.onabort=()=>{db.close();reject(tx.error||new Error('IndexedDB transaction aborted'))};
-      });
-    }catch(idbError){writeLockFallback(item);console.warn('ADRIANA menggunakan localStorage fallback:',idbError);return true}
+      await idbTransaction('readwrite',(tx)=>tx.objectStore(IDB_STORE).put(item));
+      return true;
+    }catch(idbError){
+      console.error('ADRIANA IndexedDB write failed; full snapshot was NOT copied to localStorage:',idbError);
+      const detail=(idbError?.name||'IndexedDBError')+': '+(idbError?.message||'write failed');
+      throw new Error('Penyimpanan IndexedDB gagal ('+detail+'). Dataset tetap berada di sesi aktif. Unduh EMERGENCY BACKUP JSON sebelum meninggalkan halaman; jangan refresh/menutup halaman.');
+    }
   };
   const idbAll=async()=>{
-    let rows=[];try{
-      const db=await openDB();
-      rows=await new Promise((resolve,reject)=>{
-        let tx;try{tx=db.transaction(IDB_STORE,'readonly');const r=tx.objectStore(IDB_STORE).getAll();r.onsuccess=()=>resolve(r.result||[]);r.onerror=()=>reject(r.error||new Error('IndexedDB read failed'));tx.oncomplete=()=>db.close();tx.onerror=()=>{db.close();reject(tx.error)};
-        }catch(e){db.close();reject(e)}
-      });
+    let rows=[];
+    try{
+      rows=await idbTransaction('readonly',(tx)=>tx.objectStore(IDB_STORE).getAll());
     }catch(e){console.warn('ADRIANA IDB read fallback:',e)}
     const map=new Map();[...rows,...readLockFallback()].forEach(x=>{if(x?.date)map.set(x.id||`${x.afd||'OC'}_${x.date}`,x)});return [...map.values()];
   };
@@ -3023,22 +3086,43 @@ document.addEventListener('DOMContentLoaded',()=>{migrateLegacyHistoryHybrid();r
     try{
       const existing=(await merged(snap.afd)).find(x=>x.date===snap.date);
       if(existing){snap.closingId=existing.closingId||snap.closingId;snap.versionNumber=existing.versionNumber||1;}
+
+      // Full dataset must be committed to IndexedDB before STAGED is cleared.
+      // No large localStorage fallback: quota failure must never destroy the active session.
       await idbPut(snap);
-      // Update the in-memory cache immediately so OC and OEYM remain visible as
-      // separate afdeling datasets in the existing multi-AFD UI.
+
       const c=window.ADRIANA_LOCK_IDB_CACHE||[];
       const ci=c.findIndex(x=>(x.afd||'OC')===(snap.afd||'OC')&&x.date===snap.date);
       if(ci>=0)c[ci]=snap;else c.push(snap);
       window.ADRIANA_LOCK_IDB_CACHE=c;
-      let idx=parseLS('adriana_afd_index',[]);if(!Array.isArray(idx))idx=[];
-      idx=idx.filter(x=>!(x.date===snap.date&&x.afd===snap.afd));idx.push({date:snap.date,afd:snap.afd});idx.sort((a,b)=>String(b.date).localeCompare(String(a.date)));localStorage.setItem('adriana_afd_index',JSON.stringify(idx));
-      // Keep only the legacy OC mirror when one already exists; do not create another large snapshot.
-      ACTIVE=snap;STAGED=null;window.ADRIANA_DATA=buildData(snap);renderAll(snap);
+
+      // The localStorage index is only a convenience pointer. Its failure must
+      // not turn a successfully committed IndexedDB snapshot into a failed close.
+      try{
+        let idx=parseLS('adriana_afd_index',[]);
+        if(!Array.isArray(idx))idx=[];
+        idx=idx.filter(x=>!(x.date===snap.date&&x.afd===snap.afd));
+        idx.push({date:snap.date,afd:snap.afd});
+        idx.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+        localStorage.setItem('adriana_afd_index',JSON.stringify(idx));
+      }catch(indexError){console.warn('ADRIANA index pointer not updated; dataset is safely stored in IndexedDB:',indexError);}
+
+      ACTIVE=snap;
+      STAGED=null;
+      window.ADRIANA_DATA=buildData(snap);
+      renderAll(snap);
       document.getElementById('lockState').textContent='● DATA LOCKED · VALIDATED';
       document.getElementById('uploadMsg').innerHTML+='<br><b>LOCKED:</b> '+fmtDate(snap.date)+' · '+snap.closingId;
+      const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=true;
       await renderHistory();
-      alert('Dataset '+fmtDate(snap.date)+' berhasil di-CLOSE & LOCK. '+(snap.storageMode==='localStorage-fallback'?'Tersimpan melalui localStorage fallback pada browser/perangkat ini.':'Tersimpan di IndexedDB.'));
-    }catch(e){console.error(e);alert('Gagal menyimpan CLOSE & LOCK: '+(e?.message||e));}
+      alert('Dataset '+fmtDate(snap.date)+' berhasil di-CLOSE & LOCK. Tersimpan di IndexedDB.');
+    }catch(e){
+      console.error(e);
+      const backupBtn=document.getElementById('backupBtn');if(backupBtn)backupBtn.disabled=false;
+      const msg='CLOSE & LOCK belum berhasil. Dataset tetap berada di sesi aktif dan tidak dihapus. '+(e?.message||e)+' Klik EMERGENCY BACKUP JSON untuk mengunduh salinan sebelum mencoba lagi.';
+      const box=document.getElementById('reconBox');if(box)box.innerHTML='<b>LOCK BELUM BERHASIL</b><br>'+html.escape(msg);
+      alert(msg);
+    }
   };
   renderHistory=async function(){
     const host=document.getElementById('evalHistory');if(!host)return;
@@ -3624,85 +3708,9 @@ html,body{width:100%;max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:1
    summary.innerHTML=cards.map(([k,v])=>`<div class="panel"><div class="small">${safe(k)}</div><div class="value">${fmtCorr(v)}</div><div class="small">Pearson r · n=${m.length}</div></div>`).join('');
    charts.innerHTML=specs.map(([t,x,y,xl,yl])=>tiChart(t,xl,yl,m,x,y)).join('');
  }
- 
- function durationToMinutes(value){
-  const x=String(value??'').trim();
-  if(!x)return null;
-  let m=x.match(/(\d{1,3}):([0-5]\d)(?::([0-5]\d))?/);
-  if(m)return Number(m[1])*60+Number(m[2])+Number(m[3]||0)/60;
-  m=x.match(/(?:(\d+(?:[.,]\d+)?)\s*jam)?\s*(?:(\d+(?:[.,]\d+)?)\s*menit)?/i);
-  if(m&&(m[1]||m[2]))return Number(String(m[1]||0).replace(',','.'))*60+Number(String(m[2]||0).replace(',','.'));
-  return null;
- }
- function formatDurationMinutes(value){
-  if(!Number.isFinite(value))return '—';
-  const total=Math.round(value),h=Math.floor(total/60),m=total%60;
-  return `${h} jam ${String(m).padStart(2,'0')} menit`;
- }
- function downloadTiWeeklyExcel(){
-  const data=window.tiWeeklyExportData;
-  if(!data||!data.rows?.length){alert('Belum ada data akumulasi mingguan untuk diunduh.');return;}
-  const headers=['Pemanen','Hari Kerja Terdeteksi','Rata-rata Coverage per 6 Hari (Ha)','Rata-rata Durasi per Hari Kerja','JJG ADRIANA','BM','BB','Hari Produksi Match'];
-  const esc=v=>`"${String(v??'').replace(/"/g,'""')}"`;
-  const lines=[headers,...data.rows.map(r=>[r.name,r.days,Number(r.avgCoverage||0).toFixed(2),r.avgDuration,r.jjg,r.bm,r.bb,r.productionDays])]
-    .map(row=>row.map(esc).join(','));
-  const csv='\uFEFF'+`Periode,${esc(data.from+' s.d. '+data.to)}\r\nAFD,${esc(data.afd)}\r\n\r\n`+lines.join('\r\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download=`GITA_ADRIANA_Akumulasi_Mingguan_${data.from}_${data.to}.csv`;
-  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-}
-function renderWeeklyHarvesterSummary(reports){
-  const body=$('tiWeeklyRows'),note=$('tiWeeklyNote');
-  if(!body||!note)return;
-  if(!currentReport?.date){note.textContent='Pilih/import laporan GITA terlebih dahulu.';body.innerHTML='<tr><td colspan="8" class="small">Belum ada laporan terpilih.</td></tr>';return;}
-  const selected=new Date();
-  if(!Number.isFinite(selected.getTime())){note.textContent='Tanggal laporan tidak valid.';return;}
-  const dow=selected.getDay(),back=dow===0?6:dow-1;
-  const monday=new Date(selected);monday.setDate(selected.getDate()-back);
-  const saturday=new Date(monday);saturday.setDate(monday.getDate()+5);
-  const iso=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-  const from=iso(monday),to=iso(saturday),afd=String(currentReport.afd||'');
-  const weekReports=reports.filter(r=>String(r.afd||'')===afd&&String(r.date)>=from&&String(r.date)<=to)
-    .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
-  const people=new Map();
-  for(const rep of weekReports){
-   const prod=activeProduction(rep.date,afd),prodByName=new Map((prod.people||[]).map(p=>[norm(p.name),p]));
-   const seenNames=new Set();
-   for(const row of (rep.rows||[])){
-    const key=row.nameKey||norm(row.name);if(!key||seenNames.has(key))continue;seenNames.add(key);
-    const p=prodByName.get(key);
-    let a=people.get(key);
-    if(!a){a={name:row.name,days:new Set(),coverage:0,durationMinutes:0,durationDays:0,jjg:0,bm:0,bb:0,productionDays:new Set()};people.set(key,a);}
-    a.days.add(String(rep.date));
-    a.coverage+=Number(row.coverageHa)||0;
-    const mins=durationToMinutes(row.duration);
-    if(mins!=null){a.durationMinutes+=mins;a.durationDays++;}
-    if(p&&prod.snap&&String(prod.snap.date)===String(rep.date)){
-      a.jjg+=Number(p.jjg)||0;a.bm+=Number(p.bm)||0;a.bb+=Number(p.bb)||0;
-      a.productionDays.add(String(rep.date));
-    }
-   }
-  }
-  note.textContent=`Periode kalender berjalan: ${from} s.d. ${to} · ${weekReports.length} laporan GITA tersimpan · AFD ${afd||'—'}. Coverage ditampilkan sebagai total coverage ÷ 6 hari kerja (Senin–Sabtu), termasuk jika pemanen tidak memiliki data pada seluruh 6 hari. Durasi ditampilkan sebagai rata-rata total durasi ÷ hari kerja dengan data durasi. JJG/BM/BB dijumlahkan hanya pada tanggal yang memiliki snapshot produksi ADRIANA cocok.`;
-  const rows=[...people.values()].sort((a,b)=>a.name.localeCompare(b.name,'id'));
-  window.tiWeeklyExportData={from,to,afd,rows:rows.map(a=>({
-    name:a.name,days:a.days.size,coverage:a.coverage,avgCoverage:a.coverage/6,
-    avgDuration:a.durationDays?formatDurationMinutes(a.durationMinutes/a.durationDays):'',
-    jjg:a.productionDays.size?a.jjg:'',bm:a.productionDays.size?a.bm:'',
-    bb:a.productionDays.size?a.bb:'',productionDays:a.productionDays.size
-  }))};
-  const exportBtn=$('tiWeeklyExportBtn');
-  if(exportBtn){
-    exportBtn.disabled=!rows.length;
-    exportBtn.onclick=()=>downloadTiWeeklyExcel();
-  }
-  body.innerHTML=rows.length?rows.map(a=>`<tr><td><b>${safe(a.name)}</b></td><td>${a.days.size}</td><td>${(a.coverage/6).toFixed(2)}</td><td>${a.durationDays?formatDurationMinutes(a.durationMinutes/a.durationDays):'—'}</td><td>${a.productionDays.size?a.jjg.toLocaleString('id-ID'):'—'}</td><td>${a.productionDays.size?a.bm.toLocaleString('id-ID'):'—'}</td><td>${a.productionDays.size?a.bb.toLocaleString('id-ID'):'—'}</td><td>${a.productionDays.size}</td></tr>`).join(''):'<tr><td colspan="8" class="small">Belum ada laporan GITA pada minggu ini (Senin–Sabtu).</td></tr>';
- }
-async function render(){try{if(window.ADRIANA_LOCK_IDB_READY)await window.ADRIANA_LOCK_IDB_READY;}catch(e){}const prod=activeProduction(currentReport?.date,currentReport?.afd),sameDate=!!currentReport&&!!prod.snap&&String(currentReport.date)===String(prod.snap.date),byName=new Map(prod.people.map(p=>[norm(p.name),p]));currentRows=(currentReport?.rows||[]).map(g=>{const p=byName.get(g.nameKey);const matched=!!p&&sameDate;return {...g,jjg:matched?p.jjg:null,bm:matched?p.bm:null,bb:matched?p.bb:null,bmPct:matched&&p.jjg>0?p.bm/p.jjg*100:null,bbPct:matched&&p.jjg>0?p.bb/p.jjg*100:null,jjgHa:matched&&g.coverageHa>0?p.jjg/g.coverageHa:null,amantaName:p?.name||'',matched,amantaBlocks:p?.blocks||[],matchReason:!p?'PEMANEN TIDAK DITEMUKAN':!sameDate?'TANGGAL BERBEDA':'MATCH'}});const matched=currentRows.filter(r=>r.matched);$('tiKpiPeople').textContent=currentRows.length||'—';$('tiKpiMatched').textContent=currentRows.length?`${matched.length}/${currentRows.length}`:'—';$('tiKpiCoverage').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.coverageHa),matched.map(r=>r.jjg))):'—';$('tiKpiPoints').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.totalPoints),matched.map(r=>r.jjg))):'—';$('tiRows').innerHTML=currentRows.length?currentRows.map(r=>`<tr><td>${safe(r.name)}</td><td>${r.coverageHa.toFixed(2)}</td><td>${r.totalPoints.toLocaleString('id-ID')}</td><td>${safe(r.duration)}</td><td>${r.matched?r.jjg.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bm.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bmPct.toFixed(2)+'%':'—'}</td><td>${r.matched?r.bb.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bbPct.toFixed(2)+'%':'—'}</td><td>${r.matched&&r.jjgHa!=null?r.jjgHa.toFixed(2):'—'}</td><td>${safe(r.blocks||'—')}</td><td>${r.matched?'<b style="color:#15803d">MATCH</b>':`<span style="color:#b45309">${safe(r.matchReason)}</span>`}</td></tr>`).join(''):'<tr><td colspan="12" class="small">Belum ada data.</td></tr>';renderTiCorrelations(currentRows,sameDate);
+ async function render(){try{if(window.ADRIANA_LOCK_IDB_READY)await window.ADRIANA_LOCK_IDB_READY;}catch(e){}const prod=activeProduction(currentReport?.date,currentReport?.afd),sameDate=!!currentReport&&!!prod.snap&&String(currentReport.date)===String(prod.snap.date),byName=new Map(prod.people.map(p=>[norm(p.name),p]));currentRows=(currentReport?.rows||[]).map(g=>{const p=byName.get(g.nameKey);const matched=!!p&&sameDate;return {...g,jjg:matched?p.jjg:null,bm:matched?p.bm:null,bb:matched?p.bb:null,bmPct:matched&&p.jjg>0?p.bm/p.jjg*100:null,bbPct:matched&&p.jjg>0?p.bb/p.jjg*100:null,jjgHa:matched&&g.coverageHa>0?p.jjg/g.coverageHa:null,amantaName:p?.name||'',matched,amantaBlocks:p?.blocks||[],matchReason:!p?'PEMANEN TIDAK DITEMUKAN':!sameDate?'TANGGAL BERBEDA':'MATCH'}});const matched=currentRows.filter(r=>r.matched);$('tiKpiPeople').textContent=currentRows.length||'—';$('tiKpiMatched').textContent=currentRows.length?`${matched.length}/${currentRows.length}`:'—';$('tiKpiCoverage').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.coverageHa),matched.map(r=>r.jjg))):'—';$('tiKpiPoints').textContent=sameDate?fmtCorr(corr(matched.map(r=>r.totalPoints),matched.map(r=>r.jjg))):'—';$('tiRows').innerHTML=currentRows.length?currentRows.map(r=>`<tr><td>${safe(r.name)}</td><td>${r.coverageHa.toFixed(2)}</td><td>${r.totalPoints.toLocaleString('id-ID')}</td><td>${safe(r.duration)}</td><td>${r.matched?r.jjg.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bm.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bmPct.toFixed(2)+'%':'—'}</td><td>${r.matched?r.bb.toLocaleString('id-ID'):'—'}</td><td>${r.matched?r.bbPct.toFixed(2)+'%':'—'}</td><td>${r.matched&&r.jjgHa!=null?r.jjgHa.toFixed(2):'—'}</td><td>${safe(r.blocks||'—')}</td><td>${r.matched?'<b style="color:#15803d">MATCH</b>':`<span style="color:#b45309">${safe(r.matchReason)}</span>`}</td></tr>`).join(''):'<tr><td colspan="12" class="small">Belum ada data.</td></tr>';renderTiCorrelations(currentRows,sameDate);
  const blockMaster=new Map(prod.blocks.map(b=>[blockKey(b.key||b.name),b]));
  const histReports=await getReports();
- renderWeeklyHarvesterSummary(histReports);
  const reportDateObj=currentReport?.date?new Date(currentReport.date+'T00:00:00'):null;
  const eligibleReports=histReports.filter(r=>String(r.afd||'')===String(currentReport?.afd||'')&&r.date&&reportDateObj&&new Date(r.date+'T00:00:00')<=reportDateObj);
  const selectedDate=String(currentReport?.date||'');
